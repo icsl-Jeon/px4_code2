@@ -1,0 +1,50 @@
+<launch>
+    <arg name="drone_name" default="target1"/>
+    <arg name="rviz" default="true"/>
+
+
+
+    <group ns = "$(arg drone_name)">
+        <arg name="device_type_camera1" default="t265"/>
+        <arg name="camera1"              			default="t265"/>
+        <arg name="tf_prefix_camera1"         default="$(arg drone_name)_$(arg camera1)"/>
+        <arg name="initial_reset"             default="false"/>
+        <arg name="enable_fisheye"            default="false"/>
+        <arg name="color_width"               default="640"/>
+        <arg name="color_height"              default="480"/>
+        <arg name="topic_odom_in"             default="odom_in"/>
+        <arg name="calib_odom_file"           default=""/>
+
+        <node pkg="tf" type="static_transform_publisher" name="map_to_$(arg drone_name)"
+              args="0 0 0 0 0 0  map $(arg drone_name)_$(arg camera1)_odom_frame 100"/>
+
+        <group ns="$(arg camera1)">
+            <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+                <arg name="device_type"           value="$(arg device_type_camera1)"/>
+                <arg name="serial_no"             value=""/>
+                <arg name="tf_prefix"                     value="$(arg tf_prefix_camera1)"/>
+                <arg name="initial_reset"         value="$(arg initial_reset)"/>
+                <arg name="enable_fisheye1"       value="$(arg enable_fisheye)"/>
+                <arg name="enable_fisheye2"       value="$(arg enable_fisheye)"/>
+                <arg name="topic_odom_in"         value="$(arg topic_odom_in)"/>
+                <arg name="calib_odom_file"       value="$(arg calib_odom_file)"/>
+                <arg name="enable_pose"           value="true"/>
+            </include>
+        </group>
+
+        <include file = "$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="/dev/ttyACM0:57600"/>
+        </include>
+
+        <node name = "server_node" pkg="px4_code2" type="server_node">
+            <param name = "drone_name" value = "$(arg drone_name)"/>
+        </node>
+
+    </group>
+
+
+
+
+    <node if = "$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find px4_code2)/rviz/server.rviz"/>
+
+</launch>
