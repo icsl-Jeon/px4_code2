@@ -8,9 +8,25 @@
 #include <gcs_widget/widget.h>
 #include <rqt_gui_cpp/plugin.h>
 
+// Service List
+#include <px4_code2/Takeoff.h>
+
+// ROS
+#include <ros/ros.h>
 
 namespace px4_code2{
-    class GcsPlugin : public rqt_gui_cpp::Plugin{
+    class GcsPlugin :  public rqt_gui_cpp::Plugin{
+
+        struct Param{
+            std::vector<std::string> droneNameSet;
+            int getNdrone() {return droneNameSet.size();}
+
+        };
+
+        std::string takeoffServiceName = "";
+
+
+        Q_OBJECT // NOTE : the class with this macros should be included in moc
     public:
         GcsPlugin();
         virtual ~GcsPlugin();
@@ -24,6 +40,13 @@ namespace px4_code2{
 
     private:
         Widget* widget;
+        ros::NodeHandle nh;
+        Param param;
+
+        // ROS
+    private slots:
+        void callService(int droneId, std::string service);
+
 
 
     };

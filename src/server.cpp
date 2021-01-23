@@ -19,7 +19,7 @@ void Server::callbackOdom(const nav_msgs::OdometryConstPtr& msgPtr) {
         }
     }
     catch (tf::TransformException ex){
-        ROS_ERROR_STREAM( "[px4_code2 server] received odom but no tf to global frame " << param.worldFrame );
+        ROS_ERROR_STREAM( param.getLabel() + ": received odom but no tf to global frame " << param.worldFrame );
     }
 
 }
@@ -27,17 +27,40 @@ void Server::callbackOdom(const nav_msgs::OdometryConstPtr& msgPtr) {
 bool Server::callbackTakeoff(px4_code2::TakeoffRequest &req, px4_code2::TakeoffResponse &resp) {
 
     if (status.isInit) {
+
+        // Takeoff parameters
         double height = req.height;
         double speedToAir = 0.1;
         double takeoffTime = height / speedToAir;
-        trajgen::time_knots<double>{0, takeoffTime};
+        trajgen::time_knots<double> ts{0, takeoffTime};
+
+        // Initial translation
         FixPin x0(0.0, 0 ,TrajVector(state.curPose.pose.position.x,
                                   state.curPose.pose.position.y,
                                   state.curPose.pose.position.z
                                   ));
+        FixPin xdot0(0.0, 1 ,TrajVector(0,0,0));
+        FixPin xddot0(0.0, 2 ,TrajVector(0,0,0));
 
+        // Final translation
+        FixPin xf(takeoffTime, 0 ,TrajVector(state.curPose.pose.position.x,
+                                     state.curPose.pose.position.y,
+                                     state.curPose.pose.position.z
+        ));
+        FixPin xdotf(takeoffTime, 1 ,TrajVector(0,0,0));
+        FixPin xddotf(takeoffTime, 2 ,TrajVector(0,0,0));
 
+        // Solve trajectory
+        std::vector<FixPin*> pinSet{&x0,&xdot0,&xddot0,&xf,&xdotf,&xddotf};
+        int polyOrder = 5;
+        trajgen::PolyParam pp(polyOrder,2,trajgen::ALGORITHM::POLY_COEFF);
+        TrajGenObj trajGenObj(ts,pp); trajGenObj.solve(false);
 
+        // Upload mission
+        Trajectory takeoffTraj(&trajGenObj,takeoffTime);
+        status.curMission.loadTrajectory(takeoffTraj);
+        status.curMission.triggerTime = ros::Time::now();
+        status.isMissionReceived = true;
 
         return true;
     }else{

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(px4_code2)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+ add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -38,16 +38,13 @@ generate_messages(
 
 catkin_package(
 
-
-
-
 )
-set(QT_SRC resource/gcs_widget/widget.cpp)
+set(QT_SRC resource/gcs_widget/widget.cpp resource/gcs_rqt/gcs_plugin.cpp)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
-    qt5_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h)
+    qt5_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h)
     qt5_wrap_ui(QT_UIS_H resource/gcs_widget/widget.ui)
 else()
-    qt4_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h)
+    qt4_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h)
     qt4_wrap_ui(QT_UIS_H resource/gcs_widget/widget.ui)
 endif()
 
@@ -56,15 +53,13 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 
 )
-set(RQT_SRC resource/gcs_rqt/gcs_plugin.cpp)
-set(RQT_H resource/gcs_rqt/gcs_plugin.h)
 
 
 #########################
 ##       CLIENT        ##
 #########################
 message("${RQT_SRC}")
-add_library(${PROJECT_NAME} ${RQT_SRC} ${RQT_H} ${QT_MOCS} ${QT_SRC} ${QT_UIS_H})
+add_library(${PROJECT_NAME}  ${QT_MOCS} ${QT_SRC} ${QT_UIS_H})
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
     target_link_libraries(${PROJECT_NAME} Qt5::Widgets ${catkin_LIBRARIES})
 else()

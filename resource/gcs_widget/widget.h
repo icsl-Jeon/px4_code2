@@ -14,8 +14,11 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
+signals:
+    void callService(int droneId, std::string serviceName);
 
 private slots:
+    // From UI
     void on_pushButton_takeoff_clicked();
 
 private:

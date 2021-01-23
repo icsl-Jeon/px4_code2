@@ -10,12 +10,8 @@
 #include <tf/transform_listener.h>
 #include <string>
 #include <utils/utility.h>
-#include <traj_gen/TrajGen.hpp>
 
 using namespace std;
-const int TRAJGEN_DIM = 3;
-typedef trajgen::FixPin<double,TRAJGEN_DIM> FixPin;
-typedef trajgen::Vector<double,TRAJGEN_DIM> TrajVector;
 
 
 namespace px4_code2{
@@ -26,7 +22,9 @@ namespace px4_code2{
         struct Status{
             bool isPoseReceived = false;
             bool isInit = false;
+            bool isMissionReceived = false;
             Phase phase;
+            Mission curMission;
         };
 
         struct State{
@@ -35,12 +33,10 @@ namespace px4_code2{
         };
 
         struct Param{
+            string labelServer = "[[ px4_code/server of ";
             string droneName;
+            string getLabel() {return labelServer + droneName + " ]] ";};
             string worldFrame = "/map";
-            struct takeoff{
-
-
-            };
 
         };
 
