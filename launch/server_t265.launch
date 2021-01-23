@@ -1,9 +1,6 @@
 <launch>
     <arg name="drone_name" default="target1"/>
     <arg name="rviz" default="true"/>
-
-
-
     <group ns = "$(arg drone_name)">
         <arg name="device_type_camera1" default="t265"/>
         <arg name="camera1"              			default="t265"/>

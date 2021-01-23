@@ -1,0 +1,18 @@
+<library path="lib/libpx4_code2">
+    <class name="px4_code2/GcsPlugin" type="px4_code2::GcsPlugin" base_class_type="rqt_gui_cpp::Plugin">
+        <description>
+            Plugin for ROS gcs
+        </description>
+        <qtgui>
+            <!-- group the plugin into the folder Robot Tools... -->
+            <group>
+                <label>Robot Tools</label>
+                <icon type="theme">folder</icon>
+                <statustip>Plugins related to robot tools.</statustip>
+            </group>
+            <label> FelipeSuite </label>
+            <icon type="theme">input-tablet</icon>
+            <statustip>Plugin for ROS GCS</statustip>
+        </qtgui>
+    </class>
+</library>

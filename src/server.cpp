@@ -2,6 +2,8 @@
 
 using namespace px4_code2;
 
+
+
 void Server::callbackOdom(const nav_msgs::OdometryConstPtr& msgPtr) {
     try {
         status.isPoseReceived = true;
@@ -22,6 +24,28 @@ void Server::callbackOdom(const nav_msgs::OdometryConstPtr& msgPtr) {
 
 }
 
+bool Server::callbackTakeoff(px4_code2::TakeoffRequest &req, px4_code2::TakeoffResponse &resp) {
+
+    if (status.isInit) {
+        double height = req.height;
+        double speedToAir = 0.1;
+        double takeoffTime = height / speedToAir;
+        trajgen::time_knots<double>{0, takeoffTime};
+        FixPin x0(0.0, 0 ,TrajVector(state.curPose.pose.position.x,
+                                  state.curPose.pose.position.y,
+                                  state.curPose.pose.position.z
+                                  ));
+
+
+
+
+        return true;
+    }else{
+        resp.is_success = false;
+        return false;
+    }
+
+}
 
 Server::Server() : nh("~"){
 

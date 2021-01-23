@@ -10,8 +10,12 @@
 #include <tf/transform_listener.h>
 #include <string>
 #include <utils/utility.h>
+#include <traj_gen/TrajGen.hpp>
 
 using namespace std;
+const int TRAJGEN_DIM = 3;
+typedef trajgen::FixPin<double,TRAJGEN_DIM> FixPin;
+typedef trajgen::Vector<double,TRAJGEN_DIM> TrajVector;
 
 
 namespace px4_code2{
@@ -33,6 +37,10 @@ namespace px4_code2{
         struct Param{
             string droneName;
             string worldFrame = "/map";
+            struct takeoff{
+
+
+            };
 
         };
 
@@ -48,7 +56,9 @@ namespace px4_code2{
             ros::Publisher pubSetPose;
             ros::Publisher pubVisionPose;
         };
-
+        struct ServerSet{
+            ros::ServiceServer takeoffServer;
+        };
 
     private:
 
@@ -72,6 +82,7 @@ namespace px4_code2{
         }
 
         void callbackOdom(const nav_msgs::OdometryConstPtr & msgPtr);
+        bool callbackTakeoff(px4_code2::TakeoffRequest & req, px4_code2::TakeoffResponse & resp);
         void publish();
 
     public:
