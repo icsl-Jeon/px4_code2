@@ -4,12 +4,16 @@ project(px4_code2)
 ## Compile as C++11, supported in ROS Kinetic and newer
  add_compile_options(-std=c++11)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
+## Include qpOASES
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+find_package(qpOASES REQUIRED)
+message( "cmake module path : ${CMAKE_MODULE_PATH}")
+
+## ROS
 find_package(catkin REQUIRED COMPONENTS
         mavros roscpp geometry_msgs message_generation tf nav_msgs rqt_gui rqt_gui_cpp
 )
+
 
 
 
@@ -22,10 +26,22 @@ endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # This finds ui_*.h
 
-## Generate services in the 'srv' folder
+
+
+#########################
+##       MESSAGE       ##
+#########################
+add_message_files(
+        FILES
+        phase.msg
+)
+
+##########################
+##       SERVICE        ##
+##########################
  add_service_files(
    FILES
-   Takeoff.srv
+   Takeoff.srv Lock.srv Land.srv
  )
 
 generate_messages(
@@ -39,6 +55,8 @@ generate_messages(
 catkin_package(
 
 )
+
+## Client QT and RQT
 set(QT_SRC resource/gcs_widget/widget.cpp resource/gcs_rqt/gcs_plugin.cpp)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
     qt5_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h)
@@ -59,7 +77,7 @@ include_directories(
 ##       CLIENT        ##
 #########################
 message("${RQT_SRC}")
-add_library(${PROJECT_NAME}  ${QT_MOCS} ${QT_SRC} ${QT_UIS_H})
+add_library(${PROJECT_NAME}  ${QT_MOCS} ${QT_SRC} ${QT_UIS_H} src/server.cpp src/utils/utility.cpp)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
     target_link_libraries(${PROJECT_NAME} Qt5::Widgets ${catkin_LIBRARIES})
 else()
@@ -80,6 +98,6 @@ install(FILES plugin.xml
 ##       SERVER        ##
 #########################
 
-add_executable(server_node src/exe/server_node.cpp src/server.cpp src/utils/utility.cpp)
-target_link_libraries(server_node ${catkin_LIBRARIES})
+add_executable(server_node src/exe/server_node.cpp src/server.cpp src/utils/utility.cpp )
+target_link_libraries(server_node ${catkin_LIBRARIES} ${qpOASES_LIB})
 

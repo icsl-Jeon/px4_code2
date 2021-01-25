@@ -33,13 +33,11 @@
             <arg name="fcu_url" value="/dev/ttyACM0:57600"/>
         </include>
 
-        <node name = "server_node" pkg="px4_code2" type="server_node">
+        <node name = "server_node" pkg="px4_code2" type="server_node" output = "screen">
             <param name = "drone_name" value = "$(arg drone_name)"/>
         </node>
 
     </group>
-
-
 
 
     <node if = "$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(find px4_code2)/rviz/server.rviz"/>
