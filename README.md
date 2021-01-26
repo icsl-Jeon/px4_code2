@@ -17,7 +17,7 @@
 * mavros-*
 
   ```
-  sudo apt-get install ros-${DISTRO}-mavros ros-${DISTRO}-mavros-msgs ros-${DISTRO}-mavros-extras 
+  sudo apt-get install ros-${ROS_DISTRO}-mavros ros-${DISTRO}-mavros-msgs ros-${DISTRO}-mavros-extras 
   sudo chmod +x ./resource/install_geographic.sh 
   sudo ./resource/install_geographic.sh
   sudo usermod -a -G dialout <user>
