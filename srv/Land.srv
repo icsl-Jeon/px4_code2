@@ -1,2 +1,4 @@
+float64 ground # normally below zero
+float64 speed # landing speed
 ---
 bool is_success

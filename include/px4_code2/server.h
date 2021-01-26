@@ -6,6 +6,9 @@
 #define PX4_CODE2_SERVER_H
 
 #include <mavros_msgs/State.h>
+#include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/SetMode.h>
+
 #include <px4_code2/Takeoff.h>
 #include <px4_code2/Lock.h>
 #include <px4_code2/Land.h>
@@ -17,11 +20,12 @@
 #define takeoffServiceName "/px4_code/takeoff"
 #define landServiceName "/px4_code/land"
 #define  lockServiceName "/px4_code/lock"
-#define  phaseTopicName "/px4_code/phase"
+#define armServiceName "/mavros/cmd/arming"
+#define modeSwitchName "/mavros/set_mode"
 
-#define speedToAir 0.1
-#define speedToLand 0.08
-#define landHeight -0.6
+#define  phaseTopicName "/px4_code/phase"
+#define px4StateTopicName "/mavros/state"
+
 
 using namespace std;
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
+    <width>489</width>
     <height>766</height>
    </rect>
   </property>
@@ -16,10 +16,10 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>140</y>
-     <width>491</width>
-     <height>131</height>
+     <x>10</x>
+     <y>330</y>
+     <width>461</width>
+     <height>251</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -35,9 +35,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>40</y>
+         <y>20</y>
          <width>89</width>
-         <height>51</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="text">
@@ -48,7 +48,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>40</y>
+         <y>10</y>
          <width>92</width>
          <height>23</height>
         </rect>
@@ -61,7 +61,7 @@
        <property name="geometry">
         <rect>
          <x>280</x>
-         <y>40</y>
+         <y>10</y>
          <width>92</width>
          <height>23</height>
         </rect>
@@ -74,7 +74,7 @@
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>40</y>
+         <y>10</y>
          <width>92</width>
          <height>23</height>
         </rect>
@@ -87,7 +87,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>70</y>
+         <y>40</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -97,7 +97,7 @@
        <property name="geometry">
         <rect>
          <x>280</x>
-         <y>70</y>
+         <y>40</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -107,7 +107,7 @@
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>70</y>
+         <y>40</y>
          <width>71</width>
          <height>21</height>
         </rect>
@@ -117,7 +117,7 @@
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>41</y>
+         <y>11</y>
          <width>67</width>
          <height>20</height>
         </rect>
@@ -130,13 +130,177 @@
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>70</y>
+         <y>40</y>
          <width>67</width>
          <height>20</height>
         </rect>
        </property>
        <property name="text">
         <string>Height</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>179</y>
+         <width>67</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Speed</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditSpeed3">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>180</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditSpeed2">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>179</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditSpeed1">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>179</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_land">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>89</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Land</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_9">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>90</y>
+         <width>92</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Drone3</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditLandGround1">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>120</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_8">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>90</y>
+         <width>92</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Drone2</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>91</y>
+         <width>67</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Target</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_9">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>120</y>
+         <width>67</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Ground</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_7">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>90</y>
+         <width>92</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Drone1</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditLandGround3">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>120</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditLandGround2">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>120</y>
+         <width>71</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="Line" name="line">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>150</y>
+         <width>441</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </widget>
@@ -146,7 +310,7 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>40</x>
      <y>30</y>
      <width>131</width>
      <height>17</height>
@@ -165,7 +329,7 @@
   <widget class="QLineEdit" name="lineEdit_Drone3Name">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>390</x>
      <y>30</y>
      <width>71</width>
      <height>21</height>
@@ -175,7 +339,7 @@
   <widget class="QLineEdit" name="lineEdit_Drone2Name">
    <property name="geometry">
     <rect>
-     <x>300</x>
+     <x>290</x>
      <y>30</y>
      <width>71</width>
      <height>21</height>
@@ -185,7 +349,7 @@
   <widget class="QLineEdit" name="lineEdit_Drone1Name">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>190</x>
      <y>30</y>
      <width>71</width>
      <height>21</height>
@@ -195,10 +359,10 @@
   <widget class="QWidget" name="gridLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>60</y>
-     <width>491</width>
-     <height>71</height>
+     <x>10</x>
+     <y>250</y>
+     <width>461</width>
+     <height>61</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
@@ -279,42 +443,42 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="gridLayoutWidget_3">
+  <widget class="QWidget" name="gridLayoutWidget_4">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>280</y>
-     <width>491</width>
-     <height>101</height>
+     <x>10</x>
+     <y>80</y>
+     <width>461</width>
+     <height>61</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="gridLayout_4">
     <item row="0" column="0">
-     <widget class="QFrame" name="frame_3">
+     <widget class="QFrame" name="frame_4">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QPushButton" name="pushButton_land">
+      <widget class="QPushButton" name="pushButton_mode_switcher">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>30</y>
+         <y>10</y>
          <width>89</width>
          <height>41</height>
         </rect>
        </property>
        <property name="text">
-        <string>Land</string>
+        <string>Offboard</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkBox_7">
+      <widget class="QCheckBox" name="checkBox_10">
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>40</y>
+         <y>20</y>
          <width>92</width>
          <height>23</height>
         </rect>
@@ -323,11 +487,11 @@
         <string>Drone1</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkBox_8">
+      <widget class="QCheckBox" name="checkBox_11">
        <property name="geometry">
         <rect>
          <x>280</x>
-         <y>40</y>
+         <y>20</y>
          <width>92</width>
          <height>23</height>
         </rect>
@@ -336,11 +500,11 @@
         <string>Drone2</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkBox_9">
+      <widget class="QCheckBox" name="checkBox_12">
        <property name="geometry">
         <rect>
          <x>380</x>
-         <y>40</y>
+         <y>20</y>
          <width>92</width>
          <height>23</height>
         </rect>
@@ -349,11 +513,98 @@
         <string>Drone3</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="label_6">
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>41</y>
+         <y>21</y>
+         <width>67</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Target</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>150</y>
+     <width>461</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="0" column="0">
+     <widget class="QFrame" name="frame_5">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QPushButton" name="pushButton_arm">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>89</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Arm</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_13">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>20</y>
+         <width>92</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Drone1</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_14">
+       <property name="geometry">
+        <rect>
+         <x>280</x>
+         <y>20</y>
+         <width>92</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Drone2</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox_15">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>20</y>
+         <width>92</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Drone3</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>21</y>
          <width>67</width>
          <height>20</height>
         </rect>

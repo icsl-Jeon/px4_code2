@@ -27,7 +27,7 @@ namespace px4_code2{
         };
         struct Status{
             std::vector<phase> phaseSet;
-
+            std::vector<mavros_msgs::State> px4StateSet;
         };
 
 
@@ -45,18 +45,23 @@ namespace px4_code2{
 
     signals:
         void enablePushButton(bool);
+        void enablePushButtonPX4(bool);
         void updateMissionStatus(bool isDuring,bool isExist);
+        void updatePX4State( bool isArmed , bool isOffboard);
     private:
         Status status;
         Widget* widget;
         ros::NodeHandle nh;
         ros::Timer timer;
         ros::Time lastCommTime;
+        ros::Time lastCommTimePX4;
         vector<ros::Subscriber> subPhaseSet;
+        vector<ros::Subscriber> subPX4Set;
         Param param;
 
         void callbackTimer(const ros::TimerEvent& event);
         void callbackPhase( const px4_code2::phaseConstPtr & msgPtr,int droneId);
+        void callbackPX4State( const mavros_msgs::StateConstPtr & msgPtr,int droneId);
 
         // ROS
     private slots:

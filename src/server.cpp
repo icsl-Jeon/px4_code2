@@ -70,6 +70,7 @@ namespace px4_code2 {
 
             // Takeoff parameters
             double height = req.height;
+            double speedToAir = req.speed;
             double takeoffTime = height / speedToAir;
             trajgen::time_knots<double> ts{0, takeoffTime};
             double yaw = getYaw(state.curPose.pose.orientation);
@@ -149,6 +150,7 @@ namespace px4_code2 {
 
             // compute trajectory to land ( z= 0 )
             double height = state.curPose.pose.position.z;
+            double speedToLand = req.speed; double landHeight = req.ground;
             double landTime= (height - landHeight) / speedToLand;
             trajgen::time_knots<double> ts{0,landTime};
             double yaw = getYaw(state.curPose.pose.orientation);

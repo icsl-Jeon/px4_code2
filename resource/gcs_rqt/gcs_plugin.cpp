@@ -22,7 +22,9 @@ namespace px4_code2{
         connect(widget,SIGNAL(callService(int,std::string,std::vector<double>,int *)),
                 this,SLOT(callService(int, std::string,std::vector<double>,int *)));
         connect(this,SIGNAL(enablePushButton(bool)),widget,SLOT(enableButton(bool)));
+        connect(this,SIGNAL(enablePushButtonPX4(bool)),widget,SLOT(enableButtonPX4(bool)));
         connect(this,SIGNAL(updateMissionStatus(bool,bool)),widget,SLOT(updateMissionStatus(bool,bool)));
+        connect(this,SIGNAL(updatePX4State(bool,bool)),widget,SLOT(updatePX4Status(bool,bool)));
         // ROS initialization
         timer = nh.createTimer(ros::Duration(0.01),&GcsPlugin::callbackTimer,this);
 
@@ -38,14 +40,20 @@ namespace px4_code2{
         std::string nameForUI[3] = {"","",""}; int idx = 0;
         std::cout << labelClient << ": mission drones are [ ";
         for (auto it = droneNameSet.begin() ; it < droneNameSet.end() ; it++){
-
+            // Subscribing phase
             ros::Subscriber sub = nh.subscribe<px4_code2::phase>("/" + *it + phaseTopicName,
                                            1,boost::bind(&GcsPlugin::callbackPhase,this,_1,idx));
             subPhaseSet.push_back(sub);
 
+            // Subscribing px4 state
+            sub = nh.subscribe<mavros_msgs::State>("/" + *it + px4StateTopicName,
+                                                                 1,boost::bind(&GcsPlugin::callbackPX4State,this,_1,idx));
+            subPX4Set.push_back(sub);
+
             // Phase init
             phase phase_; phase_.isMissionExist = false;
             status.phaseSet.push_back(phase_);
+            status.px4StateSet.push_back(mavros_msgs::State ());
 
             std::cout << *it ;
             nameForUI[idx] = *it;
@@ -61,8 +69,6 @@ namespace px4_code2{
 
     void GcsPlugin::shutdownPlugin()
     {
-
-
         // Save slot values
         ROS_INFO_STREAM(labelClient + " : writing config file to " << param.setting_file );
         widget->writeSettings(param.setting_file);
@@ -94,6 +100,13 @@ namespace px4_code2{
             if (service == "takeoff") {
                 px4_code2::Takeoff takeoffSrv;
                 takeoffSrv.request.height = args[0];
+                double takeoffSpeed = args[1];
+                if (takeoffSpeed<= 0){
+                    ROS_WARN_STREAM(labelClient << " : takeoff speed is below zero. resetting 0.05 [m/s]" );
+                    takeoffSpeed = 0.05;
+                }
+
+                takeoffSrv.request.speed=takeoffSpeed;
                 ros::service::call<px4_code2::Takeoff>("/" + param.droneNameSet[droneId] + takeoffServiceName,
                                                        takeoffSrv);
             }
@@ -109,9 +122,40 @@ namespace px4_code2{
             }
             if (service == "land") {
                 px4_code2::Land landSrv;
+                double landGround = args[0];  double landSpeed = args[1];
+                if (landGround > 0)
+                    ROS_WARN_STREAM(labelClient << " : landing ground is larger than zero." );
+                if (landSpeed <= 0){
+                    ROS_WARN_STREAM(labelClient << " : landing speed is below zero. resetting 0.05 [m/s]" );
+                    landSpeed = 0.05;
+                }
+
+                landSrv.request.ground = landGround; landSrv.request.speed = landSpeed;
                 ros::service::call<px4_code2::Land>("/" + param.droneNameSet[droneId] + landServiceName,
                                                     landSrv);
+            }
 
+            if (service == "arm"){
+                mavros_msgs::CommandBool cmdSrv;
+                if (args[0] == 0) { // not armed. This service is arm
+                    cmdSrv.request.value = true;
+                    ros::service::call<mavros_msgs::CommandBool>("/" + param.droneNameSet[droneId] + armServiceName,cmdSrv);
+                }else{ // armed. This service is disarm
+                    cmdSrv.request.value = false;
+                    ros::service::call<mavros_msgs::CommandBool>("/" + param.droneNameSet[droneId] + armServiceName,cmdSrv);
+                }
+            }
+
+            if (service == "offboard"){
+                mavros_msgs::SetMode modeSrv;
+
+                if (args[0] == 0) { // not offboard. This service is to offboard
+                    modeSrv.request.custom_mode= "OFFBOARD";
+                    ros::service::call<mavros_msgs::SetMode>("/" + param.droneNameSet[droneId] + modeSwitchName,modeSrv);
+                }else{ // offboard. This service is to manual
+                    modeSrv.request.custom_mode = "MANUAL";
+                    ros::service::call<mavros_msgs::SetMode>("/" + param.droneNameSet[droneId] + modeSwitchName,modeSrv);
+                }
             }
         }
     }
@@ -121,13 +165,19 @@ namespace px4_code2{
         lastCommTime = ros::Time::now();
     }
 
+    void GcsPlugin::callbackPX4State(const mavros_msgs::StateConstPtr &msgPtr, int droneId) {
+        status.px4StateSet[droneId] = *msgPtr;
+        lastCommTimePX4 = ros::Time::now();
+    }
+
     void GcsPlugin::callbackTimer(const ros::TimerEvent &event) {
 
+        // 1. Phase update and q_emit (From px4_code2 server)
         if ((ros::Time::now() - lastCommTime).toSec() > 3){
             ROS_WARN_STREAM_THROTTLE(3,labelClient + " : Communication with drones are missing.");
             Q_EMIT enablePushButton(false);
         }else{
-            // Phase update and q_emit
+
             bool isAllInit = true;
             bool isAnyDuringMission = false;
             for (auto phase_ : status.phaseSet){
@@ -135,7 +185,6 @@ namespace px4_code2{
             }
             if (isAllInit){
                 ROS_INFO_STREAM_ONCE(labelClient + " : All drones are ready");
-
                 for (auto phase_: status.phaseSet){
                     isAnyDuringMission = isAnyDuringMission or (phase_.phase.data != "STANDBY");
                     Q_EMIT updateMissionStatus(isAnyDuringMission,phase_.isMissionExist);
@@ -144,6 +193,21 @@ namespace px4_code2{
 
             Q_EMIT enablePushButton(true);
         }
+        // Update mavros topics
+        if ((ros::Time::now() - lastCommTimePX4).toSec() < 3) {
+            //  PX4 update and q_emit (From mavros)
+            bool isAllArmed = true, isAllOffborad = true;
+            for (int idx = 0 ; idx < param.getNdrone() ; idx ++ ) {
+                isAllArmed = isAllArmed and status.px4StateSet[idx].armed;
+                isAllOffborad =  isAllOffborad and (status.px4StateSet[idx].mode == "OFFBOARD");
+            }
+            Q_EMIT enablePushButtonPX4(true);
+            Q_EMIT updatePX4State(isAllArmed, isAllOffborad);
+        }else{
+            ROS_WARN_STREAM_THROTTLE(3,labelClient + " : Communication with mavros of drones are missing.");
+            Q_EMIT enablePushButtonPX4(false);
+        }
+
 
 
     }
