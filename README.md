@@ -4,6 +4,24 @@
 
 * qpOASES
 
+  ```
+  $ git clone https://github.com/coin-or/qpOASES.git
+  $ cd path/to/qpOASES
+  $ mkdir build && cd build
+  $ cmake .. -DCMAKE_CXX_FLAGS=-fPIC
+  $ sudo make install
+  ```
+
+  
+
+* mavros-*
+
+  ```
+  sudo apt-get install ros-${DISTRO}-mavros ros-${DISTRO}-mavros-msgs 
+  ```
+
+  
+
 ## Terms 
 
 * Mission : trajectory to be followed by a drone. Calling `trigger()` will set triggerTime.
@@ -14,9 +32,11 @@
 
 ## Features
 
-* **Takeoff** : we use the yaw angle state when called takeoff service. Auto - triggered once mission uploaded.   
-* **Lock**
-* **Land**
+
+
+* **Takeoff** : we use the yaw angle state when called takeoff service. Auto - triggered once mission uploaded.  StartPose = curPose  / Final pose = curPose.z + height
+* **Lock** : Set cur pose as cur desired pose (NOTE = /mavros pose).  If mission exists, deactivates it.  
+* **Land** : starting pose = cur pose / desired height = 0 
 
 
 
