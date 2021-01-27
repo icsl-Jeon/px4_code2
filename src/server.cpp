@@ -86,7 +86,7 @@ namespace px4_code2 {
             // Final translation
             FixPin xf(takeoffTime, 0, TrajVector(state.curPose.pose.position.x,
                                                  state.curPose.pose.position.y,
-                                                 state.curPose.pose.position.z + req.height
+                                                 req.height
             ));
             FixPin xdotf(takeoffTime, 1, TrajVector(0, 0, 0));
             FixPin xddotf(takeoffTime, 2, TrajVector(0, 0, 0));
