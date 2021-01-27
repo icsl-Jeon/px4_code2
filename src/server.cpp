@@ -45,16 +45,25 @@ namespace px4_code2 {
             geometry_msgs::PoseStamped poseWorld;
             tfListener.transformPose(param.worldFrame, pose, state.curPose);
 
-            if (status.phase == Phase::NOT_INIT) {
-                initToCurPose();
-                status.isInit = true;
-                status.phase = Phase::STANDBY;
-            }
         }
         catch (tf::TransformException ex) {
             ROS_ERROR_STREAM(param.getLabel() + ": received odom but no tf to global frame " << param.worldFrame);
         }
     }
+   void Server::callbackMavrosPose(const geometry_msgs::PoseStampedConstPtr *msgPtr) {
+        status.isMavrosPoseReceived = true;
+
+       if (status.phase == Phase::NOT_INIT and status.isPoseReceived) {
+           ROS_INFO_STREAM_ONCE(param.labelServer + " : the fused pose from px4 have arrived.");
+           initToCurPose();
+           status.isInit = true;
+           status.phase = Phase::STANDBY;
+       }
+
+   }
+
+
+
 
     void Server::callbackMavrosState(const mavros_msgs::StateConstPtr &msgPtr) {
 
@@ -73,19 +82,19 @@ namespace px4_code2 {
             double speedToAir = req.speed;
             double takeoffTime = height / speedToAir;
             trajgen::time_knots<double> ts{0, takeoffTime};
-            double yaw = getYaw(state.curPose.pose.orientation);
+            double yaw = getYaw(state.curMavrosPose.pose.orientation);
 
             // Initial translation
-            FixPin x0(0.0, 0, TrajVector(state.curPose.pose.position.x,
-                                         state.curPose.pose.position.y,
-                                         state.curPose.pose.position.z
+            FixPin x0(0.0, 0, TrajVector(state.curMavrosPose.pose.position.x,
+                                         state.curMavrosPose.pose.position.y,
+                                         state.curMavrosPose.pose.position.z
             ));
             FixPin xdot0(0.0, 1, TrajVector(0, 0, 0));
             FixPin xddot0(0.0, 2, TrajVector(0, 0, 0));
 
             // Final translation
-            FixPin xf(takeoffTime, 0, TrajVector(state.curPose.pose.position.x,
-                                                 state.curPose.pose.position.y,
+            FixPin xf(takeoffTime, 0, TrajVector(state.curMavrosPose.pose.position.x,
+                                                 state.curMavrosPose.pose.position.y,
                                                  req.height
             ));
             FixPin xdotf(takeoffTime, 1, TrajVector(0, 0, 0));
@@ -149,23 +158,23 @@ namespace px4_code2 {
         if (status.isInit){
 
             // compute trajectory to land ( z= 0 )
-            double height = state.curPose.pose.position.z;
+            double height = state.curMavrosPose.pose.position.z;
             double speedToLand = req.speed; double landHeight = req.ground;
             double landTime= (height - landHeight) / speedToLand;
             trajgen::time_knots<double> ts{0,landTime};
-            double yaw = getYaw(state.curPose.pose.orientation);
+            double yaw = getYaw(state.curMavrosPose.pose.orientation);
 
             // Initial translation
-            FixPin x0(0.0, 0, TrajVector(state.curPose.pose.position.x,
-                                         state.curPose.pose.position.y,
-                                         state.curPose.pose.position.z
+            FixPin x0(0.0, 0, TrajVector(state.curMavrosPose.pose.position.x,
+                                         state.curMavrosPose.pose.position.y,
+                                         state.curMavrosPose.pose.position.z
             ));
             FixPin xdot0(0.0, 1, TrajVector(0, 0, 0));
             FixPin xddot0(0.0, 2, TrajVector(0, 0, 0));
 
             // Final translation
-            FixPin xf(landTime, 0, TrajVector(state.curPose.pose.position.x,
-                                                 state.curPose.pose.position.y,landHeight));
+            FixPin xf(landTime, 0, TrajVector(state.curMavrosPose.pose.position.x,
+                                                 state.curMavrosPose.pose.position.y,landHeight));
             FixPin xdotf(landTime, 1, TrajVector(0, 0, 0));
             FixPin xddotf(landTime, 2, TrajVector(0, 0, 0));
 

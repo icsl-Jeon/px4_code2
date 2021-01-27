@@ -39,9 +39,9 @@
 
 
 
-* **Takeoff** : we use the yaw angle state when called takeoff service. Auto - triggered once mission uploaded.  StartPose = curPose  / Final pose = curPose.z + height
+* **Takeoff** : we use the yaw angle state when called takeoff service. Auto - triggered once mission uploaded.  StartPose = curMavrosPose  / Final pose = height in ui 
 * **Lock** : Set cur pose as cur desired pose (NOTE = /mavros pose).  If mission exists, deactivates it.  
-* **Land** : starting pose = cur pose / desired height = 0 
+* **Land** : starting pose = cur mavros pose / desired height = 0 
 
 
 
@@ -69,3 +69,9 @@ catkin build px4_code2
 rosrun rqt_gui rqt_gui --force-discover
 
 ```
+
+### PX4 parameter tuning
+
+* PWM_ARM_* : for initial thrust when armed 
+* HAS_BARO = 0 : EKF2 does not use this. But manual arming will be disabled. 
+* [Land detection](https://docs.px4.io/master/en/advanced_config/land_detector.html#land-detector-states) 

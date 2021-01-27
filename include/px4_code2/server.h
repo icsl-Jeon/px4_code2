@@ -35,7 +35,8 @@ namespace px4_code2{
     Phase stringToPhase(std::string phase_);
     class Server{
         struct Status{
-            bool isPoseReceived = false;
+            bool isPoseReceived = false; // odom from external ?
+            bool isMavrosPoseReceived = false; // mavros fused pose ?
             bool isInit = false;
             bool isMissionReceived = false;
             Phase phase = NOT_INIT;
@@ -43,7 +44,8 @@ namespace px4_code2{
         };
 
         struct State{
-            geometry_msgs::PoseStamped curPose; // This pose is from world frame
+            geometry_msgs::PoseStamped curPose; // This pose is from odom
+            geometry_msgs::PoseStamped curMavrosPose; // This pose is from EKF2
             geometry_msgs::PoseStamped curSetPose;
             geometry_msgs::PoseStamped lastMissionPose;
         };
@@ -88,7 +90,7 @@ namespace px4_code2{
 
         void initToCurPose(){
                 state.curSetPose = state.curPose;
-                ROS_INFO_STREAM(param.droneName << " : setting planning pose to current position [ " <<
+                ROS_INFO_STREAM(param.droneName << " : setting planning pose to current mavros position [ " <<
                 state.curSetPose.pose.position.x <<" , " <<
                 state.curSetPose.pose.position.y <<" , " <<
                 state.curSetPose.pose.position.z <<" ] "
@@ -97,6 +99,7 @@ namespace px4_code2{
         }
 
         void callbackOdom(const nav_msgs::OdometryConstPtr & msgPtr);
+        void callbackMavrosPose(const geometry_msgs::PoseStampedConstPtr* msgPtr);
         void callbackMavrosState(const mavros_msgs::StateConstPtr & msgPtr);
 
         bool callbackTakeoff(px4_code2::TakeoffRequest & req, px4_code2::TakeoffResponse & resp);
