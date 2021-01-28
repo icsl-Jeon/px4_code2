@@ -50,9 +50,9 @@ namespace px4_code2 {
             ROS_ERROR_STREAM(param.getLabel() + ": received odom but no tf to global frame " << param.worldFrame);
         }
     }
-   void Server::callbackMavrosPose(const geometry_msgs::PoseStampedConstPtr *msgPtr) {
+   void Server::callbackMavrosPose(const geometry_msgs::PoseStampedConstPtr & msgPtr) {
         status.isMavrosPoseReceived = true;
-
+        state.curMavrosPose = *msgPtr;
        if (status.phase == Phase::NOT_INIT and status.isPoseReceived) {
            ROS_INFO_STREAM_ONCE(param.labelServer + " : the fused pose from px4 have arrived.");
            initToCurPose();
@@ -228,7 +228,8 @@ namespace px4_code2 {
         subSet.subOdom = nh.subscribe("/" + param.droneName + "/t265/odom/sample", 10, &Server::callbackOdom, this);
         subSet.subMavrosState = nh.subscribe("/" + param.droneName + "/mavros/state", 10, &Server::callbackMavrosState,
                                              this);
-
+        subSet.subMavrosPose = nh.subscribe("/" + param.droneName + "/mavros/local_position/pose", 10, &Server::callbackMavrosPose,
+                                            this);
 
         // SERVICE
         servSet.takeoffServer = nh.advertiseService("/" + param.droneName + takeoffServiceName,

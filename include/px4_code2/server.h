@@ -61,6 +61,7 @@ namespace px4_code2{
         struct SubscriberSet{
             ros::Subscriber subOdom;
             ros::Subscriber subMavrosState;
+            ros::Subscriber subMavrosPose;
 
         };
         struct PublisherSet{
@@ -99,7 +100,7 @@ namespace px4_code2{
         }
 
         void callbackOdom(const nav_msgs::OdometryConstPtr & msgPtr);
-        void callbackMavrosPose(const geometry_msgs::PoseStampedConstPtr* msgPtr);
+        void callbackMavrosPose(const geometry_msgs::PoseStampedConstPtr& msgPtr);
         void callbackMavrosState(const mavros_msgs::StateConstPtr & msgPtr);
 
         bool callbackTakeoff(px4_code2::TakeoffRequest & req, px4_code2::TakeoffResponse & resp);

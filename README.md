@@ -70,8 +70,11 @@ rosrun rqt_gui rqt_gui --force-discover
 
 ```
 
-### PX4 parameter tuning
+### PX4 
 
-* PWM_ARM_* : for initial thrust when armed 
-* HAS_BARO = 0 : EKF2 does not use this. But manual arming will be disabled. 
+* PWM_ARM_* : for initial thrust when arming begins
+* Gain tuning : for small drone such as f330 size, the gain tuning was required. See resource folder  
+* HAS_BARO = 0 : Disabling barometer was only available in 1.10.1. For the firmware, see resource folder. 
+  In the recent version, disabling barometer blocks EKF2 operation and QGC does not receive attitude info.
+* Do not use Pixhwak 4 mini. It caused a lot of abrupt increase in thrust.   
 * [Land detection](https://docs.px4.io/master/en/advanced_config/land_detector.html#land-detector-states) 
