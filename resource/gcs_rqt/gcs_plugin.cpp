@@ -22,9 +22,9 @@ namespace px4_code2{
         connect(widget,SIGNAL(callService(int,std::string,std::vector<double>,int *)),
                 this,SLOT(callService(int, std::string,std::vector<double>,int *)));
         connect(this,SIGNAL(enablePushButton(bool)),widget,SLOT(enableButton(bool)));
-        connect(this,SIGNAL(enablePushButtonPX4(bool)),widget,SLOT(enableButtonPX4(bool)));
+        connect(this,SIGNAL(enablePushButtonPX4(int, bool)),widget,SLOT(enableButtonPX4(int, bool)));
         connect(this,SIGNAL(updateMissionStatus(bool,bool)),widget,SLOT(updateMissionStatus(bool,bool)));
-        connect(this,SIGNAL(updatePX4State(bool,bool)),widget,SLOT(updatePX4Status(bool,bool)));
+        connect(this,SIGNAL(updatePX4State(int, bool)),widget,SLOT(updatePX4Status(int, bool)));
         // ROS initialization
         timer = nh.createTimer(ros::Duration(0.01),&GcsPlugin::callbackTimer,this);
 
@@ -37,7 +37,7 @@ namespace px4_code2{
         // 1. Drone set
         std::vector<std::string> droneNameSet;
         nh.getParam("/drone_name_set",droneNameSet);
-        std::string nameForUI[3] = {"","",""}; int idx = 0;
+         int idx = 0;
         std::cout << labelClient << ": mission drones are [ ";
         for (auto it = droneNameSet.begin() ; it < droneNameSet.end() ; it++){
             // Subscribing phase
@@ -49,21 +49,20 @@ namespace px4_code2{
             sub = nh.subscribe<mavros_msgs::State>("/" + *it + px4StateTopicName,
                                                                  1,boost::bind(&GcsPlugin::callbackPX4State,this,_1,idx));
             subPX4Set.push_back(sub);
-
             // Phase init
             phase phase_; phase_.isMissionExist = false;
             status.phaseSet.push_back(phase_);
             status.px4StateSet.push_back(mavros_msgs::State ());
+            lastCommTimePX4.push_back(ros::Time(0));
 
             std::cout << *it ;
-            nameForUI[idx] = *it;
             if (it != droneNameSet.end()-1)
                 std::cout << ", ";
             idx++;
         }
         std::cout <<  " ]"<<std::endl;
         param.droneNameSet = droneNameSet;
-        widget->initNames(nameForUI[0],nameForUI[1],nameForUI[2]);
+        widget->initNames(droneNameSet);
     }
 
 
@@ -167,7 +166,7 @@ namespace px4_code2{
 
     void GcsPlugin::callbackPX4State(const mavros_msgs::StateConstPtr &msgPtr, int droneId) {
         status.px4StateSet[droneId] = *msgPtr;
-        lastCommTimePX4 = ros::Time::now();
+        lastCommTimePX4[droneId] = ros::Time::now();
     }
 
     void GcsPlugin::callbackTimer(const ros::TimerEvent &event) {
@@ -193,21 +192,19 @@ namespace px4_code2{
 
             Q_EMIT enablePushButton(true);
         }
-        // Update mavros topics
-        if ((ros::Time::now() - lastCommTimePX4).toSec() < 3) {
-            //  PX4 update and q_emit (From mavros)
-            bool isAllArmed = true, isAllOffborad = true;
-            for (int idx = 0 ; idx < param.getNdrone() ; idx ++ ) {
-                isAllArmed = isAllArmed and status.px4StateSet[idx].armed;
-                isAllOffborad =  isAllOffborad and (status.px4StateSet[idx].mode == "OFFBOARD");
-            }
-            Q_EMIT enablePushButtonPX4(true);
-            Q_EMIT updatePX4State(isAllArmed, isAllOffborad);
-        }else{
-            ROS_WARN_STREAM_THROTTLE(3,labelClient + " : Communication with mavros of drones are missing.");
-            Q_EMIT enablePushButtonPX4(false);
-        }
+        for (int m = 0 ; m < param.getNdrone() ; m++) {
+            // Update mavros topics
+            if ((ros::Time::now() - lastCommTimePX4[m]).toSec() < 3) {
+                //  PX4 update and q_emit (From mavros)
+                bool isOffboard = status.px4StateSet[m].mode == "OFFBOARD";
 
+                Q_EMIT enablePushButtonPX4(m,true);
+                Q_EMIT updatePX4State(m,isOffboard);
+            } else {
+                ROS_WARN_STREAM_THROTTLE(3, labelClient + " : Communication with mavros of drones are missing.");
+                Q_EMIT enablePushButtonPX4(m,false);
+            }
+        }
 
 
     }

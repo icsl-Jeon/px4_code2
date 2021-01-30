@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>makise.png</file>
+    </qresource>
+</RCC>

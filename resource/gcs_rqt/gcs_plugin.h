@@ -45,16 +45,16 @@ namespace px4_code2{
 
     signals:
         void enablePushButton(bool);
-        void enablePushButtonPX4(bool);
+        void enablePushButtonPX4(int,bool);
         void updateMissionStatus(bool isDuring,bool isExist);
-        void updatePX4State( bool isArmed , bool isOffboard);
+        void updatePX4State(int,   bool isOffboard);
     private:
         Status status;
         Widget* widget;
         ros::NodeHandle nh;
         ros::Timer timer;
         ros::Time lastCommTime;
-        ros::Time lastCommTimePX4;
+        vector<ros::Time> lastCommTimePX4;
         vector<ros::Subscriber> subPhaseSet;
         vector<ros::Subscriber> subPX4Set;
         Param param;

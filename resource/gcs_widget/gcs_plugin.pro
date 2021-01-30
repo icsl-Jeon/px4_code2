@@ -32,3 +32,10 @@ HEADERS += \
 
 FORMS += \
         widget.ui
+
+DISTFILES += \
+    ../../../../../Desktop/makise.png \
+    makise.png
+
+RESOURCES += \
+    img.qrc

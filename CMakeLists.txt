@@ -24,6 +24,7 @@ else()
     include(${QT_USE_FILE})
 endif()
 
+set(CMAKE_AUTORCC true) # to include qt resource collection
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # This finds ui_*.h
 
 
@@ -59,11 +60,13 @@ catkin_package(
 ## Client QT and RQT
 set(QT_SRC resource/gcs_widget/widget.cpp resource/gcs_rqt/gcs_plugin.cpp)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
-    qt5_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h)
+    qt5_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h )
     qt5_wrap_ui(QT_UIS_H resource/gcs_widget/widget.ui)
+    qt5_add_resources(resource/gcs_widget/img.qrc)
 else()
-    qt4_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h)
+    qt4_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h )
     qt4_wrap_ui(QT_UIS_H resource/gcs_widget/widget.ui)
+    qt4_add_resources(resource/gcs_widget/img.qrc)
 endif()
 
 include_directories(
@@ -77,7 +80,7 @@ include_directories(
 ##       CLIENT        ##
 #########################
 message("${RQT_SRC}")
-add_library(${PROJECT_NAME}  ${QT_MOCS} ${QT_SRC} ${QT_UIS_H} src/server.cpp src/utils/utility.cpp)
+add_library(${PROJECT_NAME}  ${QT_MOCS} ${QT_SRC} ${QT_UIS_H} src/server.cpp src/utils/utility.cpp  resource/gcs_widget/img.qrc)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
     target_link_libraries(${PROJECT_NAME} Qt5::Widgets ${catkin_LIBRARIES})
 else()

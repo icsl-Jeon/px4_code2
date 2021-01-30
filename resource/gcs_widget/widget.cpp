@@ -3,142 +3,140 @@
 #include "ui_widget.h"
 
 
-
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    this->setWindowTitle("FelipeSuite");
 
+    // ui image
+    QPixmap pixmap;
+    pixmap.load( ":/makise.png" );
+    int w = ui->label_makise->width();
+    int h = ui->label_makise->height();
+    ui->label_makise->setPixmap(pixmap.scaled(w,h,Qt::KeepAspectRatio));
+    this->setWindowTitle("FelipeSuite");
+    ui->pushButton_listenxy->setCheckable(true);
+    // line edit read only
     ui->lineEdit_Drone1Name->setReadOnly(true);
     ui->lineEdit_Drone2Name->setReadOnly(true);
     ui->lineEdit_Drone3Name->setReadOnly(true);
+    ui->textEdit_makise->setReadOnly(true);
+    ui->textEdit_makise->append("Welcome pilot. Have a safe flight. \n");
+    QList<QCheckBox *> l_checkboxes =findChildren<QCheckBox *>();
+    QList<QPushButton *> l_pushbuttons =findChildren<QPushButton *>();
 
+    for(auto checkbox : l_checkboxes){
+        checkbox->setEnabled(false);
+        char idxChar = checkbox->objectName().toStdString().back();
+        char idxStr[2];
+        idxStr[0] = idxChar;
+        idxStr[1] = '\0';
+        int idx = atoi(idxStr)-1;
+//       std::cout << "to target "<< idx <<checkbox->objectName().toStdString() << std::endl;
+        checkBoxAll[idx].push_back(checkbox);
+    }
+    for (int m =0 ; m < 3 ; m++)
+    for (auto checkbox : checkBoxAll[m])
+        checkbox->setEnabled(false);
 
-    ui->checkBox_1->setEnabled(false);
-    ui->checkBox_2->setEnabled(false);
-    ui->checkBox_3->setEnabled(false);
+    for (auto pushbutton : l_pushbuttons){
 
-    ui->checkBox_4->setEnabled(false);
-    ui->checkBox_5->setEnabled(false);
-    ui->checkBox_6->setEnabled(false);
+        // identify type of this button
+        auto itBack =  pushbutton->objectName().toStdString().end();
+        char typeChar = pushbutton->objectName().toStdString().back();
+        char offboardIdx = *(itBack-2);
 
-    ui->checkBox_7->setEnabled(false);
-    ui->checkBox_8->setEnabled(false);
-    ui->checkBox_9->setEnabled(false);
+        if (typeChar == 'm'){ // mavros
 
-    ui->checkBox_10->setEnabled(false);
-    ui->checkBox_11->setEnabled(false);
-    ui->checkBox_12->setEnabled(false);
+            pushbutton->setEnabled(false);
 
-    ui->checkBox_13->setEnabled(false);
-    ui->checkBox_14->setEnabled(false);
-    ui->checkBox_15->setEnabled(false);
+            if (offboardIdx == 'o'){ // buttons with individual drones
+                char id = *(itBack-4);
 
-    ui->pushButton_lock->setEnabled(false);
-    ui->pushButton_takeoff->setEnabled(false);
-    ui->pushButton_arm->setEnabled(false);
-    ui->pushButton_mode_switcher->setEnabled(false);
-    ui->pushButton_land->setEnabled(false);
+            std::cout << pushbutton->objectName().toStdString() << offboardIdx << "/" << id << std::endl;
+
+                char idxStr[2];
+                idxStr[0] = id;
+                idxStr[1] = '\0';
+                int idx = atoi(idxStr) - 1;
+                pushButtonMavrosOffboard[idx] .push_back(pushbutton);
+            }
+            else  { // buttons with all drons
+
+                pushButtonMavrosArmDisarm.push_back(pushbutton);
+            }
+
+        }else if (typeChar == 'p'){ // px4_code
+            pushbutton->setEnabled(false);
+            pushButtonPx4code.push_back(pushbutton);
+        }else{ // trajgen or other buttons
+            pushbutton->setEnabled(true);
+        }
+    }
 }
 
 Widget::~Widget()
 {
     delete ui;
 }
-
-void Widget::initNames(std::string name1, std::string name2, std::string name3){
-
-    ui->lineEdit_Drone1Name->setText( QString::fromStdString( name1));
-    ui->lineEdit_Drone2Name->setText(QString::fromStdString(name2));
-    ui->lineEdit_Drone3Name->setText(QString::fromStdString(name3));
+void Widget::initNames(std::vector<std::string> nameSet){
 
 
-    if (name1 == ""){
-        ui->checkBox_1->setEnabled(false);
-        ui->checkBox_4->setEnabled(false);
-        ui->checkBox_7->setEnabled(false);
-        ui->checkBox_10->setEnabled(false);
-        ui->checkBox_13 -> setEnabled(false);
-    }else{
-        ui->checkBox_1->setChecked(true);
-        ui->checkBox_4->setChecked(true);
-        ui->checkBox_7 ->setChecked(true);
-        ui->checkBox_10 ->setChecked(true);
-        ui->checkBox_13 ->setChecked(true);
+    QLineEdit* set [3] = {ui->lineEdit_Drone1Name, ui->lineEdit_Drone2Name, ui->lineEdit_Drone3Name};
+    Ndrone = nameSet.size();
+
+
+
+    for (int m =0 ; m < Ndrone ; m ++){
+        set[m]->setText(QString::fromStdString(nameSet[m]));
+            // push button
+            for(auto checkbox : checkBoxAll[m]){
+                checkbox->setEnabled(true);
+                checkbox->setChecked(true);
+            }
+
+
     }
-    if (name2 == ""){
-        ui->checkBox_2->setEnabled(false);
-        ui->checkBox_5->setEnabled(false);
-        ui->checkBox_8->setEnabled(false);
-        ui->checkBox_11->setEnabled(false);
-        ui->checkBox_14->setEnabled(false);
-    }else{
-        ui->checkBox_2->setChecked(true);
-        ui->checkBox_5->setChecked(true);
-        ui->checkBox_8->setChecked(true);
-        ui->checkBox_11->setChecked(true);
-        ui->checkBox_14->setChecked(true);
-    }
-
-    if (name3 == ""){
-        ui->checkBox_3->setEnabled(false);
-        ui->checkBox_6->setEnabled(false);
-        ui->checkBox_9->setEnabled(false);
-        ui->checkBox_12->setEnabled(false);
-        ui->checkBox_15->setEnabled(false);
-    }else{
-        ui->checkBox_3->setChecked(true);
-        ui->checkBox_6->setChecked(true);
-        ui->checkBox_9->setChecked(true);
-        ui->checkBox_12->setChecked(true);
-        ui->checkBox_15->setChecked(true);
-    }
-
 }
 
-void Widget::on_pushButton_takeoff_clicked()
+void Widget::on_pushButton_takeoff_p_clicked()
 {
 
 
     isMissionUpload = true;
-    bool checkBoxes[3] = {(ui->checkBox_1->isChecked()) ,
-                          ( ui->checkBox_2->isChecked()),
-                          (ui->checkBox_3->isChecked())} ;
+    bool checkBoxes[3] = {(ui->checkBox_takeoff1->isChecked()) ,
+                          ( ui->checkBox_takeoff2->isChecked()),
+                          (ui->checkBox_takeoff3->isChecked())} ;
+
 
     QLineEdit* argTakeoffSpeed[3] = {ui->lineEditSpeed1, ui->lineEditSpeed2, ui->lineEditSpeed3};
+    QLineEdit* argTakeoffHeight[3] = {ui->lineEdit_takeoff_height1,
+                                      ui->lineEdit_takeoff_height2, ui->lineEdit_takeoff_height3};
 
     for (int m = 0 ; m < 3 ; m++){
         if (checkBoxes[m]){
-            QString q( ui->lineEdit->text());
+            QString q( argTakeoffHeight[m]->text());
             double height = q.toDouble();
             double speed = argTakeoffSpeed[m]->text().toDouble();
-
 
             std::vector<double> args(2); args[0] = height;  args[1] = speed;
             Q_EMIT callService(m,"takeoff",args,NULL);
         }
     }
 
+    ui->textEdit_makise->append("Takeoff requested for all drones\n");
+
 }
 
 void Widget::writeSettings(std::string settingFile){
 
    QSettings settings(QString::fromStdString(settingFile),QSettings::IniFormat) ;
-
-    settings.setValue("takeoff1",ui->lineEdit->text());
-    settings.setValue("takeoff2",ui->lineEdit_2->text());
-    settings.setValue("takeoff3",ui->lineEdit_3->text());
-
-    settings.setValue("land1",ui->lineEditLandGround1->text());
-    settings.setValue("land2",ui->lineEditLandGround2->text());
-    settings.setValue("land3",ui->lineEditLandGround3->text());
+    QList<QLineEdit*> l_lineEdit =findChildren<QLineEdit *>();
+    for(auto lineEdit : l_lineEdit )
+        settings.setValue(lineEdit->objectName(),lineEdit->text());
 
 
-    settings.setValue("speed1",ui->lineEditSpeed1->text());
-    settings.setValue("speed2",ui->lineEditSpeed2->text());
-    settings.setValue("speed3",ui->lineEditSpeed3->text());
 
 }
 
@@ -149,18 +147,10 @@ void Widget::readSettings(std::string settingFile){
 
    QSettings settings(QString::fromStdString(settingFile),QSettings::IniFormat) ;
 
-   ui->lineEdit->setText(settings.value("takeoff1").toString());
-   ui->lineEdit_2->setText(settings.value("takeoff2").toString());
-   ui->lineEdit_3->setText(settings.value("takeoff3").toString());
-
-   ui->lineEditLandGround1->setText(settings.value("land1").toString());
-   ui->lineEditLandGround2->setText(settings.value("land2").toString());
-   ui->lineEditLandGround3->setText(settings.value("land3").toString());
-
-   ui->lineEditSpeed1->setText(settings.value("speed1").toString());
-   ui->lineEditSpeed2->setText(settings.value("speed2").toString());
-   ui->lineEditSpeed3->setText(settings.value("speed3").toString());
-
+    QList<QLineEdit*> l_lineEdit =findChildren<QLineEdit *>();
+    for(auto lineEdit : l_lineEdit ){
+        lineEdit->setText(settings.value(lineEdit->objectName()).toString());
+    }
 
 }
 
@@ -173,16 +163,16 @@ void Widget::updateMissionStatus(bool duringMission_, bool isMissionUpload_){
 
     if (duringMission and isMissionUpload){
         if (not isLockPushLock){
-            ui->pushButton_lock->setText("Lock");
-            ui->pushButton_lock->setStyleSheet("background-color: red");
+            ui->pushButton_lock_p->setText("Lock");
+            ui->pushButton_lock_p->setStyleSheet("background-color: red");
             isLockPushLock = true;
         }
 
     }else if ((not duringMission) and isMissionUpload){
         if (isLockPushLock){
 
-            ui->pushButton_lock->setText("Resume");
-            ui->pushButton_lock->setStyleSheet("background-color: green");
+            ui->pushButton_lock_p->setText("Resume");
+            ui->pushButton_lock_p->setStyleSheet("background-color: green");
             isLockPushLock = false;
 
         }
@@ -190,8 +180,8 @@ void Widget::updateMissionStatus(bool duringMission_, bool isMissionUpload_){
     }else{
 
         if (not isLockPushLock){
-            ui->pushButton_lock->setText("Lock");
-            ui->pushButton_lock->setStyleSheet("background-color: red");
+            ui->pushButton_lock_p->setText("Lock");
+            ui->pushButton_lock_p->setStyleSheet("background-color: red");
             isLockPushLock = true;
         }
 
@@ -199,53 +189,75 @@ void Widget::updateMissionStatus(bool duringMission_, bool isMissionUpload_){
     }
 }
 
-void Widget::updatePX4Status( bool isArmed_, bool isOffBorad_){
+void Widget::updatePX4Status(int droneIdx, bool isOffborad_){
 
 
-   isArmed = isArmed_; // is all ?
-   isOffBorad = isOffBorad_; // is all ?
+   isOffborad[droneIdx] = isOffborad_; // is all ?
 
-   if (isArmed){
-       if (ui->pushButton_arm->isEnabled())
-            ui->pushButton_arm->setText("Disarm");
-   }
-   else{
-       if (ui->pushButton_arm->isEnabled())
-            ui->pushButton_arm->setText("Arm");
-    }
-    if (isOffBorad){
-        if (ui->pushButton_mode_switcher->isEnabled())
-            ui->pushButton_mode_switcher->setText("Manual");
+    if (isOffborad){
+        if (pushButtonMavrosOffboard[droneIdx][0]->isEnabled())
+            pushButtonMavrosOffboard[droneIdx][0]->setText("Manual");
     }
     else{
-        if (ui->pushButton_mode_switcher->isEnabled())
-            ui->pushButton_mode_switcher->setText("Offboard");
+        if (pushButtonMavrosOffboard[droneIdx][0]->isEnabled())
+            pushButtonMavrosOffboard[droneIdx][0]->setText("Offboard");
     }
+
+
+
+
 }
 
 
-
-
+// enable button if one of drone px4_code2 updated
 void Widget::enableButton(bool enable){
 
 //    std::cout << enable << std::endl;
-    ui->pushButton_lock->setEnabled(enable);
+    ui->pushButton_lock_p->setEnabled(enable);
+    ui->pushButton_takeoff_p->setEnabled(enable);
+    ui->pushButton_land_p->setEnabled(enable);
+
+
+
+
+    if (isButtonEnabled == false){
+        if (enable) {
+            ui->textEdit_makise->append("px4_code connected. \n");
+            isButtonEnabled = enable;
+        }
+    }else{
+        if (not enable){
+            ui->textEdit_makise->append("px4_code disconnected. \n");
+            isButtonEnabled = enable;
+        }
+    }
+}
+
+void Widget::enableButtonPX4(int droneIdx, bool enable){
+
+    for (auto button : pushButtonMavrosArmDisarm)
+        button->setEnabled(enable);
 //    ui->pushButton_lock->setStyleSheet("background-color: red");
-    ui->pushButton_takeoff->setEnabled(enable);
-    ui->pushButton_land->setEnabled(enable);
+    pushButtonMavrosOffboard[droneIdx][0]->setEnabled(enable);
+    for (auto checkbox : checkBoxAll[droneIdx] )
+        checkbox->setEnabled(enable);
+
+    if (isPX4buttonEnabled == false ){
+        if (enable){
+        ui->textEdit_makise->append("mavros connected. \n");
+        isPX4buttonEnabled = enable;
+        }
+    }else{
+        if(not enable){
+        ui->textEdit_makise->append("mavros disconnected. \n");
+        isPX4buttonEnabled = enable;
+        }
+    }
 
 }
 
-void Widget::enableButtonPX4(bool enable){
 
-//    std::cout << enable << std::endl;
-    ui->pushButton_arm->setEnabled(enable);
-//    ui->pushButton_lock->setStyleSheet("background-color: red");
-    ui->pushButton_mode_switcher->setEnabled(enable);
-}
-
-
-void Widget::on_pushButton_lock_clicked()
+void Widget::on_pushButton_lock_p_clicked()
 {
 
     std::vector<double> args(1) ; int returnPhase;
@@ -284,13 +296,13 @@ void Widget::on_pushButton_lock_clicked()
 //    }
 }
 
-void Widget::on_pushButton_land_clicked()
+void Widget::on_pushButton_land_p_clicked()
 {
 
     isMissionUpload = true;
-    bool checkBoxes[3] = {(ui->checkBox_7->isChecked()) ,
-                          ( ui->checkBox_8->isChecked()),
-                          (ui->checkBox_9->isChecked())} ;
+    bool checkBoxes[3] = {(ui->checkBox_land1->isChecked()) ,
+                          ( ui->checkBox_land2->isChecked()),
+                          (ui->checkBox_land3->isChecked())} ;
 
     QLineEdit* argLandGround[3] = {ui->lineEditLandGround1, ui->lineEditLandGround2, ui->lineEditLandGround3};
     QLineEdit* argLandSpeed[3] = {ui->lineEditSpeed1, ui->lineEditSpeed2, ui->lineEditSpeed3};
@@ -307,36 +319,88 @@ void Widget::on_pushButton_land_clicked()
 
 }
 
-void Widget::on_pushButton_arm_clicked()
+void Widget::on_pushButton_arm_m_clicked()
 {
 
-    bool checkBoxes[3] = {(ui->checkBox_13->isChecked()) ,
-                          ( ui->checkBox_14->isChecked()),
-                          (ui->checkBox_15->isChecked())} ;
+    bool checkBoxes[3] = {(ui->checkBox_arm1->isChecked()) ,
+                          ( ui->checkBox_arm2->isChecked()),
+                          (ui->checkBox_arm3->isChecked())} ;
 
     for (int m = 0 ; m < 3 ; m++){
         if (checkBoxes[m]){
-            std::vector<double> args(1); args[0] = isArmed;
+            std::vector<double> args(1); args[0] =false ;
                 Q_EMIT callService(m,"arm",args,NULL);
-
         }
     }
+
+        ui->textEdit_makise->append("Requested arming for all drones . \n");
+
 }
 
-void Widget::on_pushButton_mode_switcher_clicked()
+void Widget::on_pushButton_disarm_m_clicked()
 {
 
-    bool checkBoxes[3] = {(ui->checkBox_10->isChecked()) ,
-                          ( ui->checkBox_11->isChecked()),
-                          (ui->checkBox_12->isChecked())} ;
+    bool checkBoxes[3] = {(ui->checkBox_disarm1->isChecked()) ,
+                          ( ui->checkBox_disarm2->isChecked()),
+                          (ui->checkBox_disarm3->isChecked())} ;
 
     for (int m = 0 ; m < 3 ; m++){
         if (checkBoxes[m]){
-            std::vector<double> args(1); args[0] = isOffBorad;
-                Q_EMIT callService(m,"offboard",args,NULL);
-
+            std::vector<double> args(1); args[0] = true;
+                Q_EMIT callService(m,"arm",args,NULL);
         }
     }
+        ui->textEdit_makise->append("Requested disarming for all drones . \n");
+}
 
+
+void Widget::on_pushButton_mode_switcher1_om_clicked()
+{
+        if (isOffborad[0])
+            ui->textEdit_makise->append(QString::fromStdString("requested manual mode for" + droneNames[0] ));
+        else
+            ui->textEdit_makise->append(QString::fromStdString("requested offboard mode for" + droneNames[0] ));
+
+        std::vector<double> args(1); args[0] = isOffborad[0];
+        Q_EMIT callService(0,"offboard",args,NULL);
+}
+
+void Widget::on_pushButton_mode_switcher2_om_clicked()
+{
+
+        if (isOffborad[1])
+            ui->textEdit_makise->append(QString::fromStdString("requested manual mode for" + droneNames[1] ));
+        else
+            ui->textEdit_makise->append(QString::fromStdString("requested offboard mode for" + droneNames[1] ));
+
+            std::vector<double> args(1); args[0] = isOffborad[1];
+                Q_EMIT callService(1,"offboard",args,NULL);
+}
+
+void Widget::on_pushButton_mode_switcher3_om_clicked()
+{
+        if (isOffborad[2])
+            ui->textEdit_makise->append(QString::fromStdString("requested manual mode for" + droneNames[2] ));
+        else
+            ui->textEdit_makise->append(QString::fromStdString("requested offboard mode for" + droneNames[2] ));
+
+            std::vector<double> args(1); args[0] = isOffborad[2];
+                Q_EMIT callService(2,"offboard",args,NULL);
+}
+
+void Widget::on_pushButton_listenxy_clicked(bool checked)
+{
+    if (checked)
+        writeMakise("Listening waypoints");
+    else
+        writeMakise("Finishing waypoints");
+}
+
+void Widget::writeMakise(std::string words){
+
+    ui->textEdit_makise->append(QString::fromStdString(words));
 
 }
+
+
+
