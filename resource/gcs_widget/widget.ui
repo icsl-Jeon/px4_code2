@@ -7,799 +7,293 @@
     <x>0</x>
     <y>0</y>
     <width>489</width>
-    <height>796</height>
+    <height>724</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>330</y>
-     <width>461</width>
-     <height>191</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QFrame" name="frame">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-color: rgb(46, 52, 54);</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QPushButton" name="pushButton_takeoff_p">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>20</y>
-         <width>89</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>114</red>
-             <green>159</green>
-             <blue>207</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>114</red>
-             <green>159</green>
-             <blue>207</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>114</red>
-             <green>159</green>
-             <blue>207</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="text">
-        <string>Takeoff</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_takeoff1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone1</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_takeoff2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone2</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_takeoff3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone3</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit_takeoff_height1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>40</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit_takeoff_height2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>40</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEdit_takeoff_height3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>40</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_8">
-       <property name="geometry">
-        <rect>
-         <x>36</x>
-         <y>150</y>
-         <width>81</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Speed [m/s]</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditSpeed3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>151</y>
-         <width>71</width>
-         <height>20</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditSpeed2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>150</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditSpeed1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>150</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_land_p">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>80</y>
-         <width>89</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>46</red>
-             <green>52</green>
-             <blue>54</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="ButtonText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>238</red>
-             <green>238</green>
-             <blue>236</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>46</red>
-             <green>52</green>
-             <blue>54</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="ButtonText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>238</red>
-             <green>238</green>
-             <blue>236</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>46</red>
-             <green>52</green>
-             <blue>54</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="ButtonText">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>190</red>
-             <green>190</green>
-             <blue>190</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="text">
-        <string>Land</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_land3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>70</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone3</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditLandGround1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>100</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_land2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>70</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone2</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_land1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>70</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone1</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditLandGround3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>100</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditLandGround2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>100</y>
-         <width>71</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="Line" name="line">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>130</y>
-         <width>441</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>20</y>
-     <width>91</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>DroneNames</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_Drone3Name">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>20</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>5</red>
-         <green>135</green>
-         <blue>79</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>5</red>
-         <green>135</green>
-         <blue>79</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>5</red>
-         <green>135</green>
-         <blue>79</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>5</red>
-         <green>135</green>
-         <blue>79</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </disabled>
-    </palette>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_Drone2Name">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>20</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>32</red>
-         <green>74</green>
-         <blue>135</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>32</red>
-         <green>74</green>
-         <blue>135</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>32</red>
-         <green>74</green>
-         <blue>135</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>32</red>
-         <green>74</green>
-         <blue>135</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </disabled>
-    </palette>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_Drone1Name">
-   <property name="geometry">
-    <rect>
-     <x>150</x>
-     <y>20</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="Light">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>239</red>
-         <green>41</green>
-         <blue>41</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="Light">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>239</red>
-         <green>41</green>
-         <blue>41</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled>
-      <colorrole role="Light">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>238</red>
-         <green>238</green>
-         <blue>236</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Base">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>239</red>
-         <green>41</green>
-         <blue>41</blue>
-        </color>
-       </brush>
-      </colorrole>
-      <colorrole role="Window">
-       <brush brushstyle="SolidPattern">
-        <color alpha="255">
-         <red>239</red>
-         <green>41</green>
-         <blue>41</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </disabled>
-    </palette>
-   </property>
-  </widget>
-  <widget class="QWidget" name="gridLayoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>260</y>
-     <width>461</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
-     <widget class="QFrame" name="frame_2">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QPushButton" name="pushButton_lock_p">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>10</y>
-         <width>89</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Lock</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_lock1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>20</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone1</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_lock2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>20</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone2</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_lock3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>20</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone3</string>
-       </property>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="gridLayoutWidget_4">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>461</width>
-     <height>91</height>
+     <x>120</x>
+     <y>10</y>
+     <width>341</width>
+     <height>87</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout_4">
+   <layout class="QGridLayout" name="gridLayout_names">
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="checkBox_offboard1">
+      <property name="text">
+       <string>Drone1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QCheckBox" name="checkBox_offboard3">
+      <property name="text">
+       <string>Drone3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_Drone3Name">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>5</red>
+            <green>135</green>
+            <blue>79</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>5</red>
+            <green>135</green>
+            <blue>79</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>5</red>
+            <green>135</green>
+            <blue>79</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>5</red>
+            <green>135</green>
+            <blue>79</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="0">
-     <widget class="QFrame" name="frame_4">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+     <widget class="QLineEdit" name="lineEdit_Drone1Name">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Light">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>239</red>
+            <green>41</green>
+            <blue>41</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Light">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>239</red>
+            <green>41</green>
+            <blue>41</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Light">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>239</red>
+            <green>41</green>
+            <blue>41</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>239</red>
+            <green>41</green>
+            <blue>41</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="checkBox_offboard2">
+      <property name="text">
+       <string>Drone2</string>
       </property>
-      <widget class="QCheckBox" name="checkBox_offboard1">
-       <property name="geometry">
-        <rect>
-         <x>72</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone1</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_offboard2">
-       <property name="geometry">
-        <rect>
-         <x>190</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone2</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_offboard3">
-       <property name="geometry">
-        <rect>
-         <x>310</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone3</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_mode_switcher1_om">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>40</y>
-         <width>81</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Offboard</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_mode_switcher2_om">
-       <property name="geometry">
-        <rect>
-         <x>190</x>
-         <y>40</y>
-         <width>81</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Offboard</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButton_mode_switcher3_om">
-       <property name="geometry">
-        <rect>
-         <x>310</x>
-         <y>40</y>
-         <width>81</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Offboard</string>
-       </property>
-      </widget>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_Drone2Name">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>32</red>
+            <green>74</green>
+            <blue>135</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>32</red>
+            <green>74</green>
+            <blue>135</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Base">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>32</red>
+            <green>74</green>
+            <blue>135</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="Window">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>32</red>
+            <green>74</green>
+            <blue>135</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="pushButton_mode_switcher1_om">
+      <property name="text">
+       <string>Offboard</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QPushButton" name="pushButton_mode_switcher2_om">
+      <property name="text">
+       <string>Offboard</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QPushButton" name="pushButton_mode_switcher3_om">
+      <property name="text">
+       <string>Offboard</string>
+      </property>
      </widget>
     </item>
    </layout>
@@ -808,220 +302,171 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
-     <width>461</width>
-     <height>41</height>
+     <y>110</y>
+     <width>451</width>
+     <height>101</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout_5">
-    <item row="0" column="0">
-     <widget class="QFrame" name="frame_5">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+   <layout class="QGridLayout" name="gridLayout_arming">
+    <item row="0" column="3">
+     <widget class="QCheckBox" name="checkBox_arm3">
+      <property name="text">
+       <string>Drone3</string>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QPushButton" name="pushButton_arm_m">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>10</y>
-         <width>89</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>51</red>
-             <green>169</green>
-             <blue>99</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>51</red>
-             <green>169</green>
-             <blue>99</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>51</red>
-             <green>169</green>
-             <blue>99</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="text">
-        <string>Arm</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_arm1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone1</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_arm2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone2</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_arm3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone3</string>
-       </property>
-      </widget>
      </widget>
     </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="gridLayoutWidget_6">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>210</y>
-     <width>461</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout_6">
+    <item row="1" column="0">
+     <widget class="QPushButton" name="pushButton_disarm_m">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>25</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>25</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>255</red>
+            <green>25</green>
+            <blue>0</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
+      <property name="text">
+       <string>Disarm</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QCheckBox" name="checkBox_disarm3">
+      <property name="text">
+       <string>Drone3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="pushButton_lock_p">
+      <property name="text">
+       <string>Lock</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QCheckBox" name="checkBox_arm2">
+      <property name="text">
+       <string>Drone2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QCheckBox" name="checkBox_arm1">
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="text">
+       <string>Drone1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QCheckBox" name="checkBox_lock2">
+      <property name="text">
+       <string>Drone2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QCheckBox" name="checkBox_disarm2">
+      <property name="text">
+       <string>Drone2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="checkBox_lock1">
+      <property name="text">
+       <string>Drone1</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
-     <widget class="QFrame" name="frame_6">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+     <widget class="QPushButton" name="pushButton_arm_m">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>51</red>
+            <green>169</green>
+            <blue>99</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>51</red>
+            <green>169</green>
+            <blue>99</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>51</red>
+            <green>169</green>
+            <blue>99</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+      <property name="text">
+       <string>Arm</string>
       </property>
-      <widget class="QPushButton" name="pushButton_disarm_m">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>10</y>
-         <width>89</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>255</red>
-             <green>25</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>255</red>
-             <green>25</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>255</red>
-             <green>25</green>
-             <blue>0</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="text">
-        <string>Disarm</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_disarm1">
-       <property name="geometry">
-        <rect>
-         <x>150</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone1</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_disarm2">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone2</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="checkBox_disarm3">
-       <property name="geometry">
-        <rect>
-         <x>350</x>
-         <y>10</y>
-         <width>92</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Drone3</string>
-       </property>
-      </widget>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QCheckBox" name="checkBox_disarm1">
+      <property name="text">
+       <string>Drone1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QCheckBox" name="checkBox_lock3">
+      <property name="text">
+       <string>Drone3</string>
+      </property>
      </widget>
     </item>
    </layout>
@@ -1030,9 +475,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>530</y>
+     <y>380</y>
      <width>461</width>
-     <height>161</height>
+     <height>141</height>
     </rect>
    </property>
    <property name="font">
@@ -1044,110 +489,200 @@
    <property name="title">
     <string>Trajectory generator</string>
    </property>
-   <widget class="QWidget" name="horizontalLayoutWidget">
+   <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>40</y>
-      <width>401</width>
+      <x>20</x>
+      <y>60</y>
+      <width>421</width>
       <height>51</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QComboBox" name="comboBox_drone_selector"/>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <item row="2" column="3">
+      <widget class="QLineEdit" name="lineEdit_trajgen_duration"/>
      </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_listenxy">
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEdit_trajgen_order"/>
+     </item>
+     <item row="2" column="4">
+      <widget class="QLabel" name="label_4">
        <property name="font">
         <font>
-         <weight>50</weight>
-         <bold>false</bold>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>Listen xy </string>
+        <string>wayp. margin[m]</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="label">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
        <property name="font">
         <font>
-         <weight>50</weight>
-         <bold>false</bold>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>Height</string>
+        <string>Polyorder</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QSlider" name="TrajGenheightSlider">
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>239</green>
-             <blue>239</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>239</green>
-             <blue>239</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>239</green>
-             <blue>239</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_erase">
+     <item row="2" column="2">
+      <widget class="QLabel" name="label_3">
        <property name="font">
         <font>
-         <weight>50</weight>
-         <bold>false</bold>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>Erase</string>
+        <string>Duration [s]</string>
        </property>
       </widget>
+     </item>
+     <item row="2" column="5">
+      <widget class="QLineEdit" name="lineEdit_trajgen_waypoint"/>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButton_trajgen_generate">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>110</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Generate</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_trajgen_save">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>110</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Save here</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_trajgen_save_dir">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>110</y>
+      <width>221</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QSplitter" name="splitter">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>441</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <widget class="QComboBox" name="comboBox_drone_selector"/>
+    <widget class="QPushButton" name="pushButton_listenxy">
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Listen xy </string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="TrajGenheightSlider">
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>239</red>
+           <green>239</green>
+           <blue>239</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Height [m]</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_erase">
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Erase</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QLabel" name="label_makise">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>710</y>
+     <y>630</y>
      <width>81</width>
      <height>81</height>
     </rect>
@@ -1163,7 +698,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>710</y>
+     <y>630</y>
      <width>361</width>
      <height>81</height>
     </rect>
@@ -1232,6 +767,290 @@
      </disabled>
     </palette>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_mission">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>530</y>
+     <width>461</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="title">
+    <string>Trajectory mission</string>
+   </property>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>30</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="lineEdit"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_2"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_3"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>30</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Upload</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_6">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>451</width>
+     <height>147</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_arming_2">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetNoConstraint</enum>
+    </property>
+    <property name="horizontalSpacing">
+     <number>6</number>
+    </property>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEditLandGround2"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Speed [m/s]</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QCheckBox" name="checkBox_takeoff1">
+      <property name="text">
+       <string>Drone1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="lineEdit_takeoff_height3"/>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEditSpeed2"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QCheckBox" name="checkBox_takeoff2">
+      <property name="text">
+       <string>Drone2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QPushButton" name="pushButton_takeoff_p">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>114</red>
+            <green>159</green>
+            <blue>207</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>114</red>
+            <green>159</green>
+            <blue>207</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>114</red>
+            <green>159</green>
+            <blue>207</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
+      <property name="text">
+       <string>    Takeoff   </string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QCheckBox" name="checkBox_land2">
+      <property name="text">
+       <string>Drone2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" rowspan="2">
+     <widget class="QPushButton" name="pushButton_land_p">
+      <property name="palette">
+       <palette>
+        <active>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>46</red>
+            <green>52</green>
+            <blue>54</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </active>
+        <inactive>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>46</red>
+            <green>52</green>
+            <blue>54</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </inactive>
+        <disabled>
+         <colorrole role="Button">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>46</red>
+            <green>52</green>
+            <blue>54</blue>
+           </color>
+          </brush>
+         </colorrole>
+         <colorrole role="ButtonText">
+          <brush brushstyle="SolidPattern">
+           <color alpha="255">
+            <red>190</red>
+            <green>190</green>
+            <blue>190</blue>
+           </color>
+          </brush>
+         </colorrole>
+        </disabled>
+       </palette>
+      </property>
+      <property name="text">
+       <string>Land</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEditLandGround1"/>
+    </item>
+    <item row="3" column="3">
+     <widget class="QLineEdit" name="lineEditLandGround3"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_takeoff_height1"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="checkBox_land1">
+      <property name="text">
+       <string>Drone1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QCheckBox" name="checkBox_land3">
+      <property name="text">
+       <string>Drone3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLineEdit" name="lineEditSpeed3"/>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_takeoff_height2"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEditSpeed1"/>
+    </item>
+    <item row="0" column="3">
+     <widget class="QCheckBox" name="checkBox_takeoff3">
+      <property name="text">
+       <string>Drone3</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

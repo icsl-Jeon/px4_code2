@@ -25,18 +25,29 @@ namespace px4_code2{
         connect(this,SIGNAL(enablePushButtonPX4(int, bool)),widget,SLOT(enableButtonPX4(int, bool)));
         connect(this,SIGNAL(updateMissionStatus(bool,bool)),widget,SLOT(updateMissionStatus(bool,bool)));
         connect(this,SIGNAL(updatePX4State(int, bool)),widget,SLOT(updatePX4Status(int, bool)));
+
+        connect (widget,SIGNAL(toggleWaypoints(int, bool)),this,SLOT(toggleWaypoints(int, bool)));
+        connect (widget,SIGNAL(eraseWaypoitns(int)),this,SLOT(eraseWaypoints(int)));
+        connect (widget,SIGNAL(generateTrajectory(int,int,double,double)),this,SLOT(generateTrajectory(int,int,double,double)));
+
+
         // ROS initialization
         timer = nh.createTimer(ros::Duration(0.01),&GcsPlugin::callbackTimer,this);
 
         // 0. Slot loading
         nh = getNodeHandle();
         nh.getParam("/qt_setting_dir",param.setting_file);
+        nh.getParam("/world_frame_id",param.worldFrameId);
+        cout << param.worldFrameId << endl;
         std::cout << labelClient + " : setting file : " << param.setting_file << std::endl;
         widget->readSettings(param.setting_file);
 
         // 1. Drone set
         std::vector<std::string> droneNameSet;
         nh.getParam("/drone_name_set",droneNameSet);
+        waypointsSet = vector<vector<geometry_msgs::Point>>(droneNameSet.size());
+        trajectorySet.resize(droneNameSet.size());
+
          int idx = 0;
         std::cout << labelClient << ": mission drones are [ ";
         for (auto it = droneNameSet.begin() ; it < droneNameSet.end() ; it++){
@@ -49,12 +60,22 @@ namespace px4_code2{
             sub = nh.subscribe<mavros_msgs::State>("/" + *it + px4StateTopicName,
                                                                  1,boost::bind(&GcsPlugin::callbackPX4State,this,_1,idx));
             subPX4Set.push_back(sub);
+
             // Phase init
             phase phase_; phase_.isMissionExist = false;
             status.phaseSet.push_back(phase_);
             status.px4StateSet.push_back(mavros_msgs::State ());
             lastCommTimePX4.push_back(ros::Time(0));
 
+
+            // Publish for waypoint selection and trajectory
+            ros::Publisher pub = nh.advertise<nav_msgs::Path>("/" + *it + "/waypoints",1);
+            pubWaypointsSet.push_back(pub);
+            pub = nh.advertise<nav_msgs::Path>("/" + *it + "/trajectory",1);
+            pubTrajSet.push_back(pub);
+            trajectorySet[idx].first = false; // init with invalid trajectory
+
+            // Printing
             std::cout << *it ;
             if (it != droneNameSet.end()-1)
                 std::cout << ", ";
@@ -62,6 +83,7 @@ namespace px4_code2{
         }
         std::cout <<  " ]"<<std::endl;
         param.droneNameSet = droneNameSet;
+        subWaypoints = nh.subscribe("waypoints",1,&GcsPlugin::callbackWaypoint,this);
         widget->initNames(droneNameSet);
     }
 
@@ -158,7 +180,88 @@ namespace px4_code2{
             }
         }
     }
+    void GcsPlugin::toggleWaypoints(int droneId, bool startListen) {
+        if (startListen) {
+            status.isListenWaypoints = true;
+            status.curWaypointTarget = droneId;
+            waypointsSet[droneId].clear();
+            ROS_INFO_STREAM(labelClient+ " : Start listening waypoints for drone " +
+            to_string(droneId) + " . Initialize waypoints set");
+        }else{
+           status.isListenWaypoints = false;
+            ROS_INFO_STREAM(labelClient+ " : Finish listening waypoints.");
+        }
+    }
 
+    void GcsPlugin::callbackWaypoint(const geometry_msgs::PoseStampedPtr &msgPtr) {
+        if (status.isListenWaypoints) {
+            geometry_msgs::Point curWaypoint;
+            curWaypoint.x = msgPtr->pose.position.x;
+            curWaypoint.y = msgPtr->pose.position.y;
+            curWaypoint.z = widget->getSliderValue()*MAX_HEIGHT;
+            waypointsSet[status.curWaypointTarget].push_back(curWaypoint);
+            string msg = "Received points [" + to_string(curWaypoint.x) + " , "+
+                    to_string(curWaypoint.y) + " , "+ to_string(curWaypoint.z) + "]";
+            widget->writeMakise(msg);
+        }
+    }
+    void GcsPlugin::eraseWaypoints(int droneId) {
+        if (not waypointsSet[droneId].empty()) {
+            widget->writeMakise("Erased last waypoint.");
+            waypointsSet[droneId].pop_back();
+        }else{
+
+            widget->writeMakise("Already empty.");
+        }
+    }
+    void GcsPlugin::generateTrajectory(int droneId,int polyOrder, double tf_, double margin_) {
+        // Read waypoints
+        int N = waypointsSet[droneId].size() -1;
+        double t0 = 0, tf = tf_; double margin = margin_;
+        // 1. Time knots proportion to interval distance
+        trajgen::time_knots<double> ts(N+1); ts[0] = t0;
+        double lengthSum = 0 ;
+        for (int n = 1 ; n <= N ; n++) {
+            double dist = distance(waypointsSet[droneId][n], waypointsSet[droneId][n - 1]);
+            lengthSum += dist;
+            ts[n] = lengthSum * tf;
+        }
+        for (int n = 1 ; n <= N ; n++) {
+            ts[n] /= lengthSum; // TODO check
+        }
+
+        // 2. Define pin
+        vector<Pin *> pinSet(N+1 + 2);  // 2 = initial vel, accel
+
+        for (int n = 0 ; n <= N ; n++){
+            double t = ts[n];
+            auto waypoint = waypointsSet[droneId][n];
+            TrajVector xl (waypoint.x - margin,waypoint.y - margin , waypoint.z - margin);
+            TrajVector xu (waypoint.x + margin,waypoint.y + margin , waypoint.z + margin);
+            pinSet[n] = new LoosePin(t,0,xl,xu);
+        }
+
+        FixPin xdot0(0.0, 1, TrajVector(0, 0, 0));
+        FixPin xddot0(0.0, 2, TrajVector(0, 0, 0));
+
+        pinSet[N+1] = &xdot0; pinSet[N+2] = &xddot0;
+
+        // TrajGen settings
+        trajgen::PolyParam pp (polyOrder,2,trajgen::ALGORITHM::POLY_COEFF);
+        TrajGenObj trajGenObj(ts,pp);
+        trajGenObj.setDerivativeObj(TrajVector(0, 1, 1));
+        trajGenObj.addPinSet(pinSet);
+
+        if (trajGenObj.solve(false)){
+            auto traj = make_pair<bool,Trajectory>(false,Trajectory(&trajGenObj,tf));
+            widget->writeMakise("Generation success!");
+        }else{
+            auto traj = make_pair<bool,Trajectory>(false,Trajectory());
+            trajectorySet[droneId] = traj;
+            widget->writeMakise("Trajectory generation failed.");
+        }
+
+    }
     void GcsPlugin::callbackPhase(const px4_code2::phaseConstPtr &msgPtr,int droneId) {
         status.phaseSet[droneId] =*(msgPtr);
         lastCommTime = ros::Time::now();
@@ -204,6 +307,15 @@ namespace px4_code2{
                 ROS_WARN_STREAM_THROTTLE(3, labelClient + " : Communication with mavros of drones are missing.");
                 Q_EMIT enablePushButtonPX4(m,false);
             }
+        }
+
+        // publish
+        for (int m = 0 ; m < param.getNdrone() ; m++){
+            nav_msgs::Path path = convertTo(waypointsSet[m]);
+            path.header.frame_id = param.worldFrameId;
+            pubWaypointsSet[m].publish(path);
+            if (trajectorySet[m].first) // if it is valid trajectory,
+                pubTrajSet[m].publish(trajectorySet[m].second.getPath(param.worldFrameId));
         }
 
 

@@ -27,11 +27,15 @@ public:
     void initNames(std::vector<std::string> nameSet);
     void writeSettings(std::string settingFile);
     void readSettings(std::string settingFile);
-
+    double getSliderValue();
     ~Widget();
 signals:
     void callService(int droneId, std::string serviceName,
                     std::vector<double> argDouble,int * returnPhase);
+    void toggleWaypoints(int, bool );
+    void eraseWaypoitns(int);
+    void generateTrajectory(int droneId,int polyOrder, double tf , double margin );
+
 public slots :  // communicate with outer loop
     void enableButton(bool enable); // enable buttons regarding px4_code at the start communication
     void enableButtonPX4(int droneIdx,bool enable); // enable buttons regarding mavros at the start communication
@@ -52,6 +56,10 @@ private slots:
     void on_pushButton_mode_switcher3_om_clicked();
 
     void on_pushButton_listenxy_clicked(bool checked);
+
+    void on_pushButton_erase_clicked();
+
+    void on_pushButton_trajgen_generate_clicked();
 
 private:
     bool isLockPushLock =true;

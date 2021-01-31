@@ -3,6 +3,7 @@ project(px4_code2)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
  add_compile_options(-std=c++11)
+set(CMAKE_BUILD_TYPE Debug)
 
 ## Include qpOASES
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
@@ -60,11 +61,11 @@ catkin_package(
 ## Client QT and RQT
 set(QT_SRC resource/gcs_widget/widget.cpp resource/gcs_rqt/gcs_plugin.cpp)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
-    qt5_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h )
+    qt5_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h include/traj_gen/TrajGen.hpp)
     qt5_wrap_ui(QT_UIS_H resource/gcs_widget/widget.ui)
     qt5_add_resources(resource/gcs_widget/img.qrc)
 else()
-    qt4_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h )
+    qt4_wrap_cpp(QT_MOCS resource/gcs_widget/widget.h resource/gcs_rqt/gcs_plugin.h include/traj_gen/TrajGen.hpp)
     qt4_wrap_ui(QT_UIS_H resource/gcs_widget/widget.ui)
     qt4_add_resources(resource/gcs_widget/img.qrc)
 endif()
@@ -80,11 +81,11 @@ include_directories(
 ##       CLIENT        ##
 #########################
 message("${RQT_SRC}")
-add_library(${PROJECT_NAME}  ${QT_MOCS} ${QT_SRC} ${QT_UIS_H} src/server.cpp src/utils/utility.cpp  resource/gcs_widget/img.qrc)
+add_library(${PROJECT_NAME}  ${QT_MOCS} ${QT_SRC} ${QT_UIS_H} src/server.cpp src/utils/utility.cpp  resource/gcs_widget/img.qrc include/traj_gen/TrajGen.hpp)
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
-    target_link_libraries(${PROJECT_NAME} Qt5::Widgets ${catkin_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} Qt5::Widgets ${catkin_LIBRARIES} ${qpOASES_LIB})
 else()
-    target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${catkin_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${catkin_LIBRARIES} ${qpOASES_LIB})
 endif()
 
 install(TARGETS ${PROJECT_NAME}

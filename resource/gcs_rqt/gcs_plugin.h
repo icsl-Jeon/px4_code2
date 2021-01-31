@@ -10,13 +10,11 @@
 // Service List
 #include <px4_code2/server.h>
 #include <px4_code2/Takeoff.h>
-
+#define MAX_HEIGHT 3
 // ROS
 #include <ros/ros.h>
 
 namespace px4_code2{
-
-
 
     class GcsPlugin :  public rqt_gui_cpp::Plugin{
 
@@ -24,10 +22,13 @@ namespace px4_code2{
             std::vector<std::string> droneNameSet;
             int getNdrone() {return droneNameSet.size();}
             std::string setting_file;
+            std::string worldFrameId ;
         };
         struct Status{
             std::vector<phase> phaseSet;
             std::vector<mavros_msgs::State> px4StateSet;
+            bool isListenWaypoints = false;
+            int curWaypointTarget = -1;
         };
 
 
@@ -48,26 +49,37 @@ namespace px4_code2{
         void enablePushButtonPX4(int,bool);
         void updateMissionStatus(bool isDuring,bool isExist);
         void updatePX4State(int,   bool isOffboard);
+
     private:
         Status status;
         Widget* widget;
         ros::NodeHandle nh;
+
+        // Communication
         ros::Timer timer;
         ros::Time lastCommTime;
         vector<ros::Time> lastCommTimePX4;
         vector<ros::Subscriber> subPhaseSet;
         vector<ros::Subscriber> subPX4Set;
+
+        // Trajectory
+        ros::Subscriber subWaypoints;
+        vector<vector<geometry_msgs::Point>> waypointsSet;
+        vector<ros::Publisher> pubWaypointsSet;
+        vector<pair<bool,Trajectory>> trajectorySet; // bool = is uploaded
+        vector<ros::Publisher> pubTrajSet;
         Param param;
 
         void callbackTimer(const ros::TimerEvent& event);
         void callbackPhase( const px4_code2::phaseConstPtr & msgPtr,int droneId);
         void callbackPX4State( const mavros_msgs::StateConstPtr & msgPtr,int droneId);
-
+        void callbackWaypoint (const geometry_msgs::PoseStampedPtr& msgPtr);
         // ROS
     private slots:
         void callService(int droneId, std::string service,std::vector<double>,int * out);
-
-
+        void toggleWaypoints(int droneId, bool startListen);
+        void eraseWaypoints(int droneId);
+        void generateTrajectory(int droneId, int polyOrder, double tf, double margin);
 
     };
 

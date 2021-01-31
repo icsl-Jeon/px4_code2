@@ -26,6 +26,11 @@ Widget::Widget(QWidget *parent) :
     QList<QCheckBox *> l_checkboxes =findChildren<QCheckBox *>();
     QList<QPushButton *> l_pushbuttons =findChildren<QPushButton *>();
 
+    ui->TrajGenheightSlider->setMinimum(0);
+    ui->TrajGenheightSlider->setMaximum(10);
+    ui->TrajGenheightSlider->setTickPosition(QSlider::TicksBelow);
+    ui->TrajGenheightSlider->setTickInterval(1);
+
     for(auto checkbox : l_checkboxes){
         checkbox->setEnabled(false);
         char idxChar = checkbox->objectName().toStdString().back();
@@ -89,6 +94,8 @@ void Widget::initNames(std::vector<std::string> nameSet){
 
 
     for (int m =0 ; m < Ndrone ; m ++){
+        droneNames[m] = nameSet[m];
+        ui->comboBox_drone_selector->addItem(QString::fromStdString(nameSet[m]));
         set[m]->setText(QString::fromStdString(nameSet[m]));
             // push button
             for(auto checkbox : checkBoxAll[m]){
@@ -194,7 +201,7 @@ void Widget::updatePX4Status(int droneIdx, bool isOffborad_){
 
    isOffborad[droneIdx] = isOffborad_; // is all ?
 
-    if (isOffborad){
+    if (isOffborad[droneIdx]){
         if (pushButtonMavrosOffboard[droneIdx][0]->isEnabled())
             pushButtonMavrosOffboard[droneIdx][0]->setText("Manual");
     }
@@ -255,6 +262,15 @@ void Widget::enableButtonPX4(int droneIdx, bool enable){
     }
 
 }
+
+double Widget::getSliderValue(){
+
+    return double(ui->TrajGenheightSlider->value())/ ui->TrajGenheightSlider->maximum();
+
+}
+
+
+
 
 
 void Widget::on_pushButton_lock_p_clicked()
@@ -390,10 +406,16 @@ void Widget::on_pushButton_mode_switcher3_om_clicked()
 
 void Widget::on_pushButton_listenxy_clicked(bool checked)
 {
-    if (checked)
-        writeMakise("Listening waypoints");
-    else
+        int idx = ui->comboBox_drone_selector->currentIndex() ;
+    if (checked){
+        Q_EMIT toggleWaypoints(idx,true);
+        std::string targetString =  "For "+ droneNames[idx]+" ";
+        writeMakise(targetString  + ", I am Listening waypoints");
+    }
+    else{
+        Q_EMIT toggleWaypoints(idx,false);
         writeMakise("Finishing waypoints");
+    }
 }
 
 void Widget::writeMakise(std::string words){
@@ -404,3 +426,22 @@ void Widget::writeMakise(std::string words){
 
 
 
+
+void Widget::on_pushButton_erase_clicked()
+{
+        int idx = ui->comboBox_drone_selector->currentIndex() ;
+        Q_EMIT eraseWaypoitns(idx);
+
+}
+
+void Widget::on_pushButton_trajgen_generate_clicked()
+{
+
+        int idx = ui->comboBox_drone_selector->currentIndex() ;
+        int order = ui->lineEdit_trajgen_order->text().toInt();
+        double tf = ui->lineEdit_trajgen_duration->text().toDouble();
+        double margin = ui->lineEdit_trajgen_waypoint->text().toDouble();
+
+        Q_EMIT generateTrajectory(idx,order,tf,margin);
+
+}

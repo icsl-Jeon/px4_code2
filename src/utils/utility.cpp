@@ -50,6 +50,20 @@ namespace px4_code2 {
         return poseStamped;
     }
 
+    nav_msgs::Path convertTo(const vector<geometry_msgs::Point>& points){
+        nav_msgs::Path path;
+        for (auto pnt : points){
+            geometry_msgs::PoseStamped poseStamped;
+            poseStamped.pose.position = pnt; poseStamped.pose.orientation.w = 1;
+            path.poses.push_back(poseStamped);
+        }
+        return path;
+    }
+    double distance(const geometry_msgs::Point& pnt1, const geometry_msgs::Point& pnt2){
+        return sqrt(pow(pnt1.x - pnt2.x,2) + pow(pnt1.y - pnt2.y,2) + pow(pnt1.z - pnt2.z,2));
+
+    }
+
     Trajectory::Trajectory(TrajGenObj *trajPtr,double fixedYaw, double duration) {
         int N = 50; //TODO
         double dt = duration/N;
@@ -64,6 +78,44 @@ namespace px4_code2 {
             yaws.push_back(fixedYaw);
         }
     }
+
+    Trajectory::Trajectory(TrajGenObj *trajPtr, double duration) {
+        int N = 50; //TODO
+        double dt = duration/N;
+        for (int n = 0 ; n < N ; n++){
+            double t = dt*n;
+            TrajVector p = trajPtr->eval(t,0);
+            ts.push_back(t);
+            xs.push_back(p(0));
+            ys.push_back(p(1));
+            zs.push_back(p(2));
+
+            TrajVector pdot = trajPtr->eval(t,1);
+            double yaw = atan2(pdot(1),pdot(0));
+            yaws.push_back(yaw);
+        }
+    }
+    nav_msgs::Path Trajectory::getPath(string frameId) {
+       nav_msgs::Path path; path.header.frame_id = frameId;
+       int N = ts.size();
+       for (int n = 0 ; n < N ; n ++ ){
+           geometry_msgs::PoseStamped poseStamped;
+           poseStamped.pose.position.x = xs[n];
+           poseStamped.pose.position.y = ys[n];
+           poseStamped.pose.position.z = zs[n];
+
+           tf::Quaternion q;
+           q.setRPY(0,0,yaws[n]); q.normalize();
+
+           poseStamped.pose.orientation.x = q.x();
+           poseStamped.pose.orientation.y = q.y();
+           poseStamped.pose.orientation.z = q.z();
+           poseStamped.pose.orientation.w = q.w();
+           path.poses.push_back(poseStamped);
+       }
+       return path;
+    }
+
     void Mission::loadTrajectory(const Trajectory &traj) {
 
         missionTraj = traj; triggerTime = ros::Time::now();

@@ -18,6 +18,7 @@ const int TRAJGEN_DIM = 3;
 
 typedef trajgen::Pin<double,TRAJGEN_DIM> Pin;
 typedef trajgen::FixPin<double,TRAJGEN_DIM> FixPin;
+typedef trajgen::LoosePin<double,TRAJGEN_DIM> LoosePin;
 typedef trajgen::Vector<double,TRAJGEN_DIM> TrajVector;
 typedef trajgen::PolyTrajGen<double,TRAJGEN_DIM> TrajGenObj;
 
@@ -28,8 +29,8 @@ namespace px4_code2 {
     double interpolate(const vector<double>& xData,const vector<double>& yData, const double & x,bool extrapolate);
     double getYaw (const geometry_msgs::Quaternion& q);
     geometry_msgs::PoseStamped convertTo(const nav_msgs::Odometry& odom);
-
-
+    nav_msgs::Path convertTo (const vector<geometry_msgs::Point>& points);
+    double distance(const geometry_msgs::Point& pnt1, const geometry_msgs::Point& pnt2);
 
     struct Trajectory {
         std::vector<double> ts; // start from 0
@@ -39,6 +40,8 @@ namespace px4_code2 {
         std::vector<double> yaws;
         Trajectory() = default;
         Trajectory(TrajGenObj* trajPtr, double fixedYaw, double duration);
+        Trajectory(TrajGenObj* trajPtr, double duration);  // align yaw to tangential
+        nav_msgs::Path getPath (string frameId);
 
     };
 
