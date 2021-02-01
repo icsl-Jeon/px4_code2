@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>489</width>
-    <height>724</height>
+    <height>821</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -477,7 +477,7 @@
      <x>10</x>
      <y>380</y>
      <width>461</width>
-     <height>141</height>
+     <height>191</height>
     </rect>
    </property>
    <property name="font">
@@ -500,10 +500,24 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_7">
      <item row="2" column="3">
-      <widget class="QLineEdit" name="lineEdit_trajgen_duration"/>
+      <widget class="QLineEdit" name="lineEdit_trajgen_duration">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_trajgen_order"/>
+      <widget class="QLineEdit" name="lineEdit_trajgen_order">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
      </item>
      <item row="2" column="4">
       <widget class="QLabel" name="label_4">
@@ -542,7 +556,14 @@
       </widget>
      </item>
      <item row="2" column="5">
-      <widget class="QLineEdit" name="lineEdit_trajgen_waypoint"/>
+      <widget class="QLineEdit" name="lineEdit_trajgen_waypoint">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -552,7 +573,7 @@
       <x>20</x>
       <y>110</y>
       <width>89</width>
-      <height>25</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -562,10 +583,29 @@
    <widget class="QPushButton" name="pushButton_trajgen_save">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>120</x>
       <y>110</y>
       <width>89</width>
-      <height>25</height>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Save</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_trajgen_save_dir">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>110</y>
+      <width>221</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
@@ -573,19 +613,6 @@
       <weight>50</weight>
       <bold>false</bold>
      </font>
-    </property>
-    <property name="text">
-     <string>Save here</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_trajgen_save_dir">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>110</y>
-      <width>221</width>
-      <height>25</height>
-     </rect>
     </property>
    </widget>
    <widget class="QSplitter" name="splitter">
@@ -604,8 +631,8 @@
     <widget class="QPushButton" name="pushButton_listenxy">
      <property name="font">
       <font>
-       <weight>50</weight>
-       <bold>false</bold>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="text">
@@ -668,8 +695,8 @@
     <widget class="QPushButton" name="pushButton_erase">
      <property name="font">
       <font>
-       <weight>50</weight>
-       <bold>false</bold>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="text">
@@ -677,12 +704,47 @@
      </property>
     </widget>
    </widget>
+   <widget class="QLineEdit" name="lineEdit_trajgen_load_dir">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>140</y>
+      <width>221</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_trajgen_load">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>140</y>
+      <width>89</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Load</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_makise">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>630</y>
+     <y>690</y>
      <width>81</width>
      <height>81</height>
     </rect>
@@ -698,7 +760,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>630</y>
+     <y>690</y>
      <width>361</width>
      <height>81</height>
     </rect>
@@ -772,7 +834,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>530</y>
+     <y>580</y>
      <width>461</width>
      <height>91</height>
     </rect>
@@ -813,17 +875,17 @@
       <number>2</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit_traj_load_dir1"/>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="lineEdit_traj_load_dir2"/>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="lineEdit_traj_load_dir3"/>
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="pushButton_traj_upload">
     <property name="geometry">
      <rect>
       <x>110</x>

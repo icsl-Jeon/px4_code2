@@ -445,3 +445,52 @@ void Widget::on_pushButton_trajgen_generate_clicked()
         Q_EMIT generateTrajectory(idx,order,tf,margin);
 
 }
+
+void Widget::on_pushButton_trajgen_save_clicked()
+{
+
+        int idx = ui->comboBox_drone_selector->currentIndex() ;
+        std::string fileDir = ui->lineEdit_trajgen_save_dir->text().toStdString();
+
+        Q_EMIT saveTrajectory(idx,fileDir);
+
+}
+
+void Widget::on_pushButton_trajgen_load_clicked()
+{
+
+        int idx = ui->comboBox_drone_selector->currentIndex() ;
+        std::string fileDir = ui->lineEdit_trajgen_load_dir->text().toStdString();
+        Q_EMIT loadTrajectory(idx,fileDir);
+
+}
+
+
+void Widget::on_pushButton_traj_upload_clicked()
+{
+
+    QLineEdit* dirs[3] = {ui->lineEdit_traj_load_dir1, ui->lineEdit_traj_load_dir2,ui->lineEdit_traj_load_dir3};
+    for (int m = 0 ; m < Ndrone; m++){
+        QString dir = *dirs[m];
+        if (not dir.isEmpty()){
+            Q_EMIT loadTrajectory(m,dir.toStdString());
+            writeMakise("For " + droneNames[m] + " , upload trajectory in client.");
+        }
+
+    }
+}
+
+void Widget::on_pushButton_traj_start_clicked()
+{
+
+    QLineEdit* dirs[3] = {ui->lineEdit_traj_load_dir1, ui->lineEdit_traj_load_dir2,ui->lineEdit_traj_load_dir3};
+    writeMakise("Mission  requested for servers. Good luck :)");
+    for (int m = 0 ; m < Ndrone ; m++){
+        QString dir = *dirs[m];
+        if (not dir.isEmpty()){
+             std::vector<double> args(1); int output;
+            Q_EMIT callService(m,"trajectory_follow",args,output);
+        }
+    }
+
+}

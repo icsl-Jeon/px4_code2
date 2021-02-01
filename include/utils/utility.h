@@ -14,6 +14,8 @@
 #include <utility>
 #include <tf/transform_listener.h>
 
+#include <iostream>
+
 const int TRAJGEN_DIM = 3;
 
 typedef trajgen::Pin<double,TRAJGEN_DIM> Pin;
@@ -41,7 +43,9 @@ namespace px4_code2 {
         Trajectory() = default;
         Trajectory(TrajGenObj* trajPtr, double fixedYaw, double duration);
         Trajectory(TrajGenObj* trajPtr, double duration);  // align yaw to tangential
+        Trajectory(string fileDir,bool& isLoaded);
         nav_msgs::Path getPath (string frameId);
+        bool writeTxt(string fileDir);
 
     };
 

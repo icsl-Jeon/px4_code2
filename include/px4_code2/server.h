@@ -13,6 +13,7 @@
 #include <px4_code2/Lock.h>
 #include <px4_code2/Land.h>
 #include <px4_code2/phase.h>
+#include <px4_code2/UploadTrajectory.h>
 
 #include <string>
 #include <utils/utility.h>
@@ -22,6 +23,7 @@
 #define  lockServiceName "/px4_code/lock"
 #define armServiceName "/mavros/cmd/arming"
 #define modeSwitchName "/mavros/set_mode"
+#define trajFollowServiceName "/px4_code/trajectory_follow"
 
 #define  phaseTopicName "/px4_code/phase"
 #define px4StateTopicName "/mavros/state"

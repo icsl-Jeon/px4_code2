@@ -35,6 +35,9 @@ signals:
     void toggleWaypoints(int, bool );
     void eraseWaypoitns(int);
     void generateTrajectory(int droneId,int polyOrder, double tf , double margin );
+    void saveTrajectory(int droneId, std::string );
+    void loadTrajectory(int droneId, std::string );
+
 
 public slots :  // communicate with outer loop
     void enableButton(bool enable); // enable buttons regarding px4_code at the start communication
@@ -60,6 +63,12 @@ private slots:
     void on_pushButton_erase_clicked();
 
     void on_pushButton_trajgen_generate_clicked();
+
+    void on_pushButton_trajgen_save_clicked();
+
+    void on_pushButton_trajgen_load_clicked();
+
+    void on_pushButton_traj_upload_clicked();
 
 private:
     bool isLockPushLock =true;

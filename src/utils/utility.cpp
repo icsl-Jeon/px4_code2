@@ -82,7 +82,7 @@ namespace px4_code2 {
     Trajectory::Trajectory(TrajGenObj *trajPtr, double duration) {
         int N = 50; //TODO
         double dt = duration/N;
-        for (int n = 0 ; n < N ; n++){
+        for (int n = 0 ; n <= N ; n++){
             double t = dt*n;
             TrajVector p = trajPtr->eval(t,0);
             ts.push_back(t);
@@ -95,6 +95,43 @@ namespace px4_code2 {
             yaws.push_back(yaw);
         }
     }
+
+    Trajectory::Trajectory(string fileDir,bool& isLoaded) {
+        ifstream file; file.open(fileDir);
+        if (file.is_open()){
+            while (!file.eof()){
+                string line;
+                getline(file,line);
+                stringstream ss(line);
+                std::string val;
+                while (!ss.eof()){
+                    getline(ss,val,' ');
+                    ts.push_back(atof(val.c_str()));
+                    getline(ss,val,' ');
+                    xs.push_back(atof(val.c_str()));
+                    getline(ss,val,' ');
+                    ys.push_back(atof(val.c_str()));
+                    getline(ss,val,' ');
+                    zs.push_back(atof(val.c_str()));
+                    getline(ss,val,' ');
+                    yaws.push_back(atof(val.c_str()));
+                }
+
+            }
+
+            ts.pop_back(); xs.pop_back();  ys.pop_back(); zs.pop_back(); yaws.pop_back();
+            ROS_INFO("Trajectory constructed with duration = %f / pnt number = %d",ts.back(),ts.size());
+            isLoaded = ts.size() > 1 ;
+
+        }else{
+            ROS_ERROR_STREAM(fileDir + " was not opened! Trajectory object will not be created.");
+            isLoaded = false;
+        }
+
+
+
+    }
+
     nav_msgs::Path Trajectory::getPath(string frameId) {
        nav_msgs::Path path; path.header.frame_id = frameId;
        int N = ts.size();
@@ -114,6 +151,19 @@ namespace px4_code2 {
            path.poses.push_back(poseStamped);
        }
        return path;
+    }
+
+    bool Trajectory::writeTxt(string fileDir) {
+        ofstream file; file.open(fileDir);
+        if(file.is_open()){
+            for (int n = 0 ; n < ts.size() ; n++){
+                file<<ts[n]<<" " << xs[n] <<" " <<ys[n] << " " << zs[n] << " " << yaws[n] << endl;
+            }
+            file.close();
+            return true;
+        }else{
+            return false;
+        }
     }
 
     void Mission::loadTrajectory(const Trajectory &traj) {

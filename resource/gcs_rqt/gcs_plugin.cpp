@@ -29,6 +29,8 @@ namespace px4_code2{
         connect (widget,SIGNAL(toggleWaypoints(int, bool)),this,SLOT(toggleWaypoints(int, bool)));
         connect (widget,SIGNAL(eraseWaypoitns(int)),this,SLOT(eraseWaypoints(int)));
         connect (widget,SIGNAL(generateTrajectory(int,int,double,double)),this,SLOT(generateTrajectory(int,int,double,double)));
+        connect (widget,SIGNAL(saveTrajectory(int,std::string)),this,SLOT(saveTrajectoryTxt(int,std::string)));
+        connect (widget,SIGNAL(loadTrajectory(int,std::string)),this,SLOT(loadTrajectoryTxt(int,std::string)));
 
 
         // ROS initialization
@@ -178,6 +180,19 @@ namespace px4_code2{
                     ros::service::call<mavros_msgs::SetMode>("/" + param.droneNameSet[droneId] + modeSwitchName,modeSrv);
                 }
             }
+
+            if (service == "trajectory_follow"){
+                px4_code2::UploadTrajectory trajSrv;
+                bool isValid = trajectorySet[droneId].first;
+                if (isValid){
+
+                }else{
+
+                }
+
+
+
+            }
         }
     }
     void GcsPlugin::toggleWaypoints(int droneId, bool startListen) {
@@ -215,53 +230,84 @@ namespace px4_code2{
         }
     }
     void GcsPlugin::generateTrajectory(int droneId,int polyOrder, double tf_, double margin_) {
+
         // Read waypoints
         int N = waypointsSet[droneId].size() -1;
-        double t0 = 0, tf = tf_; double margin = margin_;
-        // 1. Time knots proportion to interval distance
-        trajgen::time_knots<double> ts(N+1); ts[0] = t0;
-        double lengthSum = 0 ;
-        for (int n = 1 ; n <= N ; n++) {
-            double dist = distance(waypointsSet[droneId][n], waypointsSet[droneId][n - 1]);
-            lengthSum += dist;
-            ts[n] = lengthSum * tf;
-        }
-        for (int n = 1 ; n <= N ; n++) {
-            ts[n] /= lengthSum; // TODO check
-        }
+        if (N >= 0) {
+            double t0 = 0, tf = tf_;
+            double margin = margin_;
+            // 1. Time knots proportion to interval distance
+            trajgen::time_knots<double> ts(N + 1);
+            ts[0] = t0;
+            double lengthSum = 0;
+            for (int n = 1; n <= N; n++) {
+                double dist = distance(waypointsSet[droneId][n], waypointsSet[droneId][n - 1]);
+                lengthSum += dist;
+                ts[n] = lengthSum * tf;
+            }
+            for (int n = 1; n <= N; n++) {
+                ts[n] /= lengthSum; // TODO check
+            }
 
-        // 2. Define pin
-        vector<Pin *> pinSet(N+1 + 2);  // 2 = initial vel, accel
+            // 2. Define pin
+            vector<Pin *> pinSet(N + 1 + 2);  // 2 = initial vel, accel
 
-        for (int n = 0 ; n <= N ; n++){
-            double t = ts[n];
-            auto waypoint = waypointsSet[droneId][n];
-            TrajVector xl (waypoint.x - margin,waypoint.y - margin , waypoint.z - margin);
-            TrajVector xu (waypoint.x + margin,waypoint.y + margin , waypoint.z + margin);
-            pinSet[n] = new LoosePin(t,0,xl,xu);
-        }
+            for (int n = 0; n <= N; n++) {
+                double t = ts[n];
+                auto waypoint = waypointsSet[droneId][n];
+                TrajVector xl(waypoint.x - margin, waypoint.y - margin, waypoint.z - margin);
+                TrajVector xu(waypoint.x + margin, waypoint.y + margin, waypoint.z + margin);
+                pinSet[n] = new LoosePin(t, 0, xl, xu);
+            }
 
-        FixPin xdot0(0.0, 1, TrajVector(0, 0, 0));
-        FixPin xddot0(0.0, 2, TrajVector(0, 0, 0));
+            FixPin xdot0(0.0, 1, TrajVector(0, 0, 0));
+            FixPin xddot0(0.0, 2, TrajVector(0, 0, 0));
 
-        pinSet[N+1] = &xdot0; pinSet[N+2] = &xddot0;
+            pinSet[N + 1] = &xdot0;
+            pinSet[N + 2] = &xddot0;
 
-        // TrajGen settings
-        trajgen::PolyParam pp (polyOrder,2,trajgen::ALGORITHM::POLY_COEFF);
-        TrajGenObj trajGenObj(ts,pp);
-        trajGenObj.setDerivativeObj(TrajVector(0, 1, 1));
-        trajGenObj.addPinSet(pinSet);
+            // TrajGen settings
+            trajgen::PolyParam pp(polyOrder, 2, trajgen::ALGORITHM::POLY_COEFF);
+            TrajGenObj trajGenObj(ts, pp);
+            trajGenObj.setDerivativeObj(TrajVector(0, 1, 1));
+            trajGenObj.addPinSet(pinSet);
 
-        if (trajGenObj.solve(false)){
-            auto traj = make_pair<bool,Trajectory>(false,Trajectory(&trajGenObj,tf));
-            widget->writeMakise("Generation success!");
+            if (trajGenObj.solve(false)) {
+                auto traj = make_pair<bool, Trajectory>(true, Trajectory(&trajGenObj, tf));
+                trajectorySet[droneId] = traj;
+                widget->writeMakise("Generation success!");
+            } else {
+                auto traj = make_pair<bool, Trajectory>(false, Trajectory());
+                trajectorySet[droneId] = traj;
+                widget->writeMakise("Trajectory generation failed.");
+            }
+        }else
+            widget->writeMakise("No waypoints.");
+    }
+
+    void GcsPlugin::saveTrajectoryTxt(int droneId, std::string fileDir) {
+        if (trajectorySet[droneId].first){
+            if (trajectorySet[droneId].second.writeTxt(fileDir))
+                widget->writeMakise("Trajectory saved to : "+ fileDir);
+            else
+                widget->writeMakise("File "+ fileDir + " was not opened");
         }else{
-            auto traj = make_pair<bool,Trajectory>(false,Trajectory());
-            trajectorySet[droneId] = traj;
-            widget->writeMakise("Trajectory generation failed.");
+            widget->writeMakise("Still no trajectory to save");
+        }
+    }
+    void GcsPlugin::loadTrajectoryTxt(int droneId, std::string fileName) {
+        bool isLoaded;
+        Trajectory traj (fileName,isLoaded);
+        if (isLoaded){
+            trajectorySet[droneId].first = isLoaded;
+            trajectorySet[droneId].second = traj;
+            widget->writeMakise("Loaded txt. Overwrite trajectory.");
+        }else{
+            widget->writeMakise("Loading txt failed.");
         }
 
     }
+
     void GcsPlugin::callbackPhase(const px4_code2::phaseConstPtr &msgPtr,int droneId) {
         status.phaseSet[droneId] =*(msgPtr);
         lastCommTime = ros::Time::now();

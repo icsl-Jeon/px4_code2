@@ -4,7 +4,7 @@ project(px4_code2)
 ## Compile as C++11, supported in ROS Kinetic and newer
  add_compile_options(-std=c++11)
 set(CMAKE_BUILD_TYPE Debug)
-
+set(CMAKE_CXX_FLAGS -fPIC)
 ## Include qpOASES
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(qpOASES REQUIRED)
@@ -43,7 +43,7 @@ add_message_files(
 ##########################
  add_service_files(
    FILES
-   Takeoff.srv Lock.srv Land.srv
+   Takeoff.srv Lock.srv Land.srv UploadTrajectory.srv
  )
 
 generate_messages(

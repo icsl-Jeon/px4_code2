@@ -80,6 +80,8 @@ namespace px4_code2{
         void toggleWaypoints(int droneId, bool startListen);
         void eraseWaypoints(int droneId);
         void generateTrajectory(int droneId, int polyOrder, double tf, double margin);
+        void saveTrajectoryTxt(int droneId,std::string);
+        void loadTrajectoryTxt(int droneId, std::string);
 
     };
 
