@@ -184,10 +184,17 @@ namespace px4_code2{
             if (service == "trajectory_follow"){
                 px4_code2::UploadTrajectory trajSrv;
                 bool isValid = trajectorySet[droneId].first;
+                Trajectory traj = trajectorySet[droneId].second;
+
                 if (isValid){
-
+                    trajSrv.request.ts = traj.ts;
+                    trajSrv.request.xs = traj.xs;
+                    trajSrv.request.ys = traj.ys;
+                    trajSrv.request.zs = traj.zs;
+                    trajSrv.request.yaws = traj.yaws;
+                    ros::service::call<px4_code2::UploadTrajectory>("/"+ param.droneNameSet[droneId] + trajFollowServiceName ,trajSrv);
                 }else{
-
+                    widget->writeMakise("No valid trajectory for service call");
                 }
 
 

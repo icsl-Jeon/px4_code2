@@ -63,12 +63,17 @@ namespace px4_code2 {
         return sqrt(pow(pnt1.x - pnt2.x,2) + pow(pnt1.y - pnt2.y,2) + pow(pnt1.z - pnt2.z,2));
 
     }
-
+    /**
+     * Trajectory construction with fixed yaw
+     * @param trajPtr
+     * @param fixedYaw
+     * @param duration
+     */
     Trajectory::Trajectory(TrajGenObj *trajPtr,double fixedYaw, double duration) {
-        int N = 50; //TODO
+        int N = TRAJ_SAMPLE_PNT; //TODO
         double dt = duration/N;
 
-        for (int n = 0 ; n < N ; n++){
+        for (int n = 0 ; n <= N ; n++){
             double t = dt*n;
             TrajVector p = trajPtr->eval(t,0);
             ts.push_back(t);
@@ -79,8 +84,36 @@ namespace px4_code2 {
         }
     }
 
+    /**
+     * Trajectory construction with linearly varying yaw
+     * @param trajPtr
+     * @param yaw0
+     * @param yawf
+     * @param duration
+     */
+    Trajectory::Trajectory(TrajGenObj *trajPtr,double yaw0, double yawf, double duration) {
+        int N = TRAJ_SAMPLE_PNT; //TODO
+        double dt = duration/N;
+
+        for (int n = 0 ; n <= N ; n++){
+            double t = dt*n;
+            TrajVector p = trajPtr->eval(t,0);
+            ts.push_back(t);
+            xs.push_back(p(0));
+            ys.push_back(p(1));
+            zs.push_back(p(2));
+            yaws.push_back(yaw0 + (yawf - yaw0)/N * n );
+        }
+    }
+
+
+    /**
+     * Trajectory construction with tangential yaw
+     * @param trajPtr
+     * @param duration
+     */
     Trajectory::Trajectory(TrajGenObj *trajPtr, double duration) {
-        int N = 50; //TODO
+        int N = TRAJ_SAMPLE_PNT; //TODO
         double dt = duration/N;
         for (int n = 0 ; n <= N ; n++){
             double t = dt*n;
@@ -90,12 +123,16 @@ namespace px4_code2 {
             ys.push_back(p(1));
             zs.push_back(p(2));
 
-            TrajVector pdot = trajPtr->eval(t,1);
+            TrajVector pdot = trajPtr->eval(max(t,1e-3),1); // TODO. zero evaluation with velocity  is numerical error...
             double yaw = atan2(pdot(1),pdot(0));
             yaws.push_back(yaw);
         }
     }
-
+    /**
+     * Trajectory construction from txt file
+     * @param fileDir
+     * @param isLoaded
+     */
     Trajectory::Trajectory(string fileDir,bool& isLoaded) {
         ifstream file; file.open(fileDir);
         if (file.is_open()){
@@ -128,9 +165,31 @@ namespace px4_code2 {
             isLoaded = false;
         }
 
-
-
     }
+
+    Trajectory::Trajectory(const px4_code2::UploadTrajectoryRequest &req) {
+        ts = req.ts;
+        xs = req.xs;
+        ys = req.ys;
+        zs = req.zs;
+        yaws = req.yaws;
+    }
+
+
+    void Trajectory::append(const Trajectory &otherTraj_) {
+
+        Trajectory otherTraj = otherTraj_;
+        for (auto & it : otherTraj.ts){
+            it += ts.back();
+        }
+
+        ts.insert(ts.end(),otherTraj.ts.begin(),otherTraj.ts.end());
+        xs.insert(xs.end(),otherTraj.xs.begin(),otherTraj.xs.end());
+        ys.insert(ys.end(),otherTraj.ys.begin(),otherTraj.ys.end());
+        zs.insert(zs.end(),otherTraj.zs.begin(),otherTraj.zs.end());
+        yaws.insert(yaws.end(),otherTraj.yaws.begin(),otherTraj.yaws.end());
+    }
+
 
     nav_msgs::Path Trajectory::getPath(string frameId) {
        nav_msgs::Path path; path.header.frame_id = frameId;

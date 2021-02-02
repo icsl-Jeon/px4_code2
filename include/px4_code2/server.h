@@ -13,7 +13,6 @@
 #include <px4_code2/Lock.h>
 #include <px4_code2/Land.h>
 #include <px4_code2/phase.h>
-#include <px4_code2/UploadTrajectory.h>
 
 #include <string>
 #include <utils/utility.h>
@@ -24,6 +23,9 @@
 #define armServiceName "/mavros/cmd/arming"
 #define modeSwitchName "/mavros/set_mode"
 #define trajFollowServiceName "/px4_code/trajectory_follow"
+#define smoothStartTriggerDist 0.1
+#define smoothStartSpeed 0.1
+
 
 #define  phaseTopicName "/px4_code/phase"
 #define px4StateTopicName "/mavros/state"
@@ -77,6 +79,7 @@ namespace px4_code2{
             ros::ServiceServer takeoffServer;
             ros::ServiceServer lockServer;
             ros::ServiceServer landServer;
+            ros::ServiceServer trajServer;
         };
 
     private:
@@ -92,7 +95,7 @@ namespace px4_code2{
         ros::NodeHandle nh;
 
         void initToCurPose(){
-                state.curSetPose = state.curPose;
+                state.curSetPose = state.curMavrosPose;
                 ROS_INFO_STREAM(param.droneName << " : setting planning pose to current mavros position [ " <<
                 state.curSetPose.pose.position.x <<" , " <<
                 state.curSetPose.pose.position.y <<" , " <<
@@ -108,6 +111,7 @@ namespace px4_code2{
         bool callbackTakeoff(px4_code2::TakeoffRequest & req, px4_code2::TakeoffResponse & resp);
         bool callbackLand(px4_code2::LandRequest & req, px4_code2::LandResponse & resp);
         bool callbackLock(px4_code2::LockRequest& req, px4_code2::LockResponse& resp);
+        bool callbackTraj(px4_code2::UploadTrajectoryRequest& req, px4_code2::UploadTrajectoryResponse& resp);
 
         void publish();
 

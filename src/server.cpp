@@ -126,7 +126,7 @@ namespace px4_code2 {
                 return false;
             }
         } else {
-            ROS_WARN_STREAM(param.getLabel() + " : still the odom topic not received");
+            ROS_WARN_STREAM(param.getLabel() + " : still the  mavros pose topic not received");
             resp.is_success = false;
             return false;
         }
@@ -214,6 +214,73 @@ namespace px4_code2 {
 
     }
 
+
+    bool Server::callbackTraj(px4_code2::UploadTrajectoryRequest &req, px4_code2::UploadTrajectoryResponse &resp) {
+
+        if (status.isInit) {
+            // Check the distance to the start position of the traj
+            geometry_msgs::Point startTraj;
+            startTraj.x = req.xs.front();
+            startTraj.y = req.ys.front();
+            startTraj.z = req.zs.front();
+            Trajectory uploadedTraj(req);
+
+            // smooth start ...
+            double distToStart = distance(state.curMavrosPose.pose.position, startTraj);
+            double timeToStart = distToStart / smoothStartSpeed;
+            trajgen::time_knots<double> ts{0, timeToStart};
+
+            // Initial condition
+            FixPin x0(0.0, 0, TrajVector(state.curMavrosPose.pose.position.x,
+                                         state.curMavrosPose.pose.position.y,
+                                         state.curMavrosPose.pose.position.z
+            ));
+            FixPin xdot0(0.0, 1, TrajVector(0, 0, 0));
+            FixPin xddot0(0.0, 2, TrajVector(0, 0, 0));
+            double yaw0 = getYaw(state.curMavrosPose.pose.orientation);
+
+            // Final condition
+            FixPin xf(timeToStart, 0, TrajVector(startTraj.x,
+                                                 startTraj.y,
+                                                 startTraj.z));
+            FixPin xdotf(timeToStart, 1, TrajVector(0, 0, 0));
+            FixPin xddotf(timeToStart, 2, TrajVector(0, 0, 0));
+            double yawf = req.yaws.front();
+
+            // Trajectory solving
+            std::vector<Pin *> pinSet{&x0, &xdot0, &xddot0, &xf, &xdotf, &xddotf};
+            int polyOrder = 5;
+            trajgen::PolyParam pp(polyOrder, 2, trajgen::ALGORITHM::POLY_COEFF);
+            TrajGenObj trajGenObj(ts, pp);
+            trajGenObj.setDerivativeObj(TrajVector(0, 1, 1));
+            trajGenObj.addPinSet(pinSet);
+
+            // Upload mission
+            if (trajGenObj.solve(false)){
+                Trajectory smoothGo(&trajGenObj,yaw0,yawf,timeToStart);
+                // concatenating smoothGo + missionTrajectory
+                smoothGo.append(uploadedTraj);
+                status.curMission = Mission(param.worldFrame,Phase::TRAJ_FOLLOWING);
+                status.curMission.loadTrajectory(smoothGo);
+                status.curMission.trigger();
+                status.isMissionReceived = true;
+                status.phase =TRAJ_FOLLOWING;
+
+            }else{
+                ROS_WARN_STREAM(param.getLabel() + " : failed to compute smooth go trajectory");
+                return false;
+            }
+
+
+        }else{
+
+            ROS_WARN_STREAM(param.getLabel() + " : still the  mavros pose topic not received");
+            return false;
+
+        }
+
+    }
+
     Server::Server() : nh("~") {
         // TOPIC
         nh.param<string>("drone_name", param.droneName, "target1");
@@ -236,7 +303,7 @@ namespace px4_code2 {
                                                     &Server::callbackTakeoff, this);
         servSet.lockServer = nh.advertiseService("/" + param.droneName + lockServiceName,&Server::callbackLock,this);
         servSet.landServer = nh.advertiseService("/"+param.droneName + landServiceName,&Server::callbackLand,this);
-
+        servSet.trajServer = nh.advertiseService("/" + param.droneName + trajFollowServiceName,&Server::callbackTraj,this);
     }
 
     void Server::publish() {

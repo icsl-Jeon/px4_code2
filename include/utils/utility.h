@@ -14,9 +14,11 @@
 #include <utility>
 #include <tf/transform_listener.h>
 
+#include <px4_code2/UploadTrajectory.h>
 #include <iostream>
 
 const int TRAJGEN_DIM = 3;
+const int TRAJ_SAMPLE_PNT = 50;
 
 typedef trajgen::Pin<double,TRAJGEN_DIM> Pin;
 typedef trajgen::FixPin<double,TRAJGEN_DIM> FixPin;
@@ -42,9 +44,12 @@ namespace px4_code2 {
         std::vector<double> yaws;
         Trajectory() = default;
         Trajectory(TrajGenObj* trajPtr, double fixedYaw, double duration);
+        Trajectory(TrajGenObj* trajPtr, double yaw0, double yawf, double duration);
         Trajectory(TrajGenObj* trajPtr, double duration);  // align yaw to tangential
+        Trajectory(const px4_code2::UploadTrajectoryRequest& req);
         Trajectory(string fileDir,bool& isLoaded);
         nav_msgs::Path getPath (string frameId);
+        void append (const Trajectory& otherTraj);
         bool writeTxt(string fileDir);
 
     };

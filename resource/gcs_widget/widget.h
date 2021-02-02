@@ -70,6 +70,8 @@ private slots:
 
     void on_pushButton_traj_upload_clicked();
 
+    void on_pushButton_traj_start_clicked();
+    
 private:
     bool isLockPushLock =true;
     Ui::Widget *ui;

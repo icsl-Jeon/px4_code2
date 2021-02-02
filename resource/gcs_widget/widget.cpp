@@ -471,7 +471,7 @@ void Widget::on_pushButton_traj_upload_clicked()
 
     QLineEdit* dirs[3] = {ui->lineEdit_traj_load_dir1, ui->lineEdit_traj_load_dir2,ui->lineEdit_traj_load_dir3};
     for (int m = 0 ; m < Ndrone; m++){
-        QString dir = *dirs[m];
+        QString dir = dirs[m] ->text();
         if (not dir.isEmpty()){
             Q_EMIT loadTrajectory(m,dir.toStdString());
             writeMakise("For " + droneNames[m] + " , upload trajectory in client.");
@@ -486,10 +486,10 @@ void Widget::on_pushButton_traj_start_clicked()
     QLineEdit* dirs[3] = {ui->lineEdit_traj_load_dir1, ui->lineEdit_traj_load_dir2,ui->lineEdit_traj_load_dir3};
     writeMakise("Mission  requested for servers. Good luck :)");
     for (int m = 0 ; m < Ndrone ; m++){
-        QString dir = *dirs[m];
+        QString dir = dirs[m]->text();
         if (not dir.isEmpty()){
              std::vector<double> args(1); int output;
-            Q_EMIT callService(m,"trajectory_follow",args,output);
+            Q_EMIT callService(m,"trajectory_follow",args,&output);
         }
     }
 

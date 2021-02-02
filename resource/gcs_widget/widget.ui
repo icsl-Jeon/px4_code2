@@ -323,9 +323,9 @@
          <colorrole role="Button">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>255</red>
-            <green>25</green>
-            <blue>0</blue>
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
            </color>
           </brush>
          </colorrole>
@@ -334,9 +334,9 @@
          <colorrole role="Button">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>255</red>
-            <green>25</green>
-            <blue>0</blue>
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
            </color>
           </brush>
          </colorrole>
@@ -345,9 +345,9 @@
          <colorrole role="Button">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>255</red>
-            <green>25</green>
-            <blue>0</blue>
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
            </color>
           </brush>
          </colorrole>
@@ -419,9 +419,9 @@
          <colorrole role="Button">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>51</red>
-            <green>169</green>
-            <blue>99</blue>
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
            </color>
           </brush>
          </colorrole>
@@ -430,9 +430,9 @@
          <colorrole role="Button">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>51</red>
-            <green>169</green>
-            <blue>99</blue>
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
            </color>
           </brush>
          </colorrole>
@@ -441,9 +441,9 @@
          <colorrole role="Button">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>51</red>
-            <green>169</green>
-            <blue>99</blue>
+            <red>238</red>
+            <green>238</green>
+            <blue>236</blue>
            </color>
           </brush>
          </colorrole>
@@ -848,7 +848,7 @@
    <property name="title">
     <string>Trajectory mission</string>
    </property>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton_traj_start">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -875,13 +875,34 @@
       <number>2</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="lineEdit_traj_load_dir1"/>
+      <widget class="QLineEdit" name="lineEdit_traj_load_dir1">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_traj_load_dir2"/>
+      <widget class="QLineEdit" name="lineEdit_traj_load_dir2">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_traj_load_dir3"/>
+      <widget class="QLineEdit" name="lineEdit_traj_load_dir3">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
