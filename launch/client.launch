@@ -1,11 +1,32 @@
 <launch>
-
+    <arg name = "path" default = "$(find px4_code2)/map/bt/4floor.bt" />
     <node name = "rqt_client" pkg = "rqt_gui" type = "rqt_gui"
           args="--perspective-file $(find px4_code2)/rviz/client.perspective" output="screen">
         <rosparam param="/drone_name_set">[target1]</rosparam>
         <rosparam param = "/world_frame_id">"map" </rosparam>
         <rosparam param="/qt_setting_dir" subst_value="True">$(find px4_code2)/qt_settings/setting.ini</rosparam>
     </node>
+
+	<node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(arg path)">
+		<param name="resolution" value="0.02" />
+		<param name="frame_id" type="string" value="map" />
+		<param name="sensor_model/max_range" value="4.0" />
+		<param name="save_directory" value="$(optenv OCTOMAP_SAVE_DIR ./)" />
+		<param name="track_changes" value="true"/>
+		<param name="listen_changes" value="false"/>
+		<param name="topic_changes" value="/octomap_tracking_server/changeset" />
+		<param name ="occupancy_min_z" value = "0.2"/>
+    <param name="min_change_pub" value="0" />
+        <param name = "height_map" value = "false"/>
+        <param name = "color/r" value = "0.2"/>
+        <param name = "color/g" value = "0.2"/>
+        <param name = "color/b" value = "0.2"/>
+
+
+
+		<!--remap from="cloud_in" to="/rgbdslam/batch_clouds" /-->
+	</node>
+
 
 
     <node  name="rviz" pkg="rviz" type="rviz" args="-d $(find px4_code2)/rviz/client.rviz"/>
