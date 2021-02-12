@@ -14,6 +14,7 @@
 #include <utility>
 #include <tf/transform_listener.h>
 
+#include <eigen3/Eigen/Geometry>
 #include <px4_code2/UploadTrajectory.h>
 #include <iostream>
 

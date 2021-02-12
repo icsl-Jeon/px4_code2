@@ -81,6 +81,12 @@ Visualization Manager:
           Value: true
         odom_ned:
           Value: true
+        target1_t265_link:
+          Value: true
+        target1_t265_odom_frame:
+          Value: true
+        target1_t265_pose_frame:
+          Value: true
         target2_t265_link:
           Value: true
         target2_t265_odom_frame:
@@ -96,6 +102,10 @@ Visualization Manager:
         map:
           map_ned:
             {}
+          target1_t265_odom_frame:
+            target1_t265_pose_frame:
+              target1_t265_link:
+                {}
           target2_t265_odom_frame:
             target2_t265_pose_frame:
               target2_t265_link:
@@ -355,7 +365,7 @@ Visualization Manager:
       Marker Topic: /occupied_cells_vis_array
       Name: MapCheck
       Namespaces:
-        {}
+        map: true
       Queue Size: 100
       Value: true
     - Class: rviz/Axes
@@ -402,11 +412,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 31.058486938476562
+      Scale: 37.199920654296875
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
-      X: 1.6224266290664673
-      Y: -7.344156265258789
+      X: 1.0201913118362427
+      Y: -3.6646642684936523
     Saved: ~
 Window Geometry:
   Displays:
@@ -426,5 +436,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1094
-  X: 106
-  Y: 128
+  X: 2456
+  Y: 185

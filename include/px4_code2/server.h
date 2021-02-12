@@ -59,6 +59,8 @@ namespace px4_code2{
             string droneName;
             string getLabel() {return labelServer + droneName + " ]] ";};
             string worldFrame = "/map";
+            double yawFromPX4toSensor = 0;
+
 
         };
 

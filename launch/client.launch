@@ -7,7 +7,7 @@
 
     <node name = "rqt_client" pkg = "rqt_gui" type = "rqt_gui"
           args="--perspective-file $(find px4_code2)/rviz/client.perspective" output="screen">
-        <rosparam param="/drone_name_set">[target2]</rosparam>
+        <rosparam param="/drone_name_set">[target1,target2]</rosparam>
         <rosparam param = "/world_frame_id">"map" </rosparam>
         <rosparam param="/qt_setting_dir" subst_value="True">$(find px4_code2)/qt_settings/setting.ini</rosparam>
     </node>

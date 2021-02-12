@@ -40,10 +40,46 @@ namespace px4_code2 {
     void Server::callbackOdom(const nav_msgs::OdometryConstPtr &msgPtr) {
         try {
             status.isPoseReceived = true;
-            // Transform
+            // Transform from s1 to s2
             geometry_msgs::PoseStamped pose = convertTo(*msgPtr);
+
+            // Tps
+            Eigen::Affine3d Tps ; Tps.setIdentity();
+            Eigen::Matrix3d Rps;
+            double yaw = param.yawFromPX4toSensor;
+            Rps << cos(yaw) , -sin(yaw) , 0 ,
+                    sin(yaw), cos(yaw) ,0 ,
+                    0,0,1;
+            Tps.prerotate(Rps); Tps.rotate(Rps.transpose());
+
+            // Ts1s2 (sensor odometry)
+            Eigen::Quaterniond quat;
+            Eigen::Vector3d transl;
+            transl(0) = pose.pose.position.x;
+            transl(1) = pose.pose.position.y;
+            transl(2) = pose.pose.position.z;
+            quat.x() =  pose.pose.orientation.x;
+            quat.y() =  pose.pose.orientation.y;
+            quat.z() =  pose.pose.orientation.z;
+            quat.w() =  pose.pose.orientation.w;
+            Eigen::Affine3d Ts1s2; Ts1s2.translate(transl); Ts1s2.rotate(quat);
+
+            // Tp1p2 (px4 start to current != map frame)
+            Eigen::Affine3d Tp1p2 = Tps*Ts1s2*Tps.inverse();
+
+            geometry_msgs::PoseStamped pose_p1p2;
+            pose_p1p2.pose.position.x = Tp1p2.translation().x();
+            pose_p1p2.pose.position.y = Tp1p2.translation().y();
+            pose_p1p2.pose.position.z = Tp1p2.translation().z();
+            pose_p1p2.pose.orientation.x = Eigen::Quaterniond(Tp1p2.rotation()).x();
+            pose_p1p2.pose.orientation.y = Eigen::Quaterniond(Tp1p2.rotation()).y();
+            pose_p1p2.pose.orientation.z = Eigen::Quaterniond(Tp1p2.rotation()).z();
+            pose_p1p2.pose.orientation.w = Eigen::Quaterniond(Tp1p2.rotation()).w();
+
             geometry_msgs::PoseStamped poseWorld;
-            tfListener.transformPose(param.worldFrame, pose, state.curPose);
+
+            // To map frame
+            tfListener.transformPose(param.worldFrame, pose_p1p2, state.curPose);
 
         }
         catch (tf::TransformException ex) {
@@ -284,6 +320,7 @@ namespace px4_code2 {
     Server::Server() : nh("~") {
         // TOPIC
         nh.param<string>("drone_name", param.droneName, "target1");
+        nh.param("yaw_from_px4_to_sensor",param.yawFromPX4toSensor,0.0);
         pubSet.pubSetPose = nh.advertise<geometry_msgs::PoseStamped>(
                 "/" + param.droneName + "/mavros/setpoint_position/local", 1);
         pubSet.pubMissionPath = nh.advertise<nav_msgs::Path>("/" + param.droneName + "/px4_code/mission_path", 1);
