@@ -73,6 +73,7 @@ namespace px4_code2{
         struct PublisherSet{
             ros::Publisher pubSetPose;
             ros::Publisher pubVisionPose;
+            ros::Publisher pubVisionOdom; // odom_version of vision pose
             ros::Publisher pubMissionPath;
             ros::Publisher pubPhase;
             ros::Publisher pubLastMissionPose;

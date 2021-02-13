@@ -1,5 +1,5 @@
 <launch>
-    <arg name="drone_name" default="target1"/>
+    <arg name="drone_name" default="chaser"/>
     <arg name="rviz" default="true"/>
     <group ns = "$(arg drone_name)">
         <arg name="device_type_camera1" default="t265"/>
@@ -12,8 +12,10 @@
         <arg name="topic_odom_in"             default="odom_in"/>
         <arg name="calib_odom_file"           default=""/>
 
-        <node pkg="tf" type="static_transform_publisher" name="map_to_$(arg drone_name)"
+        <node pkg="tf" type="static_transform_publisher" name="map_to_$(arg drone_name)_start"
               args="0 0 0 0 0 0  map $(arg drone_name)_$(arg camera1)_odom_frame 100"/>
+
+
 
         <group ns="$(arg camera1)">
             <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
@@ -35,6 +37,9 @@
 
         <node name = "server_node" pkg="px4_code2" type="server_node" output = "screen">
             <param name = "drone_name" value = "$(arg drone_name)"/>
+            <param name = "yaw_from_px4_to_sensor" value = "3.141592"/>
+
+
         </node>
 
     </group>

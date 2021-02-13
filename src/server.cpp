@@ -50,7 +50,7 @@ namespace px4_code2 {
             Rps << cos(yaw) , -sin(yaw) , 0 ,
                     sin(yaw), cos(yaw) ,0 ,
                     0,0,1;
-            Tps.prerotate(Rps); Tps.rotate(Rps.transpose());
+            Tps.prerotate(Rps);
 
             // Ts1s2 (sensor odometry)
             Eigen::Quaterniond quat;
@@ -62,24 +62,34 @@ namespace px4_code2 {
             quat.y() =  pose.pose.orientation.y;
             quat.z() =  pose.pose.orientation.z;
             quat.w() =  pose.pose.orientation.w;
-            Eigen::Affine3d Ts1s2; Ts1s2.translate(transl); Ts1s2.rotate(quat);
+            Eigen::Affine3d Ts1s2; Ts1s2.setIdentity(); Ts1s2.translate(transl); Ts1s2.rotate(quat);
 
             // Tp1p2 (px4 start to current != map frame)
             Eigen::Affine3d Tp1p2 = Tps*Ts1s2*Tps.inverse();
 
             geometry_msgs::PoseStamped pose_p1p2;
+            Eigen::Quaterniond quatNew(Tp1p2.rotation()); quatNew.normalize();
+            pose_p1p2.header.frame_id = msgPtr->header.frame_id;
             pose_p1p2.pose.position.x = Tp1p2.translation().x();
             pose_p1p2.pose.position.y = Tp1p2.translation().y();
             pose_p1p2.pose.position.z = Tp1p2.translation().z();
-            pose_p1p2.pose.orientation.x = Eigen::Quaterniond(Tp1p2.rotation()).x();
-            pose_p1p2.pose.orientation.y = Eigen::Quaterniond(Tp1p2.rotation()).y();
-            pose_p1p2.pose.orientation.z = Eigen::Quaterniond(Tp1p2.rotation()).z();
-            pose_p1p2.pose.orientation.w = Eigen::Quaterniond(Tp1p2.rotation()).w();
+            pose_p1p2.pose.orientation.x = quatNew.x();
+            pose_p1p2.pose.orientation.y = quatNew.y();
+            pose_p1p2.pose.orientation.z = quatNew.z();
+            pose_p1p2.pose.orientation.w = quatNew.w();
 
+            // For convenience
             geometry_msgs::PoseStamped poseWorld;
 
             // To map frame
             tfListener.transformPose(param.worldFrame, pose_p1p2, state.curPose);
+
+
+            nav_msgs::Odometry odomWorld;
+            odomWorld.pose.pose = state.curPose.pose;
+            odomWorld.header.frame_id = param.worldFrame;
+            pubSet.pubVisionOdom.publish(odomWorld);
+
 
         }
         catch (tf::TransformException ex) {
@@ -326,6 +336,11 @@ namespace px4_code2 {
         pubSet.pubMissionPath = nh.advertise<nav_msgs::Path>("/" + param.droneName + "/px4_code/mission_path", 1);
         pubSet.pubVisionPose = nh.advertise<geometry_msgs::PoseStamped>(
                 "/" + param.droneName + "/mavros/vision_pose/pose", 1);
+
+
+        pubSet.pubVisionOdom = nh.advertise<nav_msgs::Odometry>(
+                "/" + param.droneName + "/px4_code/vision_odom", 1);
+
         pubSet.pubPhase = nh.advertise<px4_code2::phase>("/" + param.droneName + "/px4_code/phase", 1);
         pubSet.pubLastMissionPose = nh.advertise<geometry_msgs::PoseStamped>("/"+param.droneName +"/px4_code/last_mission_pose",1);
 
