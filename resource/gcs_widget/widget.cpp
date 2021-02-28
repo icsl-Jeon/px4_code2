@@ -494,3 +494,8 @@ void Widget::on_pushButton_traj_start_clicked()
     }
 
 }
+
+void Widget::on_pushButton_trajgen_test_clicked()
+{
+
+}

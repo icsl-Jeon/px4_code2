@@ -72,6 +72,8 @@ private slots:
 
     void on_pushButton_traj_start_clicked();
     
+    void on_pushButton_trajgen_test_clicked();
+
 private:
     bool isLockPushLock =true;
     Ui::Widget *ui;

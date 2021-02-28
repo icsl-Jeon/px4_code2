@@ -19,7 +19,7 @@
      <x>120</x>
      <y>10</y>
      <width>341</width>
-     <height>87</height>
+     <height>90</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_names">
@@ -494,7 +494,7 @@
      <rect>
       <x>20</x>
       <y>60</y>
-      <width>421</width>
+      <width>427</width>
       <height>51</height>
      </rect>
     </property>
@@ -573,7 +573,7 @@
       <x>20</x>
       <y>110</y>
       <width>89</width>
-      <height>51</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -618,9 +618,9 @@
    <widget class="QSplitter" name="splitter">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>30</y>
-      <width>441</width>
+      <width>421</width>
       <height>25</height>
      </rect>
     </property>
@@ -681,17 +681,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
-     <property name="font">
-      <font>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Height [m]</string>
-     </property>
-    </widget>
+    <widget class="QLineEdit" name="lineEdit_height"/>
     <widget class="QPushButton" name="pushButton_erase">
      <property name="font">
       <font>
@@ -737,6 +727,19 @@
     </property>
     <property name="text">
      <string>Load</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_trajgen_test">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>140</y>
+      <width>89</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Test</string>
     </property>
    </widget>
   </widget>
@@ -867,7 +870,7 @@
       <x>200</x>
       <y>30</y>
       <width>231</width>
-      <height>51</height>
+      <height>87</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -926,7 +929,7 @@
      <x>10</x>
      <y>220</y>
      <width>451</width>
-     <height>147</height>
+     <height>151</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_arming_2">

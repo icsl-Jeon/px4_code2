@@ -240,7 +240,6 @@ namespace px4_code2 {
 
     geometry_msgs::PoseStamped Mission::getCurDesPose(double t) {
         lastEmitTime = t;
-//        cout << t << "/" << missionTraj.ts.back() << endl;
         bool extrapolate = false;
         if (t > missionTraj.ts.back()){
             ROS_WARN_THROTTLE(3,"Time evaluation %f of trajectory exceed limit %f. Clamped", t, missionTraj.ts.back());
@@ -255,10 +254,27 @@ namespace px4_code2 {
         double x= interpolate(missionTraj.ts,missionTraj.xs,t,extrapolate);
         double y= interpolate(missionTraj.ts,missionTraj.ys,t,extrapolate);
         double z= interpolate(missionTraj.ts,missionTraj.zs,t,extrapolate);
-        double yaw= interpolate(missionTraj.ts,missionTraj.yaws,t,extrapolate);
+
+        // To prevent the singularity, the interpolation of direction =  quaternion  (TODO)
+        std::vector<double> qxs;
+        std::vector<double> qys;
+        std::vector<double> qzs;
+        std::vector<double> qws;
+
+        for (int n = 0 ; n < path.poses.size();  n ++){
+            qxs.push_back(path.poses[n].pose.orientation.x);
+            qys.push_back(path.poses[n].pose.orientation.y);
+            qzs.push_back(path.poses[n].pose.orientation.z);
+            qws.push_back(path.poses[n].pose.orientation.w);
+         }
+
+        double qx = interpolate(missionTraj.ts,qxs,t,extrapolate);
+        double qy = interpolate(missionTraj.ts,qys,t,extrapolate);
+        double qz = interpolate(missionTraj.ts,qzs,t,extrapolate);
+        double qw = interpolate(missionTraj.ts,qws,t,extrapolate);
 
         tf::Quaternion q;
-        q.setRPY(0,0,yaw); q.normalize();
+        q.setX(qx); q.setY(qy); q.setZ(qz); q.setW(qw); q.normalize();
 //        cout << q.x() << " , " << q.y() << " , " << q.z() << " , " << q.w() << endl;
 
         geometry_msgs::PoseStamped poseStamped;
