@@ -9,10 +9,10 @@
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 
-#include <px4_code2/Takeoff.h>
-#include <px4_code2/Lock.h>
-#include <px4_code2/Land.h>
-#include <px4_code2/phase.h>
+#include <px4_code2_msgs/Takeoff.h>
+#include <px4_code2_msgs/Lock.h>
+#include <px4_code2_msgs/Land.h>
+#include <px4_code2_msgs/Phase.h>
 
 #include <string>
 #include <utils/utility.h>
@@ -111,10 +111,10 @@ namespace px4_code2{
         void callbackMavrosPose(const geometry_msgs::PoseStampedConstPtr& msgPtr);
         void callbackMavrosState(const mavros_msgs::StateConstPtr & msgPtr);
 
-        bool callbackTakeoff(px4_code2::TakeoffRequest & req, px4_code2::TakeoffResponse & resp);
-        bool callbackLand(px4_code2::LandRequest & req, px4_code2::LandResponse & resp);
-        bool callbackLock(px4_code2::LockRequest& req, px4_code2::LockResponse& resp);
-        bool callbackTraj(px4_code2::UploadTrajectoryRequest& req, px4_code2::UploadTrajectoryResponse& resp);
+        bool callbackTakeoff(px4_code2_msgs::TakeoffRequest & req, px4_code2_msgs::TakeoffResponse & resp);
+        bool callbackLand(px4_code2_msgs::LandRequest & req, px4_code2_msgs::LandResponse & resp);
+        bool callbackLock(px4_code2_msgs::LockRequest& req, px4_code2_msgs::LockResponse& resp);
+        bool callbackTraj(px4_code2_msgs::UploadTrajectoryRequest& req, px4_code2_msgs::UploadTrajectoryResponse& resp);
 
         void publish();
 

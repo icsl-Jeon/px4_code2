@@ -119,7 +119,7 @@ namespace px4_code2 {
 
     }
 
-    bool Server::callbackTakeoff(px4_code2::TakeoffRequest &req, px4_code2::TakeoffResponse &resp) {
+    bool Server::callbackTakeoff(px4_code2_msgs::TakeoffRequest &req, px4_code2_msgs::TakeoffResponse &resp) {
 
         if (status.isInit) {
 
@@ -178,7 +178,7 @@ namespace px4_code2 {
         }
     }
 
-    bool Server::callbackLock(px4_code2::LockRequest &req, px4_code2::LockResponse &resp) {
+    bool Server::callbackLock(px4_code2_msgs::LockRequest &req, px4_code2_msgs::LockResponse &resp) {
 
         initToCurPose();
 
@@ -200,7 +200,7 @@ namespace px4_code2 {
 
         return true;
     }
-    bool Server::callbackLand (px4_code2::LandRequest &req, px4_code2::LandResponse &resp) {
+    bool Server::callbackLand (px4_code2_msgs::LandRequest &req, px4_code2_msgs::LandResponse &resp) {
         if (status.isInit){
 
             // compute trajectory to land ( z= 0 )
@@ -261,7 +261,7 @@ namespace px4_code2 {
     }
 
 
-    bool Server::callbackTraj(px4_code2::UploadTrajectoryRequest &req, px4_code2::UploadTrajectoryResponse &resp) {
+    bool Server::callbackTraj(px4_code2_msgs::UploadTrajectoryRequest &req, px4_code2_msgs::UploadTrajectoryResponse &resp) {
 
         if (status.isInit) {
             // Check the distance to the start position of the traj
@@ -341,7 +341,7 @@ namespace px4_code2 {
         pubSet.pubVisionOdom = nh.advertise<nav_msgs::Odometry>(
                 "/" + param.droneName + "/px4_code/vision_odom", 1);
 
-        pubSet.pubPhase = nh.advertise<px4_code2::phase>("/" + param.droneName + "/px4_code/phase", 1);
+        pubSet.pubPhase = nh.advertise<px4_code2_msgs::Phase>("/" + param.droneName + "/px4_code/phase", 1);
         pubSet.pubLastMissionPose = nh.advertise<geometry_msgs::PoseStamped>("/"+param.droneName +"/px4_code/last_mission_pose",1);
 
         subSet.subOdom = nh.subscribe("/" + param.droneName + "/t265/odom/sample", 10, &Server::callbackOdom, this);
@@ -360,7 +360,7 @@ namespace px4_code2 {
 
     void Server::publish() {
         // Phase
-        phase phaseMsg;
+        px4_code2_msgs::Phase phaseMsg;
         phaseMsg.phase.data = phaseToString(status.phase);
         phaseMsg.isMissionExist = status.isMissionReceived;
         pubSet.pubPhase.publish(phaseMsg);

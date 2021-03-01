@@ -15,7 +15,7 @@
 #include <tf/transform_listener.h>
 
 #include <eigen3/Eigen/Geometry>
-#include <px4_code2/UploadTrajectory.h>
+#include <px4_code2_msgs/UploadTrajectory.h>
 #include <iostream>
 
 const int TRAJGEN_DIM = 3;
@@ -33,6 +33,7 @@ namespace px4_code2 {
     enum Phase { NOT_INIT , STANDBY , TAKEOFF, GO_START, TRAJ_FOLLOWING, LAND };
     double interpolate(const vector<double>& xData,const vector<double>& yData, const double & x,bool extrapolate);
     double getYaw (const geometry_msgs::Quaternion& q);
+    geometry_msgs::Quaternion  getQuatFromYaw(double yaw);
     geometry_msgs::PoseStamped convertTo(const nav_msgs::Odometry& odom);
     nav_msgs::Path convertTo (const vector<geometry_msgs::Point>& points);
     double distance(const geometry_msgs::Point& pnt1, const geometry_msgs::Point& pnt2);
@@ -43,11 +44,19 @@ namespace px4_code2 {
         std::vector<double> ys;
         std::vector<double> zs;
         std::vector<double> yaws;
+
+        // Quaternion
+        std::vector<double> qxs;
+        std::vector<double> qys;
+        std::vector<double> qzs;
+        std::vector<double> qws;
+
+        void generateQuat();
         Trajectory() = default;
         Trajectory(TrajGenObj* trajPtr, double fixedYaw, double duration);
         Trajectory(TrajGenObj* trajPtr, double yaw0, double yawf, double duration);
         Trajectory(TrajGenObj* trajPtr, double duration);  // align yaw to tangential
-        Trajectory(const px4_code2::UploadTrajectoryRequest& req);
+        Trajectory(const px4_code2_msgs::UploadTrajectoryRequest& req);
         Trajectory(string fileDir,bool& isLoaded);
         nav_msgs::Path getPath (string frameId);
         void append (const Trajectory& otherTraj);

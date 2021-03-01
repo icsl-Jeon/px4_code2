@@ -9,8 +9,7 @@
 #include <rqt_gui_cpp/plugin.h>
 // Service List
 #include <px4_code2/server.h>
-#include <px4_code2/Takeoff.h>
-#define MAX_HEIGHT 3
+#include <px4_code2_msgs/Takeoff.h>
 // ROS
 #include <ros/ros.h>
 
@@ -25,10 +24,11 @@ namespace px4_code2{
             std::string worldFrameId ;
         };
         struct Status{
-            std::vector<phase> phaseSet;
+            std::vector<px4_code2_msgs::Phase> phaseSet;
             std::vector<mavros_msgs::State> px4StateSet;
             bool isListenWaypoints = false;
             int curWaypointTarget = -1;
+            bool isDuringTest = false;
         };
 
 
@@ -67,11 +67,13 @@ namespace px4_code2{
         vector<vector<geometry_msgs::Point>> waypointsSet;
         vector<ros::Publisher> pubWaypointsSet;
         vector<pair<bool,Trajectory>> trajectorySet; // bool = is uploaded
+        vector<pair<bool,Mission>> missionSet; // bool = is uploaded
         vector<ros::Publisher> pubTrajSet;
+        vector<ros::Publisher> pubTestPoseSet;
         Param param;
 
         void callbackTimer(const ros::TimerEvent& event);
-        void callbackPhase( const px4_code2::phaseConstPtr & msgPtr,int droneId);
+        void callbackPhase( const px4_code2_msgs::PhaseConstPtr & msgPtr,int droneId);
         void callbackPX4State( const mavros_msgs::StateConstPtr & msgPtr,int droneId);
         void callbackWaypoint (const geometry_msgs::PoseStampedPtr& msgPtr);
         // ROS
@@ -82,7 +84,7 @@ namespace px4_code2{
         void generateTrajectory(int droneId, int polyOrder, double tf, double margin);
         void saveTrajectoryTxt(int droneId,std::string);
         void loadTrajectoryTxt(int droneId, std::string);
-
+        void doTest(bool doTest_);
     };
 
 

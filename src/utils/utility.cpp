@@ -18,6 +18,18 @@ namespace px4_code2 {
         return y;
     }
 
+    geometry_msgs::Quaternion getQuatFromYaw(double yaw){
+        tf::Quaternion qq;
+        qq.setRPY(0,0,yaw);
+        qq.normalize();
+        geometry_msgs::Quaternion quat;
+        quat.x  = qq.getX();
+        quat.y  = qq.getY();
+        quat.z  = qq.getZ();
+        quat.w  = qq.getW();
+        return quat;
+    }
+
     double interpolate(const vector<double>& xData,const vector<double>& yData, const double& x,bool extrapolate){
 
         int size = xData.size();
@@ -63,6 +75,43 @@ namespace px4_code2 {
         return sqrt(pow(pnt1.x - pnt2.x,2) + pow(pnt1.y - pnt2.y,2) + pow(pnt1.z - pnt2.z,2));
 
     }
+
+    /**
+     * Generate quaternion from yaw when initialized
+     */
+    void Trajectory::generateQuat() {
+
+        // Inspect jump in yaw angle
+        for (int n = 1 ; n < yaws.size() ; n++){
+            if (yaws[n] - yaws[n-1] > 1.8*M_PI)
+                for (int m = n ; m < yaws.size() ; m++)
+                    yaws[m] -= 2*M_PI;
+
+            if (yaws[n] - yaws[n-1] < -1.8*M_PI)
+                for (int m = n ; m < yaws.size() ; m++)
+                    yaws[m] += 2*M_PI;
+        }
+
+
+
+        qxs.clear(); qxs.resize(yaws.size());
+        qys.clear(); qys.resize(yaws.size());
+        qzs.clear(); qzs.resize(yaws.size());
+        qws.clear(); qws.resize(yaws.size());
+
+        for(int n =0 ; n < yaws.size() ; n++){
+//            cout << yaws[n] << endl;
+           auto quat = getQuatFromYaw(yaws[n]);
+           qxs[n] = (quat.x);
+           qys[n] = (quat.y);
+           qzs[n] = (quat.z);
+           qws[n] = (quat.w);
+        }
+
+
+
+    }
+
     /**
      * Trajectory construction with fixed yaw
      * @param trajPtr
@@ -71,17 +120,17 @@ namespace px4_code2 {
      */
     Trajectory::Trajectory(TrajGenObj *trajPtr,double fixedYaw, double duration) {
         int N = TRAJ_SAMPLE_PNT; //TODO
-        double dt = duration/N;
-
-        for (int n = 0 ; n <= N ; n++){
-            double t = dt*n;
-            TrajVector p = trajPtr->eval(t,0);
+        double dt = duration / N;
+        for (int n = 0; n <= N; n++) {
+            double t = dt * n;
+            TrajVector p = trajPtr->eval(t, 0);
             ts.push_back(t);
             xs.push_back(p(0));
             ys.push_back(p(1));
             zs.push_back(p(2));
             yaws.push_back(fixedYaw);
         }
+        generateQuat();
     }
 
     /**
@@ -104,6 +153,7 @@ namespace px4_code2 {
             zs.push_back(p(2));
             yaws.push_back(yaw0 + (yawf - yaw0)/N * n );
         }
+        generateQuat();
     }
 
 
@@ -127,6 +177,7 @@ namespace px4_code2 {
             double yaw = atan2(pdot(1),pdot(0));
             yaws.push_back(yaw);
         }
+        generateQuat();
     }
     /**
      * Trajectory construction from txt file
@@ -157,6 +208,7 @@ namespace px4_code2 {
             }
 
             ts.pop_back(); xs.pop_back();  ys.pop_back(); zs.pop_back(); yaws.pop_back();
+            generateQuat();
             ROS_INFO("Trajectory constructed with duration = %f / pnt number = %d",ts.back(),ts.size());
             isLoaded = ts.size() > 1 ;
 
@@ -167,12 +219,13 @@ namespace px4_code2 {
 
     }
 
-    Trajectory::Trajectory(const px4_code2::UploadTrajectoryRequest &req) {
+    Trajectory::Trajectory(const px4_code2_msgs::UploadTrajectoryRequest &req) {
         ts = req.ts;
         xs = req.xs;
         ys = req.ys;
         zs = req.zs;
         yaws = req.yaws;
+        generateQuat();
     }
 
 
@@ -188,6 +241,7 @@ namespace px4_code2 {
         ys.insert(ys.end(),otherTraj.ys.begin(),otherTraj.ys.end());
         zs.insert(zs.end(),otherTraj.zs.begin(),otherTraj.zs.end());
         yaws.insert(yaws.end(),otherTraj.yaws.begin(),otherTraj.yaws.end());
+        generateQuat();
     }
 
 
@@ -250,28 +304,14 @@ namespace px4_code2 {
             ROS_WARN_THROTTLE(3,"Time evaluation %f of trajectory is too early %f. Clamped", t, missionTraj.ts.front());
             t = missionTraj.ts.front() + 0.0001;
         }
-
         double x= interpolate(missionTraj.ts,missionTraj.xs,t,extrapolate);
         double y= interpolate(missionTraj.ts,missionTraj.ys,t,extrapolate);
         double z= interpolate(missionTraj.ts,missionTraj.zs,t,extrapolate);
 
-        // To prevent the singularity, the interpolation of direction =  quaternion  (TODO)
-        std::vector<double> qxs;
-        std::vector<double> qys;
-        std::vector<double> qzs;
-        std::vector<double> qws;
-
-        for (int n = 0 ; n < path.poses.size();  n ++){
-            qxs.push_back(path.poses[n].pose.orientation.x);
-            qys.push_back(path.poses[n].pose.orientation.y);
-            qzs.push_back(path.poses[n].pose.orientation.z);
-            qws.push_back(path.poses[n].pose.orientation.w);
-         }
-
-        double qx = interpolate(missionTraj.ts,qxs,t,extrapolate);
-        double qy = interpolate(missionTraj.ts,qys,t,extrapolate);
-        double qz = interpolate(missionTraj.ts,qzs,t,extrapolate);
-        double qw = interpolate(missionTraj.ts,qws,t,extrapolate);
+        double qx = interpolate(missionTraj.ts,missionTraj.qxs,t,extrapolate);
+        double qy = interpolate(missionTraj.ts,missionTraj.qys,t,extrapolate);
+        double qz = interpolate(missionTraj.ts,missionTraj.qzs,t,extrapolate);
+        double qw = interpolate(missionTraj.ts,missionTraj.qws,t,extrapolate);
 
         tf::Quaternion q;
         q.setX(qx); q.setY(qy); q.setZ(qz); q.setW(qw); q.normalize();

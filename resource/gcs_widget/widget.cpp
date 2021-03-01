@@ -21,6 +21,10 @@ Widget::Widget(QWidget *parent) :
     ui->lineEdit_Drone1Name->setReadOnly(true);
     ui->lineEdit_Drone2Name->setReadOnly(true);
     ui->lineEdit_Drone3Name->setReadOnly(true);
+    ui->lineEdit_height->setReadOnly(true);
+
+
+
     ui->textEdit_makise->setReadOnly(true);
     ui->textEdit_makise->append("Welcome pilot. Have a safe flight. \n");
     QList<QCheckBox *> l_checkboxes =findChildren<QCheckBox *>();
@@ -158,6 +162,13 @@ void Widget::readSettings(std::string settingFile){
     for(auto lineEdit : l_lineEdit ){
         lineEdit->setText(settings.value(lineEdit->objectName()).toString());
     }
+
+
+    // MISC
+
+    double height = MAX_HEIGHT*getSliderValue();
+    ui->lineEdit_height->setText(QString::number(height));
+
 
 }
 
@@ -468,6 +479,9 @@ void Widget::on_pushButton_trajgen_load_clicked()
 
 void Widget::on_pushButton_traj_upload_clicked()
 {
+    isTestActive = false;
+    ui->pushButton_trajgen_test->setText(QString("Test start"));
+    ui->pushButton_trajgen_test->setStyleSheet("background-color: rgb(250,250,250)");
 
     QLineEdit* dirs[3] = {ui->lineEdit_traj_load_dir1, ui->lineEdit_traj_load_dir2,ui->lineEdit_traj_load_dir3};
     for (int m = 0 ; m < Ndrone; m++){
@@ -476,7 +490,6 @@ void Widget::on_pushButton_traj_upload_clicked()
             Q_EMIT loadTrajectory(m,dir.toStdString());
             writeMakise("For " + droneNames[m] + " , upload trajectory in client.");
         }
-
     }
 }
 
@@ -497,5 +510,29 @@ void Widget::on_pushButton_traj_start_clicked()
 
 void Widget::on_pushButton_trajgen_test_clicked()
 {
+
+    Q_EMIT doTest(true);
+    if (not isTestActive){
+        ui->pushButton_trajgen_test->setText(QString("Pause"));
+        ui->pushButton_trajgen_test->setStyleSheet("background-color: red");
+        isTestActive = true;
+    }else{
+        ui->pushButton_trajgen_test->setText(QString("Resume"));
+        ui->pushButton_trajgen_test->setStyleSheet("background-color: green");
+        isTestActive = false;
+    }
+
+}
+
+void Widget::on_TrajGenheightSlider_sliderMoved(int position)
+{
+//    writeMakise("Slider moved to "+ std::to_string(position));
+    double height = MAX_HEIGHT*getSliderValue();
+    ui->lineEdit_height->setText(QString::number(height));
+}
+
+void Widget::on_label_height_linkActivated(const QString &link)
+{
+
 
 }

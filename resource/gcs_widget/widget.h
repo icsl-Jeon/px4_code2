@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX_HEIGHT 3
+
 namespace Ui {
 class Widget;
 }
@@ -37,7 +39,7 @@ signals:
     void generateTrajectory(int droneId,int polyOrder, double tf , double margin );
     void saveTrajectory(int droneId, std::string );
     void loadTrajectory(int droneId, std::string );
-
+    void doTest(bool doTest_);
 
 public slots :  // communicate with outer loop
     void enableButton(bool enable); // enable buttons regarding px4_code at the start communication
@@ -74,6 +76,10 @@ private slots:
     
     void on_pushButton_trajgen_test_clicked();
 
+    void on_TrajGenheightSlider_sliderMoved(int position);
+
+    void on_label_height_linkActivated(const QString &link);
+
 private:
     bool isLockPushLock =true;
     Ui::Widget *ui;
@@ -86,6 +92,7 @@ private:
     bool isMissionUpload = false;
     bool isOffborad[3] = {false,false,false};
     bool droneExist [3] = {false,false,false};
+    bool isTestActive = false;
     std::string droneNames[3];
     QList<QCheckBox* > checkBoxAll[3]  ;
     QList<QPushButton* > pushButtonMavrosOffboard[3] ;

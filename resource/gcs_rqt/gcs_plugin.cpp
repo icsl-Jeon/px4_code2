@@ -31,7 +31,7 @@ namespace px4_code2{
         connect (widget,SIGNAL(generateTrajectory(int,int,double,double)),this,SLOT(generateTrajectory(int,int,double,double)));
         connect (widget,SIGNAL(saveTrajectory(int,std::string)),this,SLOT(saveTrajectoryTxt(int,std::string)));
         connect (widget,SIGNAL(loadTrajectory(int,std::string)),this,SLOT(loadTrajectoryTxt(int,std::string)));
-
+        connect (widget,SIGNAL(doTest(bool)),this,SLOT(doTest(bool)));
 
         // ROS initialization
         timer = nh.createTimer(ros::Duration(0.01),&GcsPlugin::callbackTimer,this);
@@ -49,12 +49,13 @@ namespace px4_code2{
         nh.getParam("/drone_name_set",droneNameSet);
         waypointsSet = vector<vector<geometry_msgs::Point>>(droneNameSet.size());
         trajectorySet.resize(droneNameSet.size());
+        missionSet.resize(droneNameSet.size());
 
          int idx = 0;
         std::cout << labelClient << ": mission drones are [ ";
         for (auto it = droneNameSet.begin() ; it < droneNameSet.end() ; it++){
             // Subscribing phase
-            ros::Subscriber sub = nh.subscribe<px4_code2::phase>("/" + *it + phaseTopicName,
+            ros::Subscriber sub = nh.subscribe<px4_code2_msgs::Phase>("/" + *it + phaseTopicName,
                                            1,boost::bind(&GcsPlugin::callbackPhase,this,_1,idx));
             subPhaseSet.push_back(sub);
 
@@ -64,7 +65,7 @@ namespace px4_code2{
             subPX4Set.push_back(sub);
 
             // Phase init
-            phase phase_; phase_.isMissionExist = false;
+            px4_code2_msgs::Phase phase_; phase_.isMissionExist = false;
             status.phaseSet.push_back(phase_);
             status.px4StateSet.push_back(mavros_msgs::State ());
             lastCommTimePX4.push_back(ros::Time(0));
@@ -76,6 +77,11 @@ namespace px4_code2{
             pub = nh.advertise<nav_msgs::Path>("/" + *it + "/trajectory",1);
             pubTrajSet.push_back(pub);
             trajectorySet[idx].first = false; // init with invalid trajectory
+            missionSet[idx].first = false;
+
+            // Publish for testing
+            pub = nh.advertise<geometry_msgs::PoseStamped>("/"+*it + "/testing_pose",1);
+            pubTestPoseSet.push_back(pub);
 
             // Printing
             std::cout << *it ;
@@ -121,7 +127,7 @@ namespace px4_code2{
                       ", service " << service << " is called." << std::endl;
 
             if (service == "takeoff") {
-                px4_code2::Takeoff takeoffSrv;
+                px4_code2_msgs::Takeoff takeoffSrv;
                 takeoffSrv.request.height = args[0];
                 double takeoffSpeed = args[1];
                 if (takeoffSpeed<= 0){
@@ -130,12 +136,12 @@ namespace px4_code2{
                 }
 
                 takeoffSrv.request.speed=takeoffSpeed;
-                ros::service::call<px4_code2::Takeoff>("/" + param.droneNameSet[droneId] + takeoffServiceName,
+                ros::service::call<px4_code2_msgs::Takeoff>("/" + param.droneNameSet[droneId] + takeoffServiceName,
                                                        takeoffSrv);
             }
             if (service == "lock") {
-                px4_code2::Lock lockSrv;
-                ros::service::call<px4_code2::Lock>("/" + param.droneNameSet[droneId] +lockServiceName,
+                px4_code2_msgs::Lock lockSrv;
+                ros::service::call<px4_code2_msgs::Lock>("/" + param.droneNameSet[droneId] +lockServiceName,
                                                     lockSrv);
                 // we should fill output
                 if (out != NULL){
@@ -144,7 +150,7 @@ namespace px4_code2{
 
             }
             if (service == "land") {
-                px4_code2::Land landSrv;
+                px4_code2_msgs::Land landSrv;
                 double landGround = args[0];  double landSpeed = args[1];
                 if (landGround > 0)
                     ROS_WARN_STREAM(labelClient << " : landing ground is larger than zero." );
@@ -154,7 +160,7 @@ namespace px4_code2{
                 }
 
                 landSrv.request.ground = landGround; landSrv.request.speed = landSpeed;
-                ros::service::call<px4_code2::Land>("/" + param.droneNameSet[droneId] + landServiceName,
+                ros::service::call<px4_code2_msgs::Land>("/" + param.droneNameSet[droneId] + landServiceName,
                                                     landSrv);
             }
 
@@ -182,7 +188,7 @@ namespace px4_code2{
             }
 
             if (service == "trajectory_follow"){
-                px4_code2::UploadTrajectory trajSrv;
+                px4_code2_msgs::UploadTrajectory trajSrv;
                 bool isValid = trajectorySet[droneId].first;
                 Trajectory traj = trajectorySet[droneId].second;
 
@@ -192,7 +198,7 @@ namespace px4_code2{
                     trajSrv.request.ys = traj.ys;
                     trajSrv.request.zs = traj.zs;
                     trajSrv.request.yaws = traj.yaws;
-                    ros::service::call<px4_code2::UploadTrajectory>("/"+ param.droneNameSet[droneId] + trajFollowServiceName ,trajSrv);
+                    ros::service::call<px4_code2_msgs::UploadTrajectory>("/"+ param.droneNameSet[droneId] + trajFollowServiceName ,trajSrv);
                 }else{
                     widget->writeMakise("No valid trajectory for service call");
                 }
@@ -306,16 +312,45 @@ namespace px4_code2{
         bool isLoaded;
         Trajectory traj (fileName,isLoaded);
         if (isLoaded){
+            // upload trajectory
             trajectorySet[droneId].first = isLoaded;
             trajectorySet[droneId].second = traj;
-            widget->writeMakise("Loaded txt. Overwrite trajectory.");
+
+            // upload mission from the trajectory
+            missionSet[droneId].first = isLoaded;
+            auto mission = Mission (param.worldFrameId,Phase::TRAJ_FOLLOWING);
+            mission.loadTrajectory(traj);
+            missionSet[droneId].second = mission;
+
+            widget->writeMakise("Loaded txt. Updated trajectory.");
         }else{
             widget->writeMakise("Loading txt failed.");
         }
 
     }
 
-    void GcsPlugin::callbackPhase(const px4_code2::phaseConstPtr &msgPtr,int droneId) {
+    void GcsPlugin::doTest(bool doTest_) {
+
+        // Mode switcher
+        if (status.isDuringTest) { // switch to pause
+            status.isDuringTest = false;
+
+        } else { // switch to start testing
+            status.isDuringTest = true;
+        }
+
+        for (int n =0 ; n < param.getNdrone() ; n++) {
+            if (missionSet[n].first) {  // valid mission ?
+                if (status.isDuringTest)
+                    missionSet[n].second.trigger();
+                else
+                    missionSet[n].second.stop();
+            }
+        }
+
+    }
+
+    void GcsPlugin::callbackPhase(const px4_code2_msgs::PhaseConstPtr &msgPtr,int droneId) {
         status.phaseSet[droneId] =*(msgPtr);
         lastCommTime = ros::Time::now();
     }
@@ -367,9 +402,24 @@ namespace px4_code2{
             nav_msgs::Path path = convertTo(waypointsSet[m]);
             path.header.frame_id = param.worldFrameId;
             pubWaypointsSet[m].publish(path);
-            if (trajectorySet[m].first) // if it is valid trajectory,
+
+            if (trajectorySet[m].first) { // if it is valid trajectory,
+                // publish the entire path
                 pubTrajSet[m].publish(trajectorySet[m].second.getPath(param.worldFrameId));
+
+                // is during test
+                if (missionSet[m].second.isTriggered()){
+                    pubTestPoseSet[m].publish(missionSet[m].second.emitDesPose(ros::Time::now()));
+                }
+
+            }
+
+
+
         }
+
+
+
 
 
     }

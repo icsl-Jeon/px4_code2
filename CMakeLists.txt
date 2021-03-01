@@ -13,6 +13,7 @@ message( "cmake module path : ${CMAKE_MODULE_PATH}")
 ## ROS
 find_package(catkin REQUIRED COMPONENTS
         mavros roscpp geometry_msgs message_generation tf nav_msgs rqt_gui rqt_gui_cpp
+        px4_code2_msgs
 )
 
 
@@ -30,28 +31,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON) # This finds ui_*.h
 
 
 
-#########################
-##       MESSAGE       ##
-#########################
-add_message_files(
-        FILES
-        phase.msg
-)
 
-##########################
-##       SERVICE        ##
-##########################
- add_service_files(
-   FILES
-   Takeoff.srv Lock.srv Land.srv UploadTrajectory.srv
- )
 
-generate_messages(
-        DEPENDENCIES
-        std_msgs  # Or other packages containing msgs
-        mavros_msgs
-        nav_msgs
-        )
 
 
 catkin_package(

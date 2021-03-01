@@ -1,8 +1,0 @@
-float64[] ts
-float64[] xs
-float64[] ys
-float64[] zs
-float64[] yaws
----
-bool is_valid
-

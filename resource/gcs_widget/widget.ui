@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>489</width>
-    <height>821</height>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -475,10 +475,47 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>380</y>
+     <y>390</y>
      <width>461</width>
      <height>191</height>
     </rect>
+   </property>
+   <property name="palette">
+    <palette>
+     <active>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>170</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </active>
+     <inactive>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>170</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </inactive>
+     <disabled>
+      <colorrole role="Button">
+       <brush brushstyle="SolidPattern">
+        <color alpha="255">
+         <red>170</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </brush>
+      </colorrole>
+     </disabled>
+    </palette>
    </property>
    <property name="font">
     <font>
@@ -494,7 +531,7 @@
      <rect>
       <x>20</x>
       <y>60</y>
-      <width>427</width>
+      <width>431</width>
       <height>51</height>
      </rect>
     </property>
@@ -573,8 +610,45 @@
       <x>20</x>
       <y>110</y>
       <width>89</width>
-      <height>21</height>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="Button">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>217</red>
+          <green>217</green>
+          <blue>217</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="Button">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>217</red>
+          <green>217</green>
+          <blue>217</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="Button">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>217</red>
+          <green>217</green>
+          <blue>217</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
     </property>
     <property name="text">
      <string>Generate</string>
@@ -604,7 +678,7 @@
      <rect>
       <x>210</x>
       <y>110</y>
-      <width>221</width>
+      <width>241</width>
       <height>21</height>
      </rect>
     </property>
@@ -620,7 +694,7 @@
      <rect>
       <x>20</x>
       <y>30</y>
-      <width>421</width>
+      <width>431</width>
       <height>25</height>
      </rect>
     </property>
@@ -681,7 +755,19 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_height"/>
+    <widget class="QLineEdit" name="lineEdit_height">
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_height">
+     <property name="text">
+      <string>H [m]</string>
+     </property>
+    </widget>
     <widget class="QPushButton" name="pushButton_erase">
      <property name="font">
       <font>
@@ -699,7 +785,7 @@
      <rect>
       <x>210</x>
       <y>140</y>
-      <width>221</width>
+      <width>241</width>
       <height>21</height>
      </rect>
     </property>
@@ -729,25 +815,35 @@
      <string>Load</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_trajgen_test">
+   <widget class="Line" name="line_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>140</y>
-      <width>89</width>
-      <height>21</height>
+      <x>0</x>
+      <y>170</y>
+      <width>451</width>
+      <height>20</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Test</string>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
     </property>
    </widget>
+   <zorder>gridLayoutWidget_3</zorder>
+   <zorder>pushButton_trajgen_generate</zorder>
+   <zorder>pushButton_trajgen_save</zorder>
+   <zorder>lineEdit_trajgen_save_dir</zorder>
+   <zorder>splitter</zorder>
+   <zorder>lineEdit_trajgen_load_dir</zorder>
+   <zorder>pushButton_trajgen_load</zorder>
+   <zorder>line_2</zorder>
+   <zorder>groupBox_mission</zorder>
+   <zorder>groupBox_mission</zorder>
   </widget>
   <widget class="QLabel" name="label_makise">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>690</y>
+     <y>680</y>
      <width>81</width>
      <height>81</height>
     </rect>
@@ -763,7 +859,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>690</y>
+     <y>680</y>
      <width>361</width>
      <height>81</height>
     </rect>
@@ -837,7 +933,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>580</y>
+     <y>570</y>
      <width>461</width>
      <height>91</height>
     </rect>
@@ -857,8 +953,108 @@
       <x>20</x>
       <y>30</y>
       <width>81</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
+    </property>
+    <property name="palette">
+     <palette>
+      <active>
+       <colorrole role="Button">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Window">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </active>
+      <inactive>
+       <colorrole role="Button">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Window">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </inactive>
+      <disabled>
+       <colorrole role="Button">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Base">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+       <colorrole role="Window">
+        <brush brushstyle="SolidPattern">
+         <color alpha="255">
+          <red>208</red>
+          <green>255</green>
+          <blue>194</blue>
+         </color>
+        </brush>
+       </colorrole>
+      </disabled>
+     </palette>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(208, 255, 194);</string>
     </property>
     <property name="text">
      <string>Start</string>
@@ -869,8 +1065,8 @@
      <rect>
       <x>200</x>
       <y>30</y>
-      <width>231</width>
-      <height>87</height>
+      <width>251</width>
+      <height>61</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -915,11 +1111,36 @@
       <x>110</x>
       <y>30</y>
       <width>81</width>
-      <height>51</height>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
     </property>
     <property name="text">
      <string>Upload</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_trajgen_test">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>60</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Test start</string>
     </property>
    </widget>
   </widget>
@@ -929,7 +1150,7 @@
      <x>10</x>
      <y>220</y>
      <width>451</width>
-     <height>151</height>
+     <height>160</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_arming_2">
@@ -939,6 +1160,9 @@
     <property name="horizontalSpacing">
      <number>6</number>
     </property>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEditLandGround1"/>
+    </item>
     <item row="3" column="2">
      <widget class="QLineEdit" name="lineEditLandGround2"/>
     </item>
@@ -1026,6 +1250,9 @@
       </property>
      </widget>
     </item>
+    <item row="3" column="3">
+     <widget class="QLineEdit" name="lineEditLandGround3"/>
+    </item>
     <item row="2" column="0" rowspan="2">
      <widget class="QPushButton" name="pushButton_land_p">
       <property name="palette">
@@ -1097,12 +1324,6 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEditLandGround1"/>
-    </item>
-    <item row="3" column="3">
-     <widget class="QLineEdit" name="lineEditLandGround3"/>
-    </item>
     <item row="1" column="1">
      <widget class="QLineEdit" name="lineEdit_takeoff_height1"/>
     </item>
@@ -1113,18 +1334,18 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_takeoff_height2"/>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLineEdit" name="lineEditSpeed3"/>
+    </item>
     <item row="2" column="3">
      <widget class="QCheckBox" name="checkBox_land3">
       <property name="text">
        <string>Drone3</string>
       </property>
      </widget>
-    </item>
-    <item row="4" column="3">
-     <widget class="QLineEdit" name="lineEditSpeed3"/>
-    </item>
-    <item row="1" column="2">
-     <widget class="QLineEdit" name="lineEdit_takeoff_height2"/>
     </item>
     <item row="4" column="1">
      <widget class="QLineEdit" name="lineEditSpeed1"/>
@@ -1137,6 +1358,19 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="Line" name="line_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>380</y>
+     <width>451</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
