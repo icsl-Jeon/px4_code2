@@ -80,6 +80,10 @@ private slots:
 
     void on_label_height_linkActivated(const QString &link);
 
+    void on_TrajGenheightSlider_actionTriggered(int action);
+
+    void on_TrajGenheightSlider_valueChanged(int value);
+
 private:
     bool isLockPushLock =true;
     Ui::Widget *ui;

@@ -63,7 +63,7 @@ Widget::Widget(QWidget *parent) :
             if (offboardIdx == 'o'){ // buttons with individual drones
                 char id = *(itBack-4);
 
-            std::cout << pushbutton->objectName().toStdString() << offboardIdx << "/" << id << std::endl;
+//            std::cout << pushbutton->objectName().toStdString() << offboardIdx << "/" << id << std::endl;
 
                 char idxStr[2];
                 idxStr[0] = id;
@@ -527,12 +527,22 @@ void Widget::on_pushButton_trajgen_test_clicked()
 void Widget::on_TrajGenheightSlider_sliderMoved(int position)
 {
 //    writeMakise("Slider moved to "+ std::to_string(position));
-    double height = MAX_HEIGHT*getSliderValue();
-    ui->lineEdit_height->setText(QString::number(height));
 }
 
 void Widget::on_label_height_linkActivated(const QString &link)
 {
 
 
+}
+
+void Widget::on_TrajGenheightSlider_actionTriggered(int action)
+{
+
+}
+
+void Widget::on_TrajGenheightSlider_valueChanged(int value)
+{
+
+    double height = MAX_HEIGHT*getSliderValue();
+    ui->lineEdit_height->setText(QString::number(height));
 }

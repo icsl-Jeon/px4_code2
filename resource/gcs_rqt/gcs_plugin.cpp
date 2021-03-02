@@ -40,7 +40,7 @@ namespace px4_code2{
         nh = getNodeHandle();
         nh.getParam("/qt_setting_dir",param.setting_file);
         nh.getParam("/world_frame_id",param.worldFrameId);
-        cout << param.worldFrameId << endl;
+//        cout << param.worldFrameId << endl;
         std::cout << labelClient + " : setting file : " << param.setting_file << std::endl;
         widget->readSettings(param.setting_file);
 
