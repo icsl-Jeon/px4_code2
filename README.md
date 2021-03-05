@@ -1,4 +1,9 @@
-# Code suite to manipulate multiple drone (server and client nodes)
+# Code Suite of RQT GUI for multi-drone flight 
+
+
+<p align = "center">
+<img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/intro.gif">
+</p> 
 
 ## Installation 
 
