@@ -5,6 +5,12 @@
 <img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/intro.gif">
 </p> 
 
+## Youtube videos 
+
+* **2 min manual for gui** [Youtube](https://www.youtube.com/watch?v=-kpmBBiJndk&t=51s)
+* **2 min manual for trajectory creation** [Youtube](https://www.youtube.com/watch?v=-kpmBBiJndk&t=51s)
+
+
 ## Installation 
 
 * qpOASES
