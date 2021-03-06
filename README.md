@@ -1,4 +1,4 @@
-# Code Suite of RQT GUI for multi-drone flight 
+# Code Suite of RQT GUI for multi-drone flight (px4/mavros based)
 
 
 <p align = "center">
@@ -13,6 +13,8 @@
 
 ## Installation 
 
+Ubuntu 16.04 and 18.04 were tested. 
+
 * qpOASES
 
   ```
@@ -22,7 +24,7 @@
   $ cmake .. -DCMAKE_CXX_FLAGS=-fPIC
   $ sudo make install
   ```
-
+  qpOASES is quadratic programming (QP) solver. *px4_code* generates the flight trajectory based on QP to produce input-efficient flight for drones by optimizing the high order-derivatives of the entire path. The key principle can be found in [traj_gen](https://github.com/icsl-Jeon/traj_gen) (you don't have to install the pacakge).   
   
 
 * mavros-*
