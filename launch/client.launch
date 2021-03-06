@@ -1,11 +1,17 @@
 <launch>
     <arg name = "path" default = "$(find px4_code2)/map/bt/4floor_real.bt" />
-
     <arg name = "drone_name1" value = "target1"/>
     <arg name = "drone_name2" value = "target2"/>
 
+    <arg name = "is_noetic" default = "true"/>
+
+    <arg name = "client_perspective" value="$(find px4_code2)/rviz/client_noetic.perspective" if ="$(arg is_noetic)"/>
+    <arg name = "client_perspective" value="$(find px4_code2)/rviz/client.perspective" unless ="$(arg is_noetic)"/>
+
+
+
     <node name = "rqt_client" pkg = "rqt_gui" type = "rqt_gui"
-          args="--perspective-file $(find px4_code2)/rviz/client.perspective" output="screen">
+          args="--perspective-file $(arg client_perspective)" output="screen">
         <rosparam param="/drone_name_set">[target1,target2]</rosparam>
         <rosparam param = "/world_frame_id">"map" </rosparam>
         <rosparam param="/qt_setting_dir" subst_value="True">$(find px4_code2)/qt_settings/setting.ini</rosparam>

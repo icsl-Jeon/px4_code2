@@ -1,0 +1,62 @@
+{
+  "keys": {},
+  "groups": {
+    "mainwindow": {
+      "keys": {
+        "geometry": {
+          "repr(QByteArray.hex)": "QtCore.QByteArray(b'01d9d0cb00030000000004800000005a0000066e000003db000004800000007f0000066e000003db00000000000000000780000004800000007f0000066e000003db')",
+          "type": "repr(QByteArray.hex)",
+          "pretty-print": "       Z n       n            n  "
+        },
+        "state": {
+          "repr(QByteArray.hex)": "QtCore.QByteArray(b'000000ff00000000fd0000000100000003000001ef00000331fc0100000002fb0000003e007000780034005f0063006f006400650032005f005f0047006300730050006c007500670069006e005f005f0031005f005f0057006900640067006500740100000000000001ef000000c400fffffffb0000003e007000780034005f0063006f006400650032005f005f0047006300730050006c007500670069006e005f005f0032005f005f005700690064006700650074010000012b000000c40000000000000000000001ef0000000000000004000000040000000800000008fc00000001000000030000000100000036004d0069006e0069006d0069007a006500640044006f0063006b00570069006400670065007400730054006f006f006c0062006100720000000000ffffffff0000000000000000')",
+          "type": "repr(QByteArray.hex)",
+          "pretty-print": "                 >px4_code2__GcsPlugin__1__Widget          >px4_code2__GcsPlugin__2__Widget                            6MinimizedDockWidgetsToolbar        "
+        }
+      },
+      "groups": {
+        "toolbar_areas": {
+          "keys": {
+            "MinimizedDockWidgetsToolbar": {
+              "repr": "8",
+              "type": "repr"
+            }
+          },
+          "groups": {}
+        }
+      }
+    },
+    "pluginmanager": {
+      "keys": {
+        "running-plugins": {
+          "repr": "{'px4_code2/GcsPlugin': [1]}",
+          "type": "repr"
+        }
+      },
+      "groups": {
+        "plugin__px4_code2__GcsPlugin__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__Widget": {
+              "keys": {
+                "dock_widget_title": {
+                  "repr": "'FelipeSuite'",
+                  "type": "repr"
+                },
+                "dockable": {
+                  "repr": "True",
+                  "type": "repr"
+                },
+                "parent": {
+                  "repr": "None",
+                  "type": "repr"
+                }
+              },
+              "groups": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
