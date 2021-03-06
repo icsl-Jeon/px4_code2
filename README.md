@@ -16,7 +16,7 @@
 Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were tested. 
   
 
-* qpOASES
+* **qpOASES**
 
   ```
   $ git clone https://github.com/coin-or/qpOASES.git
@@ -28,7 +28,7 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
   *qpOASES* is quadratic programming (QP) solver. *px4_code* generates the flight trajectory based on QP to produce input-efficient flight for drones by optimizing the high order-derivatives of the entire path. The key principle can be found in [traj_gen](https://github.com/icsl-Jeon/traj_gen) (you don't have to install the pacakge).   
   
 
-* mavros-*
+* **mavros-***
   ```
   cd ~/catkin_ws/src
   git clone https://github.com/icsl-Jeon/px4_code2.git
@@ -42,9 +42,9 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
   sudo usermod -a -G tty <user>
   sudo reboot
   ```
-  This package was desinged to    
+  This package was desinged to flight of the drones which has pixhawk FCU and an onboard computer (e.g. [upboard](https://up-board.org/) or [NUC](https://www.amazon.com/intel-nuc8i7/s?k=intel+nuc8i7&page=2)). We assume that the drones can be provided with their [odometry information]() and run mavros for the communicate with GCS (e.g. your laptop).           
   
-* px4_code2
+* **px4_code2**
   ```
   cd ~/catkin_ws/src
   git clone https://github.com/icsl-Jeon/px4_code2.git
@@ -52,14 +52,18 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
   catkin build px4_code2_msgs
   catkin build px4_code2
   ```
-  Note: if you want to use `catkin build` in Noetic, run the following command
+  * Note: if you want to use `catkin build` in Noetic, run the following command:
   ```
   sudo apt-get install python3-catkin-tools python3-osrf-pycommon
   ```
+  
+  
 
 ## Quick start for client rqt node in GCS (e.g. your commander laptop)
 
 Like any other [rqt node](http://wiki.ros.org/rqt), *px4_code2* can be loaded in `rqt_gui` node.
+
+
 
 
 #### kinectic ~ melodic 
