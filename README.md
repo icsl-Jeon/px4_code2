@@ -13,7 +13,7 @@
 
 ## Installation 
 
-Ubuntu 16.04 and 18.04 were tested. 
+Ubuntu 16.04 (ROS kinetic) and 18.04 (ROS melodic) were tested. 
 
 * qpOASES
 
@@ -24,10 +24,16 @@ Ubuntu 16.04 and 18.04 were tested.
   $ cmake .. -DCMAKE_CXX_FLAGS=-fPIC
   $ sudo make install
   ```
-  qpOASES is quadratic programming (QP) solver. *px4_code* generates the flight trajectory based on QP to produce input-efficient flight for drones by optimizing the high order-derivatives of the entire path. The key principle can be found in [traj_gen](https://github.com/icsl-Jeon/traj_gen) (you don't have to install the pacakge).   
+  *qpOASES* is quadratic programming (QP) solver. *px4_code* generates the flight trajectory based on QP to produce input-efficient flight for drones by optimizing the high order-derivatives of the entire path. The key principle can be found in [traj_gen](https://github.com/icsl-Jeon/traj_gen) (you don't have to install the pacakge).   
   
 
 * mavros-*
+  ```
+  cd ~/catkin_ws/src
+  git clone https://github.com/icsl-Jeon/px4_code2.git
+  cd px4_code2
+  ```
+
 
   ```
   sudo apt-get install ros-${ROS_DISTRO}-mavros ros-${ROS_DISTRO}-mavros-msgs ros-${ROS_DISTRO}-mavros-extras 
@@ -37,10 +43,17 @@ Ubuntu 16.04 and 18.04 were tested.
   sudo usermod -a -G tty <user>
   sudo reboot
   ```
-
+  This package was desinged to    
   
+* px4_code2
+  ```
+  cd ~/catkin_ws/src
+  git clone https://github.com/icsl-Jeon/px4_code2.git
+  catkin build px4_code2
+  ```
+  > 
 
-## Terms 
+## Setup 
 
 * Mission : trajectory to be followed by a drone. Calling `trigger()` will set triggerTime.
 
