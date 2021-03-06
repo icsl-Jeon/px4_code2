@@ -60,20 +60,26 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
   
 
 ## Quick start for client rqt node in GCS (e.g. your commander laptop)
+If you try to load the dashboard of px4_code2, follow
 
+### Option 1. Run fresh px4_code2 via rqt_gui 
 Like any other [rqt node](http://wiki.ros.org/rqt), *px4_code2* can be loaded in `rqt_gui` node.
+```
+rosrun rqt_gui rqt_gui --force-discover
+```
+Load by `Plugins > Robot Tools > FelipeSuite'.
 
-
-
-
+###  Option 2. Roslaunch by importing preset *.perspective file and *.ini qt settings 
 #### kinectic ~ melodic 
 
 ```
-roslaunch px4_code2 client.launch 
+roslaunch px4_code2 client.launch is_noetic:=false
 ```
 
 #### noetic 
-
+```
+roslaunch px4_code2 client.launch 
+```
 
 
 ## Setup 
