@@ -13,7 +13,8 @@
 
 ## Installation 
 
-Ubuntu 16.04 (ROS kinetic) and 18.04 (ROS melodic) were tested. 
+Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were tested. 
+  
 
 * qpOASES
 
@@ -33,8 +34,6 @@ Ubuntu 16.04 (ROS kinetic) and 18.04 (ROS melodic) were tested.
   git clone https://github.com/icsl-Jeon/px4_code2.git
   cd px4_code2
   ```
-
-
   ```
   sudo apt-get install ros-${ROS_DISTRO}-mavros ros-${ROS_DISTRO}-mavros-msgs ros-${ROS_DISTRO}-mavros-extras 
   sudo chmod +x ./resource/install_geographic.sh 
@@ -49,9 +48,29 @@ Ubuntu 16.04 (ROS kinetic) and 18.04 (ROS melodic) were tested.
   ```
   cd ~/catkin_ws/src
   git clone https://github.com/icsl-Jeon/px4_code2.git
+  git clone https://github.com/icsl-Jeon/px4_code2_msgs.git
+  catkin build px4_code2_msgs
   catkin build px4_code2
   ```
-  > 
+  Note: if you want to use `catkin build` in Noetic, run the following command
+  ```
+  sudo apt-get install python3-catkin-tools python3-osrf-pycommon
+  ```
+
+## Quick start for client rqt node in GCS (e.g. your commander laptop)
+
+Like any other [rqt node](http://wiki.ros.org/rqt), *px4_code2* can be loaded in `rqt_gui` node.
+
+
+#### kinectic ~ melodic 
+
+```
+roslaunch px4_code2 client.launch 
+```
+
+#### noetic 
+
+
 
 ## Setup 
 
