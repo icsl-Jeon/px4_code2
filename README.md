@@ -42,7 +42,7 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
   sudo usermod -a -G tty <user>
   sudo reboot
   ```
-  This package was desinged to flight of the drones which has pixhawk FCU and an onboard computer (e.g. [upboard](https://up-board.org/) or [NUC](https://www.amazon.com/intel-nuc8i7/s?k=intel+nuc8i7&page=2)). We assume that the drones can be provided with their [odometry information]() and run mavros for the communicate with GCS (e.g. your laptop).           
+  This package was desinged to flight of the drones which has pixhawk FCU and an onboard computer (e.g. [upboard](https://up-board.org/) or [NUC](https://www.amazon.com/intel-nuc8i7/s?k=intel+nuc8i7&page=2)). We assume that the drones can be provided with their [odometry information](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#Setup) and run mavros for the communicate with GCS (e.g. your laptop).           
   
 * **px4_code2**
   ```
