@@ -67,7 +67,7 @@ Like any other [rqt node](http://wiki.ros.org/rqt), *px4_code2* can be loaded in
 ```
 rosrun rqt_gui rqt_gui --force-discover
 ```
-Load by `Plugins > Robot Tools > FelipeSuite'.
+Load by `Plugins > Robot Tools > FelipeSuite`.
 
 ###  Option 2. Roslaunch by importing preset *.perspective file and *.ini qt settings 
 #### kinectic ~ melodic 
