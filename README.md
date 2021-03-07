@@ -108,17 +108,37 @@ An example of [client.launch](https://github.com/icsl-Jeon/px4_code2/blob/master
 
 ### Step 2. Server side (drones)
 
-In setting up the server side, you have to provide the odometry topic ``
+In setting up the server side, you have to provide the odometry topic and static transform from `world_frame_id` to the reference frame of the odometry. Also, [mavros] should be running in the onboard computer of the drone in the group namespace [`drone_name`]((https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#ROS-paramteres-for-server-node).     
 
 <p align = "center">
 <img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/frame.png" width="700">
 </p> 
 
-An example of [server_t265.launch](https://github.com/icsl-Jeon/px4_code2/blob/master/launch/server_t265.launch) is shown below.
+An example of launch can be found here: [server_t265.launch](https://github.com/icsl-Jeon/px4_code2/blob/master/launch/server_t265.launch) where Intel realsense t265 was used to collect odometry topic. In the example, t265 is mounted in the [opposite direction](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#ROS-paramteres-for-server-node) from the pixhawk. 
+
+#### 1. Pixhawk setup of your drone 
+*px4_code2* was designed for the [pixhawk setup](https://docs.px4.io/master/en/ros/external_position_estimation.html) where the [`mavros/vision_pose/pose`](https://docs.px4.io/master/en/ros/external_position_estimation.html#relaying-pose-data-to-px4) is used for EKF2 fusion yielding `mavros/local_position/pose`.
+
+Thus, pixhawk should have the following paramters: 
+* EKF2_AID_MASK = position + yaw
+* EKF2_HGT_MODE = vision 
+
+#### 2. Odometry setup 
+`px4_code2` subscribes [odometry](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#ROS-paramteres-for-server-node) from other packages such as [realsense](http://wiki.ros.org/realsense2_camera) to cater the above pixhawk setting.
+Basically, `px4_code2` receives the odometry and re-publish it as `geometry_msgs/PoseStamped` topic with respect to `world_frame_id`. 
+Anyway, have your own odoemtry. 
 
 
-#### Parameters for server node
+#### ROS paramteres for server node
+* `~drone_name` : the name of the considered drone. This is also the group namespace when launching the server.  
+* `yaw_from_px4_to_sensor` : the relative yaw angle from pixhawk to the heading direction of the incoming odometry. 
+   
 
+#### Subscribed ros topics for server node
+
+* `/<drone_name>/t265/odom/sample` : the incoming odometry topic. The frame_id in the header of the topic should be connected to `world_frame_id` in [tf](https://www.google.com/search?q=tf+ros&oq=tf+ros&aqs=chrome.0.0l7j69i65.2487j0j4&sourceid=chrome&ie=UTF-8)
+* `/<drone_name>/mavros/state` : the state information of the pixhawk via mavros. This is used to identify whether the drone is in [offboard](https://docs.px4.io/master/en/flight_modes/offboard.html) mode or manual. 
+* `/<drone_name>/mavros/local_position/pose` : this is the fused mavros pose (w.r.t `world_frame_id`) as the output of EKF2 fusion algorithm of pixhawk. This pose is used to [odometry](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#Features) as the current pose.        
 
 
 
@@ -126,44 +146,9 @@ An example of [server_t265.launch](https://github.com/icsl-Jeon/px4_code2/blob/m
 
 ## Features
 
-
-
 * **Takeoff** : we use the yaw angle state when called takeoff service. Auto - triggered once mission uploaded.  StartPose = curMavrosPose  / Final pose = height in ui 
 * **Lock** : Set cur pose as cur desired pose (NOTE = /mavros pose).  If mission exists, deactivates it.  
 * **Land** : starting pose = cur mavros pose / desired height = 0 
 
 
 
-
-
-## Lessons 
-
-### rqt plugin ([Ref](https://fjp.at/ros/rqt-turtle/))
-
-First, create Qt application project with `Qt creator` inside of a project. All the UI (form file) and SLOT functions are composed only in the Qt project.  
-
-Include the files in CMakeList.txt under `qtx_wrap_cpp` and build first. That will produce header and source in your catkin_ws. That's all we need to auto-complete in CLion.  Don't forget the below in CLion cmake build setting: 
-
-```
--DCATKIN_DEVEL_PREFIX:PATH=/home/jbs/catkin_ws/devel
-```
-
-
-### rqt gui list 
-```
-# Build your package 
-catkin build px4_code2
-
-# Check the plugins are loaded correctly
-rosrun rqt_gui rqt_gui --force-discover
-
-```
-
-### PX4 
-
-* PWM_ARM_* : for initial thrust when arming begins
-* Gain tuning : for small drone such as f330 size, the gain tuning was required. See resource folder  
-* HAS_BARO = 0 : Disabling barometer was only available in 1.10.1. For the firmware, see resource folder. 
-  In the recent version, disabling barometer blocks EKF2 operation and QGC does not receive attitude info.
-* Do not use Pixhwak 4 mini. It caused a lot of abrupt increase in thrust.   
-* [Land detection](https://docs.px4.io/master/en/advanced_config/land_detector.html#land-detector-states) 
