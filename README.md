@@ -87,7 +87,7 @@ To use `px4_code2` in your multi-drone flight, you have a few things to be set i
 
 ### Step 1. Client side (your GCS)
  
-An example of `client.launch` is shown below.
+An example of [client.launch](https://github.com/icsl-Jeon/px4_code2/blob/master/launch/client.launch) is shown below.
  
 ```
     <node name = "rqt_client" pkg = "rqt_gui" type = "rqt_gui"
