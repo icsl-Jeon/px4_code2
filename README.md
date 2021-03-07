@@ -100,20 +100,20 @@ An example of `client.launch` is shown below.
 
 #### Parameters for client
 
-* /drone_name_set : a list of name of drones used for the flight (up to three). The names should be matched with the [name](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#Parameters-for-server) in each launch of drone.  
-* /world_frame_id : the name of world frame. The tf should be fully connected so that the reference frame of the odometry (fraome_id of header field of [odometry](http://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html)).      
-* /qt_setting_dir : this is the setting file (.ini) containing the values in rqt gui. This file is loaded at every open of rqt gui, and saved at every normal termination.  
+* `/drone_name_set` : a list of name of drones used for the flight (up to three). The names should be matched with the [name](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#Parameters-for-server) in each launch of drone.  
+* `/world_frame_id` : the name of world frame. The tf should be fully connected so that the reference frame of the odometry (fraome_id of header field of [odometry](http://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html)).      
+* `/qt_setting_dir` : this is the setting file (.ini) containing the values in rqt gui. This file is loaded at every open of rqt gui, and saved at every normal termination.  
 
 
 
-### Server side (drones)
+### Step 2. Server side (drones)
 
 
 <p align = "center">
 <img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/frame.png" width="700">
 </p> 
 
-#### Step 2. Parameters for server
+#### Parameters for server
 
 
 
