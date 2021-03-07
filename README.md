@@ -83,7 +83,7 @@ roslaunch px4_code2 client.launch
 
 
 ## Setup 
-To use `px4_code2` in your multi-drone flight, you have a few things to be set in your GCS and drones' computer 
+To use `px4_code2` in your multi-drone flight, you have a few things to be set in your GCS and drones' computer. 
 
 ### Step 1. Client side (your GCS)
  
@@ -98,7 +98,7 @@ An example of [client.launch](https://github.com/icsl-Jeon/px4_code2/blob/master
     </node>
 ```
 
-#### Parameters for client
+#### Parameters for client node 
 
 * `/drone_name_set` : a list of name of drones used for the flight (up to three). The names should be matched with the [name](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#Parameters-for-server) in each launch of drone.  
 * `/world_frame_id` : the name of world frame. The tf should be fully connected so that the reference frame of the odometry (fraome_id of header field of [odometry](http://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html)).      
@@ -108,12 +108,16 @@ An example of [client.launch](https://github.com/icsl-Jeon/px4_code2/blob/master
 
 ### Step 2. Server side (drones)
 
+In setting up the server side, you have to provide the odometry topic ``
 
 <p align = "center">
 <img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/frame.png" width="700">
 </p> 
 
-#### Parameters for server
+An example of [server_t265.launch](https://github.com/icsl-Jeon/px4_code2/blob/master/launch/server_t265.launch) is shown below.
+
+
+#### Parameters for server node
 
 
 
