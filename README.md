@@ -129,12 +129,14 @@ Basically, `px4_code2` receives the odometry and re-publish it as `geometry_msgs
 Anyway, have your own odoemtry. 
 
 
-#### ROS paramteres for server node
+#### ROS setup 
+
+##### (1) paramteres for server node
 * `~drone_name` : the name of the considered drone. This is also the group namespace when launching the server.  
 * `yaw_from_px4_to_sensor` : the relative yaw angle from pixhawk to the heading direction of the incoming odometry. 
    
 
-#### Subscribed ros topics for server node
+##### (2) Subscribed ros topics for server node
 
 * `/<drone_name>/t265/odom/sample` : the incoming odometry topic. The frame_id in the header of the topic should be connected to `world_frame_id` in [tf](https://www.google.com/search?q=tf+ros&oq=tf+ros&aqs=chrome.0.0l7j69i65.2487j0j4&sourceid=chrome&ie=UTF-8)
 * `/<drone_name>/mavros/state` : the state information of the pixhawk via mavros. This is used to identify whether the drone is in [offboard](https://docs.px4.io/master/en/flight_modes/offboard.html) mode or manual. 
