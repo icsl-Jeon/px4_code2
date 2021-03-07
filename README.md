@@ -83,12 +83,42 @@ roslaunch px4_code2 client.launch
 
 
 ## Setup 
+To use `px4_code2` in your multi-drone flight, you have a few things to be set in your GCS and drones' computer 
 
-* Mission : trajectory to be followed by a drone. Calling `trigger()` will set triggerTime.
+### Client side (your GCS)
+ 
+An example of `client.launch` is shown below.
+ 
+```
+    <node name = "rqt_client" pkg = "rqt_gui" type = "rqt_gui"
+          args="--perspective-file $(arg client_perspective)" output="screen">
+        <rosparam param="/drone_name_set">[target1,target2]</rosparam>
+        <rosparam param = "/world_frame_id">"map" </rosparam>
+        <rosparam param="/qt_setting_dir" subst_value="True">$(find px4_code2)/qt_settings/setting.ini</rosparam>
+    </node>
+```
 
-  Usage = 1. load trajectory. 2. Call trigger 
+#### Parameters
 
-*  
+* /drone_name_set : a list of name of drones used for the flight (up to three). The names  
+* /world_frame_id :
+* /qt_setting_dir :
+
+
+
+### Server side (drones)
+
+
+<p align = "center">
+<img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/frame.png" width="700">
+</p> 
+
+#### Parameters
+
+
+
+
+
 
 ## Features
 
