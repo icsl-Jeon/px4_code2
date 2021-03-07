@@ -129,7 +129,7 @@ Basically, `px4_code2` receives the odometry and re-publish it as `geometry_msgs
 Anyway, have your own odoemtry. 
 
 
-#### ROS setup 
+#### 3. ROS setup 
 
 ##### (1) paramteres for server node
 * `~drone_name` : the name of the considered drone. This is also the group namespace when launching the server.  
@@ -144,12 +144,12 @@ Anyway, have your own odoemtry.
 
 
 
-
-
 ## Features
 
+### Basic flight 
 * **Takeoff** : we use the yaw angle state when called takeoff service. Auto - triggered once mission uploaded.  StartPose = curMavrosPose  / Final pose = height in ui 
-* **Lock** : Set cur pose as cur desired pose (NOTE = /mavros pose).  If mission exists, deactivates it.  
+* **Lock** : Set cur pose as cur desired pose (NOTE = /mavros pose).  If mission exists, deactivates it.   
+* **Resume** : If mission exists, re-activates it.   
 * **Land** : starting pose = cur mavros pose / desired height = 0 
 
 
