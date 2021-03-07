@@ -19,11 +19,11 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
 * **qpOASES**
 
   ```
-  $ git clone https://github.com/coin-or/qpOASES.git
-  $ cd path/to/qpOASES
-  $ mkdir build && cd build
-  $ cmake .. -DCMAKE_CXX_FLAGS=-fPIC
-  $ sudo make install
+  git clone https://github.com/coin-or/qpOASES.git
+  cd path/to/qpOASES
+  mkdir build && cd build
+  cmake .. -DCMAKE_CXX_FLAGS=-fPIC
+  sudo make install
   ```
   *qpOASES* is quadratic programming (QP) solver. *px4_code* generates the flight trajectory based on QP to produce input-efficient flight for drones by optimizing the high order-derivatives of the entire path. The key principle can be found in [traj_gen](https://github.com/icsl-Jeon/traj_gen) (you don't have to install the pacakge).   
   
@@ -98,9 +98,9 @@ An example of `client.launch` is shown below.
     </node>
 ```
 
-#### Parameters
+#### Parameters for client
 
-* /drone_name_set : a list of name of drones used for the flight (up to three). The names  
+* /drone_name_set : a list of name of drones used for the flight (up to three). The names should be matched with the [name](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#Parameters-for-server) in each launch of drone  
 * /world_frame_id :
 * /qt_setting_dir :
 
@@ -113,7 +113,7 @@ An example of `client.launch` is shown below.
 <img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/frame.png" width="700">
 </p> 
 
-#### Parameters
+#### Parameters for server
 
 
 
