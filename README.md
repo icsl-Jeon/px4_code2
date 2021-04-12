@@ -115,7 +115,7 @@ An example of [client.launch](https://github.com/icsl-Jeon/px4_code2/blob/master
 
 ### Step 2. Server side (drones)
 
-In setting up the server side, you have to provide the odometry topic and static transform from `world_frame_id` to the reference frame of the odometry. Also, [mavros] should be running in the onboard computer of the drone in the group namespace [`drone_name`]((https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#ROS-paramteres-for-server-node).     
+In setting up the server side, you have to provide the odometry topic and static transform from `world_frame_id` to the reference frame of the odometry. Also, [mavros] should be running in the onboard computer of the drone in the group namespace [`drone_name`](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#ROS-paramteres-for-server-node).     
 
 <p align = "center">
 <img src= "https://github.com/icsl-Jeon/px4_code2/blob/master/img/frame.png" width="700">
