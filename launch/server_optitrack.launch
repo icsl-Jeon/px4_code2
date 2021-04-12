@@ -1,0 +1,28 @@
+<launch>
+    <arg name="drone_name" default="target"/>
+    <arg name="rviz" default="true"/>
+    <group ns = "$(arg drone_name)">
+
+        <node pkg="optitrack_bridge" type="optitrack_bridge_node" name="optitrack_bridge_node" output="screen">
+            <param name="frame_id" value="/map" type="str" />
+            <param name="show_latency" value="false" type="bool" />
+            <param name="publish_with_twist" value="false" type="bool" />
+            <param name="publish_labeled_marker_pose_array" value="false" type="bool" />
+            <param name="publish_unlabeled_marker_pose_array" value="false" type="bool" />
+            <remap from ="" to="t265/odom/sample"/>
+        </node>
+
+        <include file = "$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="/dev/ttyACM0:57600"/>
+        </include>
+
+        <node name = "server_node" pkg="px4_code2" type="server_node" output = "screen">
+            <param name = "drone_name" value = "$(arg drone_name)"/>
+            <param name = "yaw_from_px4_to_sensor" value = "3.141592"/>
+        </node>
+
+    </group>
+
+
+
+</launch>

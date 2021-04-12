@@ -13,7 +13,11 @@
 
 ## Installation 
 
-Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were tested. 
+Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were tested. Installation file is formmated [here](https://github.com/icsl-Jeon/px4_code2/blob/master/install.sh). 
+```
+sudo chmod 777 install.sh
+```
+You might have to reboot system to use mavros 
 
 
 * **qpOASES**
@@ -28,6 +32,7 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
   *qpOASES* is quadratic programming (QP) solver. *px4_code* generates the flight trajectory based on QP to produce input-efficient flight for drones by optimizing the high order-derivatives of the entire path. The key principle can be found in [traj_gen](https://github.com/icsl-Jeon/traj_gen) (you don't have to install the pacakge).   
   
 * **mavros-***
+  
   ```
   cd ~/catkin_ws/src
   git clone https://github.com/icsl-Jeon/px4_code2.git
@@ -46,7 +51,6 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
 * **px4_code2**
   ```
   cd ~/catkin_ws/src
-  git clone https://github.com/icsl-Jeon/px4_code2.git
   git clone https://github.com/icsl-Jeon/px4_code2_msgs.git
   catkin build px4_code2_msgs
   catkin build px4_code2
