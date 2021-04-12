@@ -14,7 +14,7 @@
 ## Installation 
 
 Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were tested. 
-  
+
 
 * **qpOASES**
 
@@ -27,7 +27,6 @@ Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were test
   ```
   *qpOASES* is quadratic programming (QP) solver. *px4_code* generates the flight trajectory based on QP to produce input-efficient flight for drones by optimizing the high order-derivatives of the entire path. The key principle can be found in [traj_gen](https://github.com/icsl-Jeon/traj_gen) (you don't have to install the pacakge).   
   
-
 * **mavros-***
   ```
   cd ~/catkin_ws/src
@@ -86,9 +85,9 @@ roslaunch px4_code2 client.launch
 To use `px4_code2` in your multi-drone flight, you have a few things to be set in your GCS and drones' computer. 
 
 ### Step 1. Client side (your GCS)
- 
+
 An example of [client.launch](https://github.com/icsl-Jeon/px4_code2/blob/master/launch/client.launch) is shown below.
- 
+
 ```
     <node name = "rqt_client" pkg = "rqt_gui" type = "rqt_gui"
           args="--perspective-file $(arg client_perspective)" output="screen">
@@ -125,8 +124,10 @@ Thus, pixhawk should have the following paramters:
 
 #### 2. Odometry setup 
 `px4_code2` subscribes [odometry](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#ROS-paramteres-for-server-node) from other packages such as [realsense](http://wiki.ros.org/realsense2_camera) to cater the above pixhawk setting.
-Basically, `px4_code2` receives the odometry and re-publish it as `geometry_msgs/PoseStamped` topic with respect to `world_frame_id`. 
-Anyway, have your own odoemtry. 
+Basically, `px4_code2` receives the odometry and re-publish it as `geometry_msgs/PoseStamped` topic, which is represented with respect to `world_frame_id`. by using tf. 
+
+> For stable EKF2, x-axis of incoming odometry should be aligned with the direction of pixhawk heading. 
+
 
 
 #### 3. ROS setup 
@@ -134,13 +135,12 @@ Anyway, have your own odoemtry.
 ##### (1) paramteres for server node
 * `~drone_name` : the name of the considered drone. This is also the group namespace when launching the server.  
 * `yaw_from_px4_to_sensor` : the relative yaw angle from pixhawk to the heading direction of the incoming odometry. 
-   
 
 ##### (2) Subscribed ros topics for server node
 
-* `/<drone_name>/t265/odom/sample` : the incoming odometry topic. The frame_id in the header of the topic should be connected to `world_frame_id` in [tf](https://www.google.com/search?q=tf+ros&oq=tf+ros&aqs=chrome.0.0l7j69i65.2487j0j4&sourceid=chrome&ie=UTF-8)
+* `/<drone_name>/t265/odom/sample` : the incoming odometry topic from an external node. The frame_id in the header of the topic should be connected to `world_frame_id` in [tf](https://www.google.com/search?q=tf+ros&oq=tf+ros&aqs=chrome.0.0l7j69i65.2487j0j4&sourceid=chrome&ie=UTF-8)
 * `/<drone_name>/mavros/state` : the state information of the pixhawk via mavros. This is used to identify whether the drone is in [offboard](https://docs.px4.io/master/en/flight_modes/offboard.html) mode or manual. 
-* `/<drone_name>/mavros/local_position/pose` : this is the fused mavros pose (w.r.t `world_frame_id`) as the output of EKF2 fusion algorithm of pixhawk. This pose is used to [odometry](https://github.com/icsl-Jeon/px4_code2/blob/master/README.md#Features) as the current pose.        
+* `/<drone_name>/mavros/local_position/pose` : this is the final fused mavros pose (w.r.t `world_frame_id`) as the output of EKF2 fusion algorithm of pixhawk. This pose is used as the current pose.        
 
 
 
@@ -153,4 +153,5 @@ Anyway, have your own odoemtry.
 * **Land** : starting pose = cur mavros pose / desired height = 0 
 
 
+### Trajectory following (TBD)
 
