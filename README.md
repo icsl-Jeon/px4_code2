@@ -13,13 +13,17 @@
 
 ## Installation 
 
-Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were tested. Installation file is formmated [here](https://github.com/icsl-Jeon/px4_code2/blob/master/install.sh). 
+Ubuntu 16.04 (ROS kinetic), 18.04 (ROS melodic) and 20.04 (ROS noetic) were tested. This package can be either installed by [.sh file](https://github.com/icsl-Jeon/px4_code2/blob/master/install.sh), or step-by-step manual installation.
+
+### Option A: shell script installation.
+We assume you have catkin workspace  `~/catkin_ws` in [catkin build system](https://catkin-tools.readthedocs.io/en/latest/verbs/catkin_build.html). 
 ```
 sudo chmod 777 install.sh
+./install.sh
 ```
 You might have to reboot system to use mavros 
 
-
+### Option B: manual step-by-step installation 
 * **qpOASES**
 
   ```
