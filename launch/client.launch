@@ -11,6 +11,8 @@
         <rosparam param="/drone_name_set">[target]</rosparam>
         <rosparam param = "/world_frame_id">"map" </rosparam>
         <rosparam param="/qt_setting_dir" subst_value="True">$(find px4_code2)/qt_settings/setting.ini</rosparam>
+        <rosparam param="/print_ros_warning">False</rosparam> <!--useful when making only trajectory-->
+        <rosparam param="/slider_max_height">3</rosparam> <!--height of max slider location when selecting waypoints-->
     </node>
 
 

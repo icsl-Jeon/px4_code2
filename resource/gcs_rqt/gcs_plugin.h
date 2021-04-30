@@ -23,6 +23,7 @@ namespace px4_code2{
             std::string setting_file;
             std::string worldFrameId ;
             bool printRosWarning = true; //! in case of simple traj gen mode, warning is not required
+            float maxHeightSlider = 3; //! max slider will be mapped to this height when selecting z value of waypoints
         };
         struct Status{
             std::vector<px4_code2_msgs::Phase> phaseSet;

@@ -165,8 +165,7 @@ void Widget::readSettings(std::string settingFile){
 
 
     // MISC
-
-    double height = MAX_HEIGHT*getSliderValue();
+    double height = maxSlideval *getSliderValue();
     ui->lineEdit_height->setText(QString::number(height));
 
 
@@ -543,6 +542,6 @@ void Widget::on_TrajGenheightSlider_actionTriggered(int action)
 void Widget::on_TrajGenheightSlider_valueChanged(int value)
 {
 
-    double height = MAX_HEIGHT*getSliderValue();
+    double height = maxSlideval*getSliderValue();
     ui->lineEdit_height->setText(QString::number(height));
 }

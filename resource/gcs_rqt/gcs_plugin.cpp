@@ -41,7 +41,9 @@ namespace px4_code2{
         nh.getParam("/qt_setting_dir",param.setting_file);
         nh.getParam("/world_frame_id",param.worldFrameId);
         nh.getParam("/print_ros_warning",param.printRosWarning);
-        cout <<param.printRosWarning << endl;
+        nh.getParam("/slider_max_height",param.maxHeightSlider);
+//        cout << param.maxHeightSlider << endl;
+        widget->setMaxSlideValue(param.maxHeightSlider);
 
 //        cout << param.worldFrameId << endl;
         std::cout << labelClient + " : setting file : " << param.setting_file << std::endl;
@@ -229,7 +231,7 @@ namespace px4_code2{
             geometry_msgs::Point curWaypoint;
             curWaypoint.x = msgPtr->pose.position.x;
             curWaypoint.y = msgPtr->pose.position.y;
-            curWaypoint.z = widget->getSliderValue()*MAX_HEIGHT;
+            curWaypoint.z = widget->getSliderValue() * param.maxHeightSlider;
             waypointsSet[status.curWaypointTarget].push_back(curWaypoint);
             string msg = "Received points [" + to_string(curWaypoint.x) + " , "+
                     to_string(curWaypoint.y) + " , "+ to_string(curWaypoint.z) + "]";

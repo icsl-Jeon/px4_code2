@@ -12,7 +12,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_HEIGHT 3
 
 namespace Ui {
 class Widget;
@@ -30,6 +29,7 @@ public:
     void writeSettings(std::string settingFile);
     void readSettings(std::string settingFile);
     double getSliderValue();
+    double setMaxSlideValue(float maxHeight) { maxSlideval = maxHeight;};
     ~Widget();
 signals:
     void callService(int droneId, std::string serviceName,
@@ -98,6 +98,7 @@ private:
     bool droneExist [3] = {false,false,false};
     bool isTestActive = false;
     std::string droneNames[3];
+    float maxSlideval = 3;
     QList<QCheckBox* > checkBoxAll[3]  ;
     QList<QPushButton* > pushButtonMavrosOffboard[3] ;
     QList<QPushButton* > pushButtonMavrosArmDisarm;

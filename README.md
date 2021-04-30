@@ -140,7 +140,7 @@ Basically, `px4_code2` receives the odometry and re-publish it as `geometry_msgs
 
 #### 3. ROS setup 
 
-##### (1) paramteres for server node
+##### (1) paramteters for server node
 * `~drone_name` : the name of the considered drone. This is also the group namespace when launching the server.  
 * `yaw_from_px4_to_sensor` : the relative yaw angle from pixhawk to the heading direction of the incoming odometry. 
 
