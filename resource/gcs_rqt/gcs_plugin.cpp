@@ -40,7 +40,8 @@ namespace px4_code2{
         nh = getNodeHandle();
         nh.getParam("/qt_setting_dir",param.setting_file);
         nh.getParam("/world_frame_id",param.worldFrameId);
-        nh.getParam("print_ros_warning",param.printRosWarning);
+        nh.getParam("/print_ros_warning",param.printRosWarning);
+        cout <<param.printRosWarning << endl;
 
 //        cout << param.worldFrameId << endl;
         std::cout << labelClient + " : setting file : " << param.setting_file << std::endl;
@@ -395,6 +396,7 @@ namespace px4_code2{
                 Q_EMIT enablePushButtonPX4(m,true);
                 Q_EMIT updatePX4State(m,isOffboard);
             } else {
+                if (param.printRosWarning)
                 ROS_WARN_STREAM_THROTTLE(3, labelClient + " : Communication with mavros of drones are missing.");
                 Q_EMIT enablePushButtonPX4(m,false);
             }
