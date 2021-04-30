@@ -40,6 +40,8 @@ namespace px4_code2{
         nh = getNodeHandle();
         nh.getParam("/qt_setting_dir",param.setting_file);
         nh.getParam("/world_frame_id",param.worldFrameId);
+        nh.getParam("print_ros_warning",param.printRosWarning);
+
 //        cout << param.worldFrameId << endl;
         std::cout << labelClient + " : setting file : " << param.setting_file << std::endl;
         widget->readSettings(param.setting_file);
@@ -364,7 +366,8 @@ namespace px4_code2{
 
         // 1. Phase update and q_emit (From px4_code2 server)
         if ((ros::Time::now() - lastCommTime).toSec() > 3){
-            ROS_WARN_STREAM_THROTTLE(3,labelClient + " : Communication with drones are missing.");
+            if (param.printRosWarning)
+                ROS_WARN_STREAM_THROTTLE(3,labelClient + " : Communication with drones are missing.");
             Q_EMIT enablePushButton(false);
         }else{
 

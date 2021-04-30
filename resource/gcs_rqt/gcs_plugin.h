@@ -22,6 +22,7 @@ namespace px4_code2{
             int getNdrone() {return droneNameSet.size();}
             std::string setting_file;
             std::string worldFrameId ;
+            bool printRosWarning = true; //! in case of simple traj gen mode, warning is not required
         };
         struct Status{
             std::vector<px4_code2_msgs::Phase> phaseSet;
