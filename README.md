@@ -7,8 +7,8 @@
 
 ## Youtube videos 
 
-* **2 min manual for gui** [Youtube](https://www.youtube.com/watch?v=-kpmBBiJndk&t=51s)
-* **2 min manual for trajectory creation** [Youtube](https://www.youtube.com/watch?v=-kpmBBiJndk&t=51s)
+* **2 min manual for gui** [Youtube](https://youtu.be/HYCDGvJr6zw)
+* **2 min manual for trajectory creation** [Youtube](https://youtu.be/9tbOiXRAKQ8)
 
 
 ## Installation 
